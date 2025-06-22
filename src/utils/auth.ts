@@ -1,7 +1,7 @@
 import { API_URL_V2 } from "@/constants/api_endpoint";
 import { ApolloLink, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import "core-js/stable/atob";
+// import "core-js/stable/atob";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";

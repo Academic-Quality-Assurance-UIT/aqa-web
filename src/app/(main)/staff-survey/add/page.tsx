@@ -9,20 +9,17 @@ import {
 	useGetStaffSurveyCriteriaListQuery,
 } from "@/gql/graphql";
 import {
-	Checkbox,
-	Radio,
-	RadioGroup,
-	useRadio,
-	VisuallyHidden,
+	Button,
 	cn,
 	Input,
+	RadioGroup,
 	Textarea,
-	Button,
+	useRadio,
+	VisuallyHidden,
 } from "@heroui/react";
-import _, { add, set } from "lodash";
+import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { twMerge } from "tailwind-merge";
 
 export default function Page() {
 	const router = useRouter();
@@ -146,7 +143,7 @@ export default function Page() {
 				router.push("/staff-survey");
 			},
 		});
-	}, [addSurveyData, additionData, additionalComment, pointData]);
+	}, [addSurveyData, additionData, additionalComment, pointData, router]);
 
 	useEffect(() => {
 		setPointData(
