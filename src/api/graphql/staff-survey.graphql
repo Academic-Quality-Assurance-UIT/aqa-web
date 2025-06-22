@@ -42,3 +42,30 @@ query GetPointsByCategory {
 		category
 	}
 }
+
+query GetPointsByCriteria($category: String!) {
+	getPointsByCriteria(category: $category) {
+		avg_point
+		criteria
+		index
+	}
+}
+
+query GetPointWithCommentByCriteria($category: String, $page: Int) {
+	getPointWithCommentByCriteria(category: $category, pagination: { page: $page }) {
+		data {
+			criteria
+			index
+			point
+			comment
+		}
+		meta {
+			hasNext
+			hasPrev
+			page
+			size
+			total_item
+			total_page
+		}
+	}
+}

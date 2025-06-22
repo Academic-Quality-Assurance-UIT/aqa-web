@@ -299,6 +299,7 @@ export type PointByCriteriaDto = {
   __typename?: 'PointByCriteriaDTO';
   avg_point: Scalars['Float']['output'];
   criteria: Scalars['String']['output'];
+  index: Scalars['Float']['output'];
 };
 
 export type Program = {
@@ -326,6 +327,7 @@ export type Query = {
   faculty?: Maybe<Faculty>;
   getBatchList: Array<StaffSurveyBatch>;
   getCriteriaList: Array<StaffSurveyCriteria>;
+  getPointWithCommentByCriteria: StaffSurveyPointResponseDto;
   getPointsByCategory: Array<PointByCategoryDto>;
   getPointsByCriteria: Array<PointByCriteriaDto>;
   /** List all points, group by a specific entity */
@@ -398,6 +400,14 @@ export type QueryFacultiesArgs = {
 
 export type QueryFacultyArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type QueryGetPointWithCommentByCriteriaArgs = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<FilterArgs>;
+  pagination?: InputMaybe<PaginationArgs>;
+  sort?: InputMaybe<SortArgs>;
 };
 
 
@@ -498,6 +508,20 @@ export type StaffSurveyPointDto = {
   criteria_name?: InputMaybe<Scalars['String']['input']>;
   max_point: Scalars['Int']['input'];
   point: Scalars['Int']['input'];
+};
+
+export type StaffSurveyPointResponseDto = {
+  __typename?: 'StaffSurveyPointResponseDTO';
+  data: Array<StaffSurveyPointResponseItemDto>;
+  meta: PaginatedMetaData;
+};
+
+export type StaffSurveyPointResponseItemDto = {
+  __typename?: 'StaffSurveyPointResponseItemDTO';
+  comment?: Maybe<Scalars['String']['output']>;
+  criteria: Scalars['String']['output'];
+  index: Scalars['Float']['output'];
+  point: Scalars['Int']['output'];
 };
 
 export type StaffSurveySheet = {
@@ -754,6 +778,21 @@ export type GetPointsByCategoryQueryVariables = Exact<{ [key: string]: never; }>
 
 
 export type GetPointsByCategoryQuery = { __typename?: 'Query', getPointsByCategory: Array<{ __typename?: 'PointByCategoryDTO', avg_point: number, category: string }> };
+
+export type GetPointsByCriteriaQueryVariables = Exact<{
+  category: Scalars['String']['input'];
+}>;
+
+
+export type GetPointsByCriteriaQuery = { __typename?: 'Query', getPointsByCriteria: Array<{ __typename?: 'PointByCriteriaDTO', avg_point: number, criteria: string, index: number }> };
+
+export type GetPointWithCommentByCriteriaQueryVariables = Exact<{
+  category?: InputMaybe<Scalars['String']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetPointWithCommentByCriteriaQuery = { __typename?: 'Query', getPointWithCommentByCriteria: { __typename?: 'StaffSurveyPointResponseDTO', data: Array<{ __typename?: 'StaffSurveyPointResponseItemDTO', criteria: string, index: number, point: number, comment?: string | null }>, meta: { __typename?: 'PaginatedMetaData', hasNext: boolean, hasPrev: boolean, page: number, size: number, total_item: number, total_page: number } } };
 
 export type DetailSubjectQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -2120,6 +2159,108 @@ export type GetPointsByCategorySuspenseQueryHookResult = ReturnType<typeof useGe
 export type GetPointsByCategoryQueryResult = Apollo.QueryResult<GetPointsByCategoryQuery, GetPointsByCategoryQueryVariables>;
 export function refetchGetPointsByCategoryQuery(variables?: GetPointsByCategoryQueryVariables) {
       return { query: GetPointsByCategoryDocument, variables: variables }
+    }
+export const GetPointsByCriteriaDocument = gql`
+    query GetPointsByCriteria($category: String!) {
+  getPointsByCriteria(category: $category) {
+    avg_point
+    criteria
+    index
+  }
+}
+    `;
+
+/**
+ * __useGetPointsByCriteriaQuery__
+ *
+ * To run a query within a React component, call `useGetPointsByCriteriaQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPointsByCriteriaQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPointsByCriteriaQuery({
+ *   variables: {
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function useGetPointsByCriteriaQuery(baseOptions: Apollo.QueryHookOptions<GetPointsByCriteriaQuery, GetPointsByCriteriaQueryVariables> & ({ variables: GetPointsByCriteriaQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPointsByCriteriaQuery, GetPointsByCriteriaQueryVariables>(GetPointsByCriteriaDocument, options);
+      }
+export function useGetPointsByCriteriaLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPointsByCriteriaQuery, GetPointsByCriteriaQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPointsByCriteriaQuery, GetPointsByCriteriaQueryVariables>(GetPointsByCriteriaDocument, options);
+        }
+export function useGetPointsByCriteriaSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPointsByCriteriaQuery, GetPointsByCriteriaQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetPointsByCriteriaQuery, GetPointsByCriteriaQueryVariables>(GetPointsByCriteriaDocument, options);
+        }
+export type GetPointsByCriteriaQueryHookResult = ReturnType<typeof useGetPointsByCriteriaQuery>;
+export type GetPointsByCriteriaLazyQueryHookResult = ReturnType<typeof useGetPointsByCriteriaLazyQuery>;
+export type GetPointsByCriteriaSuspenseQueryHookResult = ReturnType<typeof useGetPointsByCriteriaSuspenseQuery>;
+export type GetPointsByCriteriaQueryResult = Apollo.QueryResult<GetPointsByCriteriaQuery, GetPointsByCriteriaQueryVariables>;
+export function refetchGetPointsByCriteriaQuery(variables: GetPointsByCriteriaQueryVariables) {
+      return { query: GetPointsByCriteriaDocument, variables: variables }
+    }
+export const GetPointWithCommentByCriteriaDocument = gql`
+    query GetPointWithCommentByCriteria($category: String, $page: Int) {
+  getPointWithCommentByCriteria(category: $category, pagination: {page: $page}) {
+    data {
+      criteria
+      index
+      point
+      comment
+    }
+    meta {
+      hasNext
+      hasPrev
+      page
+      size
+      total_item
+      total_page
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPointWithCommentByCriteriaQuery__
+ *
+ * To run a query within a React component, call `useGetPointWithCommentByCriteriaQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPointWithCommentByCriteriaQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPointWithCommentByCriteriaQuery({
+ *   variables: {
+ *      category: // value for 'category'
+ *      page: // value for 'page'
+ *   },
+ * });
+ */
+export function useGetPointWithCommentByCriteriaQuery(baseOptions?: Apollo.QueryHookOptions<GetPointWithCommentByCriteriaQuery, GetPointWithCommentByCriteriaQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPointWithCommentByCriteriaQuery, GetPointWithCommentByCriteriaQueryVariables>(GetPointWithCommentByCriteriaDocument, options);
+      }
+export function useGetPointWithCommentByCriteriaLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPointWithCommentByCriteriaQuery, GetPointWithCommentByCriteriaQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPointWithCommentByCriteriaQuery, GetPointWithCommentByCriteriaQueryVariables>(GetPointWithCommentByCriteriaDocument, options);
+        }
+export function useGetPointWithCommentByCriteriaSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPointWithCommentByCriteriaQuery, GetPointWithCommentByCriteriaQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetPointWithCommentByCriteriaQuery, GetPointWithCommentByCriteriaQueryVariables>(GetPointWithCommentByCriteriaDocument, options);
+        }
+export type GetPointWithCommentByCriteriaQueryHookResult = ReturnType<typeof useGetPointWithCommentByCriteriaQuery>;
+export type GetPointWithCommentByCriteriaLazyQueryHookResult = ReturnType<typeof useGetPointWithCommentByCriteriaLazyQuery>;
+export type GetPointWithCommentByCriteriaSuspenseQueryHookResult = ReturnType<typeof useGetPointWithCommentByCriteriaSuspenseQuery>;
+export type GetPointWithCommentByCriteriaQueryResult = Apollo.QueryResult<GetPointWithCommentByCriteriaQuery, GetPointWithCommentByCriteriaQueryVariables>;
+export function refetchGetPointWithCommentByCriteriaQuery(variables?: GetPointWithCommentByCriteriaQueryVariables) {
+      return { query: GetPointWithCommentByCriteriaDocument, variables: variables }
     }
 export const DetailSubjectDocument = gql`
     query DetailSubject($id: String!) {

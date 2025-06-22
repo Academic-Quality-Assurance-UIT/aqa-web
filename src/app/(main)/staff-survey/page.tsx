@@ -2,10 +2,14 @@
 
 import ChartLayout from "@/components/chart/ChartLayout";
 import PointWithGroupedEntity from "@/components/chart/PointWithGroupedEntity";
+import StaffSurveyCriteriaChart from "@/components/chart/StaffSurveyCriteriaChart";
 import { ComboChart } from "@/components/ComboChart";
 import { FilterProvider } from "@/contexts/FilterContext";
-import { useGetPointsByCategoryQuery } from "@/gql/graphql";
-import { Button } from "@heroui/react";
+import {
+	useGetPointsByCategoryQuery,
+	useGetPointsByCriteriaQuery,
+} from "@/gql/graphql";
+import { Button, Tab, Tabs } from "@heroui/react";
 import _ from "lodash";
 import Link from "next/link";
 import {} from "react-icons";
@@ -34,7 +38,7 @@ export default function Page() {
 			<div className=" flex flex-col gap-4">
 				<FilterProvider>
 					<ChartLayout
-						primaryTitle="Điểm đánh giá giảng viên theo tiêu chí"
+						primaryTitle="Điểm đánh giá giảng viên theo danh mục"
 						secondaryTitle={""}
 						legends={["Điểm đánh giá"]}
 						colors={["sky"]}
@@ -85,6 +89,18 @@ export default function Page() {
 					</ChartLayout>
 				</FilterProvider>
 			</div>
+
+			<Tabs
+				aria-label="Dynamic tabs"
+				items={points?.getPointsByCategory ?? []}
+				className=" mt-10"
+			>
+				{(item) => (
+					<Tab key={item.category} title={item.category}>
+						<StaffSurveyCriteriaChart category={item.category} />
+					</Tab>
+				)}
+			</Tabs>
 		</div>
 	);
 }

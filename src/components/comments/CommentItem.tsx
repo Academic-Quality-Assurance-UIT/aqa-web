@@ -1,34 +1,28 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import COPY_ICON from "@assets/copy.svg";
-import Image from "next/image";
+import { Class } from "@/gql/graphql";
+import { useFilterUrlQuery } from "@/hooks/useFilterUrlQuery";
+import { DeepPartial } from "@apollo/client/utilities";
 import {
 	Button,
-	Card,
+	Chip,
 	Modal,
 	ModalBody,
 	ModalContent,
 	ModalFooter,
-	ModalHeader,
-	Dropdown,
-	DropdownTrigger,
-	DropdownMenu,
-	DropdownSection,
-	DropdownItem,
-	Chip,
+	ModalHeader
 } from "@heroui/react";
-import { Class } from "@/gql/graphql";
-import { DeepPartial } from "@apollo/client/utilities";
-import CommentModalItem from "./CommentModalItem";
-import { useFilterUrlQuery } from "@/hooks/useFilterUrlQuery";
+import { motion } from "framer-motion";
+import { ReactNode, useState } from "react";
 import { IoCopyOutline, IoEllipsisVertical } from "react-icons/io5";
+import CommentModalItem from "./CommentModalItem";
 
 export default function CommentItem({
 	content,
 	type,
 	classData,
+	clickable = true,
+	secondary = "",
 }: {
 	content: string;
 	type: string;
@@ -36,6 +30,8 @@ export default function CommentItem({
 	class_id?: string;
 	isLast: boolean;
 	classData?: DeepPartial<Class> | null;
+	clickable?: boolean;
+	secondary?: ReactNode;
 }) {
 	const { setUrlQuery } = useFilterUrlQuery();
 	const [isOpen, setIsOpen] = useState(false);
@@ -57,19 +53,26 @@ export default function CommentItem({
 			>
 				<div
 					className={` flex h-16 w-2 rounded-md ${
-						type === "positive" ? "bg-green-300" : "bg-red-300"
+						type === "positive"
+							? "bg-green-300"
+							: type == "negative"
+							? "bg-red-300"
+							: "bg-gray-400"
 					}`}
 				></div>
 				<div className=" mr-auto w-full flex flex-col gap-2">
 					<p className="font-medium text-sm text-left whitespace-pre-wrap	">
 						{content}
 					</p>
+					{secondary ? secondary : null}
 					<Chip
 						size="sm"
 						className={`w-24 ${
 							type === "positive"
 								? "bg-green-300 dark:bg-green-700"
-								: "bg-red-300 dark:bg-red-700"
+								: type === "negative"
+								? "bg-red-300 dark:bg-red-700"
+								: "hidden"
 						}`}
 					>
 						<p className=" px-1 py-1 capitalize font-medium text-xs">
@@ -90,6 +93,7 @@ export default function CommentItem({
 					aria-label="Like"
 					variant="flat"
 					onPress={() => setIsOpen(true)}
+					className={clickable ? "" : "hidden"}
 				>
 					<IoEllipsisVertical />
 				</Button>
