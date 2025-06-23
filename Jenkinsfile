@@ -24,7 +24,7 @@ pipeline {
         stage('Deploy to Server') {
             steps {
                 echo "Deploying frontend container..."
-                sh "docker compose -f ${COMPOSE_FILE} up -d --no-deps --build frontend"
+                sh "docker compose -f ${COMPOSE_FILE} up -d --no-deps --build --force-recreate frontend"
             }
         }
     }
