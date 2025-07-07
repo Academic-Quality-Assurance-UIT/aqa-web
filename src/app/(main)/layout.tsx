@@ -7,9 +7,11 @@ import { useIsAdmin, useIsFullAccess, useIsLecturer } from "@/hooks/useIsAdmin";
 import { useIsFaculty } from "@/hooks/useIsFaculty";
 import CommentIcon from "@assets/CommentIcon";
 import CriteriaIcon from "@assets/CriteriaIcon";
+import AIGenerateIcon from "@assets/AIGenerateIcon";
 import HomeIcon from "@assets/HomeIcon";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect } from "react";
+import StaffSurveyIcon from "@/assets/StaffSurveyIcon";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	const router = useRouter();
@@ -29,9 +31,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
 			<NavigationDrawer>
-				<NavItem title="Trang chủ" link="/" icon={HomeIcon} />
+				<NavItem title="Trang chủ" description="Tổng quan về dữ liệu" link="/" icon={HomeIcon} />
 				<NavItem
 					title="Ý kiến"
+					description="Ý kiến của sinh viên về giảng viên"
 					link="/comment"
 					icon={CommentIcon}
 					subItems={[
@@ -66,7 +69,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					<NavItem
 						title="Khảo sát giảng viên"
 						link="/staff-survey"
-						icon={CriteriaIcon}
+						icon={StaffSurveyIcon}
+					/>
+				) : null}
+				{isFullAcess || isAdmin ? (
+					<NavItem
+						title="Tạo biểu đồ bằng AI"
+						link="/ai-generate"
+						icon={AIGenerateIcon}
 					/>
 				) : null}
 				{isAdmin ? (

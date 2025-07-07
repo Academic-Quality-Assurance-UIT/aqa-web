@@ -7,10 +7,12 @@
 * {
 	box-sizing: border-box;
 	font-family: "Montserrat", sans-serif;
+
+	--foreground-rgb: #000;
 }
 
 body {
-	color: rgb(var(--foreground-rgb));
+	color: var(--foreground-rgb);
 	background: #e9eaec;
 	/* background: linear-gradient(130deg, #e4e5e7 40%, #eddc98ee 80%, #e4e5e7 94%); */
 }

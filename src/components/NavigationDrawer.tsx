@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, CardBody } from "@heroui/react";
+import { Button, Card, CardBody, Tooltip } from "@heroui/react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -33,7 +33,7 @@ export default function NavigationDrawer({ children }: { children?: ReactNode })
 	return (
 		<NavigationDrawerContext.Provider value={{ isOpen: open }}>
 			<nav className="fixed h-screen group w-fit group px-5 pt-12 flex flex-col shadow-none transition-all hover:shadow-2xl">
-				<div className="flex flex-row items-center">
+				<div className="flex flex-row items-center opacity-0">
 					<Button className="ml-1" isIconOnly onPress={toggleDrawer}>
 						<Image
 							src={NAV_ICON}
@@ -72,6 +72,7 @@ export default function NavigationDrawer({ children }: { children?: ReactNode })
 
 export function NavItem({
 	title,
+	description,
 	link,
 	icon: Icon,
 	subItems,
@@ -101,42 +102,55 @@ export function NavItem({
 			onMouseOver={() => setIsHover(true)}
 			onMouseLeave={() => setTimeout(() => setIsHover(false), 0)}
 		>
-			<Card
-				isPressable
-				onPress={() => router.push(link)}
-				className={`h-fit transition-all bg-transparent shadow-sm ${
-					isOpen ? "shadow-none" : ""
-				} ${isSelected ? " !bg-navbar-selected" : ""}`}
-				style={isSelected ? { color: "white" } : {}}
+			<Tooltip
+				placement="right"
+				content={<div className=" flex flex-col gap-1 px-2 py-1">
+					<p className="font-bold">{title}</p>
+					{description ? (
+						<p className="text-sm">{description}</p>
+					) : null}
+				</div>}
+				color="primary"
+				offset={20}
 			>
-				<CardBody className="flex flex-col h-fit p-4">
-					<div className={` flex flex-row items-start transition-all`}>
-						<div className="w-[24px] grid place-items-center">
-							{Icon ? (
-								<Icon
-									color={
-										pathname.split("/")[1] === link.split("/")[1]
-											? "white"
-											: ""
-									}
-									width={24}
-									size={24}
-								/>
-							) : null}
+				<Card
+					isPressable
+					onPress={() => router.push(link)}
+					className={`h-fit transition-all bg-transparent shadow-sm ${
+						isOpen ? "shadow-none" : ""
+					} ${isSelected ? " !bg-navbar-selected" : ""}`}
+					style={isSelected ? { color: "white" } : {}}
+				>
+					<CardBody className="flex flex-col h-fit p-4">
+						<div className={` flex flex-row items-start transition-all`}>
+							<div className="w-[24px] grid place-items-center">
+								{Icon ? (
+									<Icon
+										color={
+											pathname.split("/")[1] ===
+											link.split("/")[1]
+												? "white"
+												: "black"
+										}
+										width={24}
+										size={24}
+									/>
+								) : null}
+							</div>
+							<div
+								className={`${
+									isOpen ? " ml-2 w-48" : "w-0"
+								} h-6 relative overflow-hidden transition-all`}
+							>
+								<p className="whitespace-nowrap font-semibold text-base h-fit w-fit absolute top-0 left-3 transition-all duration-100`">
+									{title}
+								</p>
+							</div>
 						</div>
-						<div
-							className={`${
-								isOpen ? " ml-2 w-48" : "w-0"
-							} h-6 relative overflow-hidden transition-all`}
-						>
-							<p className="whitespace-nowrap font-semibold text-base h-fit w-fit absolute top-0 left-3 transition-all duration-100`">
-								{title}
-							</p>
-						</div>
-					</div>
-				</CardBody>
-			</Card>
-			{subItems ? (
+					</CardBody>
+				</Card>
+			</Tooltip>
+			{/* {subItems ? (
 				<div
 					className={`  pl-3 ${
 						isOpen ? "" : "w-0"
@@ -156,7 +170,9 @@ export function NavItem({
 							<Link href={link} key={link}>
 								<li
 									className={` my-1 rounded-xl p-2 ${
-										pathname === link ? "" : "hover:bg-primary-hover"
+										pathname === link
+											? ""
+											: "hover:bg-primary-hover"
 									} cursor-pointer transition-all ${
 										pathname === link
 											? " bg-primary-normal text-black hover:text-black "
@@ -172,7 +188,7 @@ export function NavItem({
 						))}
 					</ul>
 				</div>
-			) : null}
+			) : null} */}
 		</UICard>
 	);
 }
@@ -190,5 +206,6 @@ export type INavItemProps = INavItem & {
 
 export type INavItem = {
 	title: string;
+	description?: string;
 	link: string;
 };

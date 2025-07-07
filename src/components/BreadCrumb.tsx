@@ -162,7 +162,7 @@ export default function BreadCrumb() {
 						index
 					) => (
 						<div key={title} className=" flex gap-1 items-center">
-							<Tooltip content={name ?? "Tất cả"}>
+							<Tooltip content={name ?? "Tất cả"} color="primary">
 								<Button
 									variant="light"
 									className={twMerge(
