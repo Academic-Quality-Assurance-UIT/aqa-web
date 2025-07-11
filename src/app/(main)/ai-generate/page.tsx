@@ -24,10 +24,10 @@ import { IoMdSend } from "react-icons/io";
 import { TfiReload } from "react-icons/tfi";
 
 const sampleQuestions = [
-	"Tỉ lệ bình luận tiêu cực/ tổng bình luận của mỗi khoa (dùng biểu đồ tròn)",
+	"Tỉ lệ ý kiến tiêu cực/ tổng bình luận của mỗi khoa (dùng biểu đồ tròn)",
 	"Điểm đánh giá trung bình của từng khoa trong học kỳ 1, năm học 2021-2022",
 	"Top 5 giảng viên có điểm đánh giá cao nhất học kỳ 1, năm học 2021-2022",
-	"Số lượng bình luận tiêu cực qua mỗi học kỳ",
+	"Số lượng ý kiến tiêu cực qua mỗi học kỳ",
 	"Biểu đồ số lượng sinh viên tham gia khảo sát qua các học kỳ",
 ];
 
