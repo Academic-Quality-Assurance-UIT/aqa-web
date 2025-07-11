@@ -19,13 +19,13 @@ export function useChartGenerating({
 
 	return {
 		generateChart: async (question: string) => {
-            onStart?.();
-            
+			onStart?.();
+
 			try {
 				const response = await axios.post(
-					"http://localhost:11434/api/generate",
+					"https://de742105db6d.ngrok-free.app/api/generate",
 					{
-						model: "aqa-sql:3b",
+						model: "aqa-sql:latest",
 						prompt: question,
 						stream: false,
 						format: "json",

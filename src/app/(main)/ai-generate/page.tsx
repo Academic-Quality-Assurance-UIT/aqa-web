@@ -1,38 +1,34 @@
 "use client";
 
+import { BarChart } from "@/components/chart/BarChart";
+import PieChart from "@/components/chart/PieChart";
+import Loading from "@/components/Loading";
+import NoData from "@/components/NoData";
 import { UICard } from "@/components/UICard";
+import { useChartGenerating } from "@/hooks/useChartGenerating";
 import {
 	Accordion,
 	AccordionItem,
 	Button,
-	Code,
-	Input,
 	Table,
+	TableBody,
+	TableCell,
 	TableColumn,
 	TableHeader,
-	TableBody,
 	TableRow,
-	TableCell,
 } from "@heroui/react";
-import { initial, sample } from "lodash";
 import { useRef, useState } from "react";
-import { FcComboChart } from "react-icons/fc";
 import { BsArrowReturnRight } from "react-icons/bs";
+import { FcComboChart } from "react-icons/fc";
 import { IoMdSend } from "react-icons/io";
-import { useChartGenerating } from "@/hooks/useChartGenerating";
-import { BarChart } from "@/components/chart/BarChart";
-import Loading from "@/components/Loading";
-import NoData from "@/components/NoData";
-import ChartLayout from "@/components/chart/ChartLayout";
-import { Color } from "@tremor/react";
 import { TfiReload } from "react-icons/tfi";
 
-
 const sampleQuestions = [
+	"Tỉ lệ bình luận tiêu cực/ tổng bình luận của mỗi khoa (dùng biểu đồ tròn)",
+	"Điểm đánh giá trung bình của từng khoa trong học kỳ 1, năm học 2021-2022",
+	"Top 5 giảng viên có điểm đánh giá cao nhất học kỳ 1, năm học 2021-2022",
 	"Số lượng bình luận tiêu cực qua mỗi học kỳ",
 	"Biểu đồ số lượng sinh viên tham gia khảo sát qua các học kỳ",
-	"Điểm đánh giá trung bình của từng khoa qua các học kỳ",
-	"Top 5 giảng viên có điểm đánh giá cao nhất học kỳ 2021-2022",
 ];
 
 export default function Page() {
@@ -116,18 +112,27 @@ export default function Page() {
 				) : (
 					<div className="w-1/2 flex flex-col items-center gap-1">
 						<p className=" text-base text-center mb-1">Câu hỏi</p>
-						<p className=" mb-2 text-xl font-semibold text-center">{question}</p>
+						<p className=" mb-2 text-xl font-semibold text-center">
+							{question}
+						</p>
 						{loading ? (
 							<Button className="bg-transparent" isLoading>
 								Đang tải...
 							</Button>
-						) : <Button className="" color="primary" onPress={() => {
-							setIsInitial(true);
-							setIsGenerated(false);
-							setGeneratedData(null);
-						}}>
+						) : (
+							<Button
+								className=""
+								color="primary"
+								onPress={() => {
+									setIsInitial(true);
+									setIsGenerated(false);
+									setGeneratedData(null);
+									setError(null);
+								}}
+							>
 								<TfiReload /> Chỉnh sửa yêu cầu
-							</Button>}
+							</Button>
+						)}
 					</div>
 				)}
 
@@ -153,20 +158,6 @@ export default function Page() {
 
 				{isGenerated && genereatedData ? (
 					<>
-						<Accordion
-							className=" w-2/3 !shadow-md !mx-0"
-							variant="shadow"
-						>
-							<AccordionItem
-								key="1"
-								aria-label="SQL Query"
-								title={<p className=" font-medium">SQL Query</p>}
-							>
-								<p className=" whitespace-pre-wrap font-mono">
-									{prettySQL(genereatedData.query)}
-								</p>
-							</AccordionItem>
-						</Accordion>
 						<div className=" w-2/3 flex flex-col items-center gap-4">
 							{(genereatedData.chart_type == "bar" ||
 								genereatedData.chart_type == "line") && (
@@ -223,7 +214,7 @@ export default function Page() {
 											hasY1={false}
 										/>
 									</div>
-									<p className=" mb-1 font-semibold">
+									<p className=" text-center mb-1 font-semibold">
 										{genereatedData.chart_title}
 									</p>
 									<p className=" text-center text-sm">
@@ -265,7 +256,41 @@ export default function Page() {
 									</TableBody>
 								</Table>
 							)}
+							{genereatedData.chart_type == "pie" ? (
+								<div className="w-full h-fit px-12 py-8 pt-10 flex flex-col items-center bg-white shadow-md rounded-3xl">
+									<div className=" w-full h-[500px] mt-4 mb-10">
+										<PieChart
+											data={genereatedData.chartData}
+											title={genereatedData.chart_title}
+											description={
+												genereatedData.chart_description
+											}
+											labels={genereatedData.metadata.labels}
+										/>
+									</div>
+									<p className=" text-center mb-1 font-semibold">
+										{genereatedData.chart_title}
+									</p>
+									<p className=" text-center text-sm">
+										{genereatedData.chart_description}
+									</p>
+								</div>
+							) : null}
 						</div>
+						<Accordion
+							className=" w-2/3 !shadow-md !mx-0"
+							variant="shadow"
+						>
+							<AccordionItem
+								key="1"
+								aria-label="SQL Query"
+								title={<p className=" font-medium">SQL Query</p>}
+							>
+								<p className=" whitespace-pre-wrap font-mono">
+									{prettySQL(genereatedData.query)}
+								</p>
+							</AccordionItem>
+						</Accordion>
 					</>
 				) : (
 					<p className="text-red-500">{error}</p>
