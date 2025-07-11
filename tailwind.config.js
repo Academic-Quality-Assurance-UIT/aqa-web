@@ -157,7 +157,7 @@ module.exports = {
 				/^(fill-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/,
 		},
 	],
-	darkMode: "class",
+	// darkMode: "class",
 	// plugins: [heroui(), require("@headlessui/tailwindcss")],
 	plugins: [
 		heroui({
@@ -166,12 +166,16 @@ module.exports = {
 					colors: {
 						primary: "#ffd85f", // Your custom primary color for light theme
 						secondary: "#148d82",
+						foreground: "#000",
+						default: "#fff",
 					},
 				},
 				dark: {
 					colors: {
 						primary: "#ffd85f", // Your custom primary color for light theme
 						secondary: "#148d82",
+						foreground: "#000",
+						default: "#fff",
 					},
 				},
 			},

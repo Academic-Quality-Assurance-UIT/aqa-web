@@ -76,6 +76,8 @@ type Props = {
 	noDataText: ReactNode;
 	valueFormatter?: ((d: number) => string | number)[];
 	onClick?: (d: IClickData) => any;
+	hasY1?: boolean;
+	yTitle?: string;
 };
 
 export function BarChart({
@@ -84,6 +86,8 @@ export function BarChart({
 	noDataText,
 	valueFormatter = [(d: number) => d],
 	onClick,
+	hasY1 = true,
+	yTitle
 }: Props) {
 	const ref = useRef<any>();
 
@@ -120,26 +124,34 @@ export function BarChart({
 					color: "black",
 					font: { size: 15 },
 					autoSkip: true,
-					stepSize: 0.2,
+					// stepSize: 0.2,
+				},
+				title: {
+					display: !!yTitle,
+					text: yTitle,
 				},
 			},
-			y1: {
-				border: {
-					display: false,
-				},
-				beginAtZero: true,
-				display: true,
-				position: "right" as const,
-				min: 0,
-				grid: {
-					drawOnChartArea: false,
-				},
-				ticks: {
-					color: "black",
-					font: { size: 15 },
-					stepSize: 1,
-				},
-			},
+			...(hasY1
+				? {
+						y1: {
+							border: {
+								display: false,
+							},
+							beginAtZero: true,
+							display: true,
+							position: "right" as const,
+							min: 0,
+							grid: {
+								drawOnChartArea: false,
+							},
+							ticks: {
+								color: "black",
+								font: { size: 15 },
+								stepSize: 1,
+							},
+						},
+				  }
+				: {}),
 		},
 		plugins: {
 			legend: {
