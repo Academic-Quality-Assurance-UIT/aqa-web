@@ -13,11 +13,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
 	return (
 		<HeroUIProvider>
-			<NextThemesProvider attribute="class" defaultTheme="light">
-				<QueryClientProvider client={queryClient}>
-					<ApolloProvider client={client}>{children}</ApolloProvider>
-				</QueryClientProvider>
-			</NextThemesProvider>
+			{/* <NextThemesProvider attribute="class" defaultTheme="light">
+			</NextThemesProvider> */}
+			<QueryClientProvider client={queryClient}>
+				<ApolloProvider client={client}>{children}</ApolloProvider>
+			</QueryClientProvider>
 		</HeroUIProvider>
 	);
 }

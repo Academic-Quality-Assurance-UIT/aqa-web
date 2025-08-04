@@ -158,6 +158,8 @@ module.exports = {
 		},
 	],
 	// darkMode: "class",
+	darkMode: "class",
+	media: false,
 	// plugins: [heroui(), require("@headlessui/tailwindcss")],
 	plugins: [
 		heroui({
