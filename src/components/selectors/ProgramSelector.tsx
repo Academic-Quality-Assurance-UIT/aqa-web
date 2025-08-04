@@ -64,10 +64,12 @@ function ProgramSelector_({
 							</DropdownItem>
 						))
 					) : (
-						<div className=" flex flex-row gap-3">
-							<Spinner size="sm" />
-							<p className=" text-sm font-medium">Đang tải</p>
-						</div>
+						<DropdownItem className={`py-2`} key={"loading"}>
+							<div className=" flex flex-row gap-3">
+								<Spinner size="sm" />
+								<p className=" text-sm font-medium">Đang tải</p>
+							</div>
+						</DropdownItem>
 					)}
 				</DropdownSection>
 				<DropdownSection title={"Khác"}>

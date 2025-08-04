@@ -52,7 +52,7 @@ export default function Page() {
 
 	return (
 		<>
-			<div className=" flex-1 grid place-items-center">
+			<div className=" h-screen flex-1 grid place-items-center">
 				<div className=" flex flex-col items-center gap-10">
 					<h1 className=" font-semibold text-xl">
 						Đăng nhập vào hệ thống
