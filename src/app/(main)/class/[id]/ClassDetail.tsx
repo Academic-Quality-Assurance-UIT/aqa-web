@@ -75,14 +75,17 @@ export default function ClassDetail({ className, ...classInfo }: IProps) {
 						<TableCell>Tham gia</TableCell>
 						<TableCell>
 							<p className=" font-medium text-zinc-500 dark:text-zinc-400">
-								{classInfo.participating_student}
+								{classInfo.participating_student ??
+									"Không có giá trị"}
 							</p>
 						</TableCell>
 					</TableRow>
 					<TableRow>
 						<TableCell>Tổng số học sinh</TableCell>
 						<TableCell>
-							<p className=" font-medium">{classInfo.total_student}</p>
+							<p className=" font-medium">
+								{classInfo.total_student ?? "Không có giá trị"}
+							</p>
 						</TableCell>
 					</TableRow>
 					<TableRow>
