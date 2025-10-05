@@ -24,7 +24,7 @@ query GetStaffSurveyCriteriaList {
 		display_name
 		index
 		semesters
-		staff_survery_criteria_id
+		staff_survey_criteria_id
 	}
 }
 
