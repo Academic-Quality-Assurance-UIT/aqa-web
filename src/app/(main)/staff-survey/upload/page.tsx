@@ -40,7 +40,7 @@ export default function Page() {
 	const pointMapping = useMemo<
 		{ category: string; criterias: { name: string; original: string }[] }[]
 	>(() => {
-		const pointColumnRegex = /(.*?)\s*\[\d+\.\s*(.*?)\]/;
+		const pointColumnRegex = /(.*?)\s*\[\d*\.?\s*(.*?)\]/;
 
 		const columns = data?.[0] ?? [];
 		const pointColumns = columns
@@ -221,7 +221,7 @@ export default function Page() {
 						criteria_category: facultyMapping.category,
 						criteria_index: index,
 					})),
-				],
+				].filter(item => _.isNumber(item.point)),
 			};
 		});
 

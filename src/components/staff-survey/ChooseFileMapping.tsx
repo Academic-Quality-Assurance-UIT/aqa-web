@@ -66,7 +66,7 @@ export default function ChooseFileMapping({
 						setMappingState((prev: any) => {
 							const newMapping = [...prev];
 							const index = newMapping.findIndex(
-								(m) => m.name === item.label
+								(m) => m.label === item.label
 							);
 							if (index !== -1) {
 								newMapping[index].column = value;
