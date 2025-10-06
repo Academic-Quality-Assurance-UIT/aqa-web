@@ -175,14 +175,34 @@ export default function Page() {
 		console.log({ pointMapping, facultyMapping, additionalCommentsMapping });
 		console.log({ surveyName });
 
+		const pointMappingWithoutComment = pointMapping.filter(
+			(d) => d.category != "Ý kiến thêm"
+		);
+		const pointMappingWithoutCommentCriteriaNames =
+			pointMappingWithoutComment.flatMap((d) =>
+				d.criterias.map((v) => v.name)
+			);
 		const criteriaList = pointMapping
-			.map((point, pointIndex: number) =>
-				point.criterias.map((criteria, index: number) => ({
-					...criteria,
-					category: point.category,
-					index: pointIndex * 100 + index,
-				}))
-			)
+			.map((point, pointIndex: number) => {
+				if (
+					point.category == "Ý kiến thêm" ||
+					point.category.startsWith("Ý kiến")
+				) {
+					return [];
+					// return point.criterias.map((criteria, index: number) => ({
+					// 	...criteria,
+					// 	name: pointMappingWithoutCommentCriteriaNames[index],
+					// 	category: point.category,
+					// 	index: pointIndex * 100 + index,
+					// }));
+				} else {
+					return point.criterias.map((criteria, index: number) => ({
+						...criteria,
+						category: point.category,
+						index: pointIndex * 100 + index,
+					}));
+				}
+			})
 			.flat();
 		console.log({ criteriaList });
 
@@ -203,25 +223,37 @@ export default function Page() {
 						max_point: 5,
 						point: rowData[criteria.original] ?? 0,
 						comment:
-							row[additionalCommentsMapping.criterias[index]] ?? "",
+							row[
+								additionalCommentsMapping.criterias[
+									pointMappingWithoutCommentCriteriaNames.indexOf(
+										criteria.name
+									)
+								]
+							] ?? "",
 						criteria_name: criteria.name,
 						criteria_category: criteria.category,
 						criteria_index: criteria.index,
 					})),
-					...facultyMapping.criterias.map((criteria, index: number) => ({
-						max_point: 5,
-						point: row[criteria.original] ?? 0,
-						comment:
-							rowData[
-								additionalCommentsMapping.criterias[
-									index + criteriaList.length
-								]
-							] ?? "",
-						criteria_name: criteria.name,
-						criteria_category: facultyMapping.category,
-						criteria_index: index,
-					})),
-				].filter(item => _.isNumber(item.point)),
+					// ...facultyMapping.criterias.map((criteria, index: number) => ({
+					// 	max_point: 5,
+					// 	point: row[criteria.original] ?? 0,
+					// 	comment:
+					// 		row[
+					// 			additionalCommentsMapping.criterias[
+					// 				pointMappingWithoutCommentCriteriaNames.indexOf(
+					// 					criteria.name
+					// 				)
+					// 			]
+					// 		] ?? "",
+					// 	criteria_name: criteria.name,
+					// 	criteria_category: facultyMapping.category,
+					// 	criteria_index: index,
+					// })),
+				].map((item) => ({
+					...item,
+					point: _.isNumber(item.point) ? item.point : 0,
+					max_point: _.isNumber(item.max_point) ? item.max_point : 0,
+				})),
 			};
 		});
 

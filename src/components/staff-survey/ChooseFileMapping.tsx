@@ -36,7 +36,19 @@ const defaultColumns = [
 		label: "Học kỳ",
 		name: "semester",
 		selected: "2025",
-		options: ["2020", "2021", "2022", "2023", "2024", "2025"],
+		options: [
+			"2015",
+			"2016",
+			"2017",
+			"2018",
+			"2019",
+			"2020",
+			"2021",
+			"2022",
+			"2023",
+			"2024",
+			"2025",
+		],
 		optionTitle: "Chọn học kỳ",
 	},
 ];
@@ -58,7 +70,7 @@ export default function ChooseFileMapping({
 			{mapping.map((item) => (
 				<ColumnSelect
 					key={item.label}
-					columns={item.column ? columns : item.options || []}
+					columns={!item.options ? columns : item.options || []}
 					title={item.optionTitle}
 					label={item.label}
 					value={item.column ?? item.selected}
@@ -70,9 +82,10 @@ export default function ChooseFileMapping({
 							);
 							if (index !== -1) {
 								newMapping[index].column = value;
+								newMapping[index].selected = value;
 							} else {
 								newMapping.push({
-									name: item.label,
+									name: item.name,
 									column: value,
 								});
 							}
