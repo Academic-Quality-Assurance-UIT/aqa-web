@@ -27,7 +27,9 @@ export function AuthenticationIntegration() {
 			console.log({ token });
 
 			const redirectUrl = searchParams.get("redirect");
-			const res = await loginIntegration({ variables: { token } });
+			const res = await loginIntegration({ variables: { token }, onError: () => {
+                router.replace('/authentication-failed')
+            } });
 			if (res.data?.loginIntegration) authLogin(res.data?.loginIntegration);
 			if (redirectUrl) router.replace(redirectUrl);
 		})();
