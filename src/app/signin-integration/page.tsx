@@ -31,7 +31,7 @@ export default function Page() {
 			if (res.data?.loginIntegration) authLogin(res.data?.loginIntegration);
 			if (redirectUrl) router.replace(redirectUrl);
 		})();
-	}, [loginIntegration, router, searchParams]);
+	}, [authLogin, loginIntegration, router, searchParams]);
 
 	return (
 		<div>
