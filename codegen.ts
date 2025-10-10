@@ -5,7 +5,7 @@ dotenvConfig();
 
 const config: CodegenConfig = {
 	overwrite: true,
-	schema: process.env.NEXT_PUBLIC_API_URL_V2,
+	schema: process.env.BACKEND_URL,
 	documents: "src/**/*.graphql",
 	// ignoreNoDocuments: true,
 	generates: {

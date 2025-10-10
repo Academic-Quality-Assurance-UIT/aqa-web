@@ -4,7 +4,7 @@ const nextConfig = {
 		return [
 			{
 				source: "/api/:path*", // frontend endpoint
-				destination: "http://localhost:8000/graphql", // backend server
+				destination: process.env.BACKEND_URL, // backend server
 			},
 		];
 	},

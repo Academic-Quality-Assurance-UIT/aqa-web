@@ -9,12 +9,14 @@ import CommentIcon from "@assets/CommentIcon";
 import CriteriaIcon from "@assets/CriteriaIcon";
 import AIGenerateIcon from "@assets/AIGenerateIcon";
 import HomeIcon from "@assets/HomeIcon";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
 import StaffSurveyIcon from "@/assets/StaffSurveyIcon";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	const router = useRouter();
+	const pathName = usePathname();
+	const searchParams = useSearchParams();
 
 	const { data, loading } = useProfileQuery({ fetchPolicy: "network-only" });
 	const { isFullAcess } = useIsFullAccess();
@@ -24,14 +26,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		if (loading === false && !data) {
-			router.replace("/signin");
+			const token = searchParams.get("token");
+			if (token)
+				router.replace(
+					`/signin-integration?token=${token}&redirect=${pathName}`
+				);
+			else router.replace("authentication-failed");
 		}
-	}, [data, loading, router]);
+	}, [data, loading, pathName, router, searchParams]);
 
 	return (
 		<>
 			<NavigationDrawer>
-				<NavItem title="Trang chủ" description="Tổng quan về dữ liệu" link="/" icon={HomeIcon} />
+				<NavItem
+					title="Trang chủ"
+					description="Tổng quan về dữ liệu"
+					link="/"
+					icon={HomeIcon}
+				/>
 				<NavItem
 					title="Ý kiến"
 					description="Ý kiến của sinh viên về giảng viên"
