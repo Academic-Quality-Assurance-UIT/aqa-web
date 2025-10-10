@@ -1,5 +1,6 @@
 "use client";
 import { useLoginIntegrationMutation } from "@/gql/graphql";
+import { useAuth } from "@/stores/auth.store";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
@@ -10,6 +11,7 @@ export default function Page() {
 	const [loginIntegration] = useLoginIntegrationMutation({
 		fetchPolicy: "network-only",
 	});
+	const { authData, isLogin, authLogin } = useAuth();
 
 	useEffect(() => {
 		(async () => {
@@ -19,11 +21,14 @@ export default function Page() {
 				return;
 			}
 
-			token = `${token.split(".")[0]}.${token.split(".")[1].replaceAll(" ", "+")}`;
+			token = `${token.split(".")[0]}.${token
+				.split(".")[1]
+				.replaceAll(" ", "+")}`;
 			console.log({ token });
 
 			const redirectUrl = searchParams.get("redirect");
-			await loginIntegration({ variables: { token } });
+			const res = await loginIntegration({ variables: { token } });
+			if (res.data?.loginIntegration) authLogin(res.data?.loginIntegration);
 			if (redirectUrl) router.replace(redirectUrl);
 		})();
 	}, [loginIntegration, router, searchParams]);

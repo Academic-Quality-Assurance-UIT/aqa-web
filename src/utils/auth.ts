@@ -20,7 +20,7 @@ export function useApolloLink() {
 			const now = new Date().getTime() / 1000;
 
 			if (decodedAccessToken.exp && decodedAccessToken.exp <= now) {
-				router.replace("/signin");
+				router.replace("/signin-integration");
 			}
 		} catch (error) {
 			console.log({ error });
