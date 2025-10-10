@@ -1,42 +1,30 @@
 "use client";
 
 import LecturerNavIcon from "@/assets/LecturerNavIcon";
+import StaffSurveyIcon from "@/assets/StaffSurveyIcon";
+import { AuthenticationNavigating } from "@/components/AuthenticationNavigating";
 import NavigationDrawer, { NavItem } from "@/components/NavigationDrawer";
 import { useProfileQuery } from "@/gql/graphql";
 import { useIsAdmin, useIsFullAccess, useIsLecturer } from "@/hooks/useIsAdmin";
 import { useIsFaculty } from "@/hooks/useIsFaculty";
+import AIGenerateIcon from "@assets/AIGenerateIcon";
 import CommentIcon from "@assets/CommentIcon";
 import CriteriaIcon from "@assets/CriteriaIcon";
-import AIGenerateIcon from "@assets/AIGenerateIcon";
 import HomeIcon from "@assets/HomeIcon";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect } from "react";
-import StaffSurveyIcon from "@/assets/StaffSurveyIcon";
+import { Suspense } from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-	const router = useRouter();
-	const pathName = usePathname();
-	const searchParams = useSearchParams();
-
 	const { data, loading } = useProfileQuery({ fetchPolicy: "network-only" });
 	const { isFullAcess } = useIsFullAccess();
 	const { isAdmin } = useIsAdmin();
 	const { isFaculty } = useIsFaculty();
 	const { isLecturer } = useIsLecturer();
 
-	useEffect(() => {
-		if (loading === false && !data) {
-			const token = searchParams.get("token");
-			if (token)
-				router.replace(
-					`/signin-integration?token=${token}&redirect=${pathName}`
-				);
-			else router.replace("authentication-failed");
-		}
-	}, [data, loading, pathName, router, searchParams]);
-
 	return (
 		<>
+			<Suspense fallback={<div></div>}>
+				<AuthenticationNavigating data={data} loading={loading} />
+			</Suspense>
 			<NavigationDrawer>
 				<NavItem
 					title="Trang chủ"
