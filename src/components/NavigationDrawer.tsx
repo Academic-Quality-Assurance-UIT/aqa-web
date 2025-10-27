@@ -59,12 +59,12 @@ export default function NavigationDrawer({ children }: { children?: ReactNode })
 				>
 					{children}
 				</div>
-				<NavItem
+				{/* <NavItem
 					className=" mb-10"
 					title="Đăng xuất"
 					link="/sign-out"
 					icon={IoLogInOutline}
-				/>
+				/> */}
 			</nav>
 		</NavigationDrawerContext.Provider>
 	);
