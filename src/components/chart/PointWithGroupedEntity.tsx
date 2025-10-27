@@ -12,9 +12,10 @@ import {
 import Loading from "@components/Loading";
 import NoData from "@components/NoData";
 import { BarChart } from "@tremor/react";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, use, useEffect, useState } from "react";
 import { ComboChart } from "../ComboChart";
-import { Select, SelectItem } from "@heroui/react";
+import { Select, SelectItem, Tab, Tabs } from "@heroui/react";
+import HistogramChart from "./HistogramChart";
 
 type Props = {
 	title: string;
@@ -29,6 +30,7 @@ type Props = {
 };
 
 type AggregationType = "average_point" | "median_point" | "trimmed_mean_point";
+type TabType = "list" | "histogram";
 
 function InnerPointWithGroupedEntity({
 	title,
@@ -45,6 +47,7 @@ function InnerPointWithGroupedEntity({
 
 	const [data, setData] = useState<GroupedPoint[]>([]);
 	const [loading, setLoading] = useState(false);
+	const [tab, setTab] = useState<TabType>("list");
 	const [aggregationField, setAggregationField] =
 		useState<AggregationType>("average_point");
 
@@ -98,9 +101,9 @@ function InnerPointWithGroupedEntity({
 			.map((point) => ({
 				[xTitle]: point[aggregationField] * 4,
 				[averageTitle]: averagePoint,
-				[medianTitle]: point.median_point,
 				name: point.display_name,
 			})) || [];
+	const histogramData = chartData.map((item) => ({ point: item[xTitle] as number }));
 
 	return (
 		<div className="">
@@ -114,7 +117,15 @@ function InnerPointWithGroupedEntity({
 				isFullWidth
 				handlerButtons={selectors}
 			>
-				<div className=" px-6 pb-4 flex justify-end">
+				<div className=" px-8 pb-4 flex justify-between items-center">
+					<Tabs
+						variant="underlined"
+						selectedKey={tab}
+						onSelectionChange={(value) => setTab(value as TabType)}
+					>
+						<Tab key="list" title="Danh sách điểm" />
+						<Tab key="histogram" title="Biểu đồ Histogram" />
+					</Tabs>
 					<Select
 						className="max-w-[240px]"
 						label="Loại điểm"
@@ -153,40 +164,44 @@ function InnerPointWithGroupedEntity({
 						</SelectItem>
 					</Select>
 				</div>
-				<ComboChart
-					data={chartData}
-					index="name"
-					enableBiaxial={false}
-					showLegend={false}
-					barSeries={{
-						categories: [xTitle],
-						yAxisLabel: "",
-						colors: [
-							aggregationField === "average_point"
-								? "sky"
-								: aggregationField === "median_point"
-								? "emerald"
-								: "amber",
-						],
-						minValue: 3,
-						maxValue: 4,
-						yAxisWidth: 60,
-						valueFormatter: (number: number) => {
-							return `${number.toFixed(2)}`;
-						},
-					}}
-					lineSeries={{
-						categories: [averageTitle],
-						showYAxis: true,
-						yAxisLabel: "",
-						colors: ["pink"],
-						minValue: 3,
-						maxValue: 4,
-						valueFormatter: (number: number) => {
-							return `${number.toFixed(2)}`;
-						},
-					}}
-				/>
+				{tab == "list" ? (
+					<ComboChart
+						data={chartData}
+						index="name"
+						enableBiaxial={false}
+						showLegend={false}
+						barSeries={{
+							categories: [xTitle],
+							yAxisLabel: "",
+							colors: [
+								aggregationField === "average_point"
+									? "sky"
+									: aggregationField === "median_point"
+									? "emerald"
+									: "amber",
+							],
+							minValue: 3,
+							maxValue: 4,
+							yAxisWidth: 60,
+							valueFormatter: (number: number) => {
+								return `${number.toFixed(2)}`;
+							},
+						}}
+						lineSeries={{
+							categories: [averageTitle],
+							showYAxis: true,
+							yAxisLabel: "",
+							colors: ["pink"],
+							minValue: 3,
+							maxValue: 4,
+							valueFormatter: (number: number) => {
+								return `${number.toFixed(2)}`;
+							},
+						}}
+					/>
+				) : histogramData ? (
+					<HistogramChart rawData={histogramData} />
+				) : null}
 			</ChartLayout>
 		</div>
 	);

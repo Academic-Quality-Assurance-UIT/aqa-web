@@ -78,7 +78,7 @@ export default function ChartLayout({
 		<BaseChart height={height}>
 			<Extensible isOpen={isOpen} setIsOpen={setIsOpen}>
 				<div className="w-full px-8">
-					<div className="  w-full mb-2 pl-2 pr-8 pt-5 flex flex-row gap-5 justify-between items-start xl:items-center">
+					<div className="  w-full mb-2 pl-2 pr-0 pt-5 flex flex-row gap-5 justify-between items-start xl:items-center">
 						<div className=" w-3/4 mt-2 flex gap-2">
 							<FcComboChart className=" mt-0" size={24} />
 							<div>
