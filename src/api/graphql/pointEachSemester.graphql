@@ -53,6 +53,8 @@ query PointsWithGroupBy(
 	) {
 		data {
 			average_point
+			median_point
+			trimmed_mean_point
 			class_num
 			display_name
 			id

@@ -151,7 +151,9 @@ export type GroupedPoint = {
   display_name?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   max_point?: Maybe<Scalars['Float']['output']>;
+  median_point: Scalars['Float']['output'];
   point?: Maybe<Scalars['Float']['output']>;
+  trimmed_mean_point: Scalars['Float']['output'];
 };
 
 export type Lecturer = {
@@ -604,7 +606,7 @@ export type UserEntity = {
   lastAccess?: Maybe<Scalars['DateTime']['output']>;
   lastSendEmail?: Maybe<Scalars['DateTime']['output']>;
   lecturer?: Maybe<Lecturer>;
-  password: Scalars['String']['output'];
+  password?: Maybe<Scalars['String']['output']>;
   role: Role;
   username: Scalars['String']['output'];
 };
@@ -717,14 +719,14 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthDto', access_token: string, user: { __typename?: 'UserEntity', displayName: string, id: string, password: string, role: Role, username: string, faculty?: { __typename?: 'Faculty', display_name: string, faculty_id: string, full_name?: string | null, is_displayed?: boolean | null } | null, lecturer?: { __typename?: 'Lecturer', display_name?: string | null, email?: string | null, faculty_id?: string | null, gender?: boolean | null, learning?: string | null, learning_position?: string | null, lecturer_id: string, mscb?: number | null, ngach?: string | null, phone?: string | null, position?: string | null, total_point?: number | null, username?: string | null } | null } } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthDto', access_token: string, user: { __typename?: 'UserEntity', displayName: string, id: string, password?: string | null, role: Role, username: string, faculty?: { __typename?: 'Faculty', display_name: string, faculty_id: string, full_name?: string | null, is_displayed?: boolean | null } | null, lecturer?: { __typename?: 'Lecturer', display_name?: string | null, email?: string | null, faculty_id?: string | null, gender?: boolean | null, learning?: string | null, learning_position?: string | null, lecturer_id: string, mscb?: number | null, ngach?: string | null, phone?: string | null, position?: string | null, total_point?: number | null, username?: string | null } | null } } };
 
 export type LoginIntegrationMutationVariables = Exact<{
   token: Scalars['String']['input'];
 }>;
 
 
-export type LoginIntegrationMutation = { __typename?: 'Mutation', loginIntegration: { __typename?: 'AuthDto', access_token: string, user: { __typename?: 'UserEntity', displayName: string, id: string, password: string, role: Role, username: string, faculty?: { __typename?: 'Faculty', display_name: string, faculty_id: string, full_name?: string | null, is_displayed?: boolean | null } | null, lecturer?: { __typename?: 'Lecturer', display_name?: string | null, email?: string | null, faculty_id?: string | null, gender?: boolean | null, learning?: string | null, learning_position?: string | null, lecturer_id: string, mscb?: number | null, ngach?: string | null, phone?: string | null, position?: string | null, total_point?: number | null, username?: string | null } | null } } };
+export type LoginIntegrationMutation = { __typename?: 'Mutation', loginIntegration: { __typename?: 'AuthDto', access_token: string, user: { __typename?: 'UserEntity', displayName: string, id: string, password?: string | null, role: Role, username: string, faculty?: { __typename?: 'Faculty', display_name: string, faculty_id: string, full_name?: string | null, is_displayed?: boolean | null } | null, lecturer?: { __typename?: 'Lecturer', display_name?: string | null, email?: string | null, faculty_id?: string | null, gender?: boolean | null, learning?: string | null, learning_position?: string | null, lecturer_id: string, mscb?: number | null, ngach?: string | null, phone?: string | null, position?: string | null, total_point?: number | null, username?: string | null } | null } } };
 
 export type PointsEachSemesterQueryVariables = Exact<{
   groupEntity: Scalars['String']['input'];
@@ -752,7 +754,7 @@ export type PointsWithGroupByQueryVariables = Exact<{
 }>;
 
 
-export type PointsWithGroupByQuery = { __typename?: 'Query', groupedPoints: { __typename?: 'PaginatedGroupedPoint', data: Array<{ __typename?: 'GroupedPoint', average_point: number, class_num: number, display_name?: string | null, id: string, max_point?: number | null, point?: number | null }> } };
+export type PointsWithGroupByQuery = { __typename?: 'Query', groupedPoints: { __typename?: 'PaginatedGroupedPoint', data: Array<{ __typename?: 'GroupedPoint', average_point: number, median_point: number, trimmed_mean_point: number, class_num: number, display_name?: string | null, id: string, max_point?: number | null, point?: number | null }> } };
 
 export type ProgramsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -846,26 +848,26 @@ export type UsersQueryVariables = Exact<{
 }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'UserEntity', displayName: string, id: string, password: string, role: Role, username: string, lastAccess?: any | null, faculty?: { __typename?: 'Faculty', display_name: string, faculty_id: string, full_name?: string | null, is_displayed?: boolean | null } | null, lecturer?: { __typename?: 'Lecturer', birth_date?: any | null, display_name?: string | null, email?: string | null, faculty_id?: string | null, gender?: boolean | null, learning?: string | null, learning_position?: string | null, lecturer_id: string, mscb?: number | null, ngach?: string | null, phone?: string | null, position?: string | null, total_point?: number | null, username?: string | null } | null }> };
+export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'UserEntity', displayName: string, id: string, password?: string | null, role: Role, username: string, lastAccess?: any | null, faculty?: { __typename?: 'Faculty', display_name: string, faculty_id: string, full_name?: string | null, is_displayed?: boolean | null } | null, lecturer?: { __typename?: 'Lecturer', birth_date?: any | null, display_name?: string | null, email?: string | null, faculty_id?: string | null, gender?: boolean | null, learning?: string | null, learning_position?: string | null, lecturer_id: string, mscb?: number | null, ngach?: string | null, phone?: string | null, position?: string | null, total_point?: number | null, username?: string | null } | null }> };
 
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'UserEntity', displayName: string, id: string, password: string, role: Role, username: string, faculty?: { __typename?: 'Faculty', display_name: string, faculty_id: string, full_name?: string | null, is_displayed?: boolean | null } | null, lecturer?: { __typename?: 'Lecturer', display_name?: string | null, email?: string | null, faculty_id?: string | null, gender?: boolean | null, learning?: string | null, learning_position?: string | null, lecturer_id: string, mscb?: number | null, ngach?: string | null, phone?: string | null, position?: string | null, total_point?: number | null, username?: string | null } | null } };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'UserEntity', displayName: string, id: string, password?: string | null, role: Role, username: string, faculty?: { __typename?: 'Faculty', display_name: string, faculty_id: string, full_name?: string | null, is_displayed?: boolean | null } | null, lecturer?: { __typename?: 'Lecturer', display_name?: string | null, email?: string | null, faculty_id?: string | null, gender?: boolean | null, learning?: string | null, learning_position?: string | null, lecturer_id: string, mscb?: number | null, ngach?: string | null, phone?: string | null, position?: string | null, total_point?: number | null, username?: string | null } | null } };
 
 export type RegisterUserMutationVariables = Exact<{
   user: UserDto;
 }>;
 
 
-export type RegisterUserMutation = { __typename?: 'Mutation', registerUser: { __typename?: 'UserEntity', displayName: string, id: string, password: string, role: Role, username: string } };
+export type RegisterUserMutation = { __typename?: 'Mutation', registerUser: { __typename?: 'UserEntity', displayName: string, id: string, password?: string | null, role: Role, username: string } };
 
 export type UpdateUserMutationVariables = Exact<{
   user: UpdateUserDto;
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'UserEntity', displayName: string, id: string, password: string, role: Role, username: string } };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'UserEntity', displayName: string, id: string, password?: string | null, role: Role, username: string } };
 
 export type RemoveUserMutationVariables = Exact<{
   id: Scalars['String']['input'];
@@ -1889,6 +1891,8 @@ export const PointsWithGroupByDocument = gql`
   ) {
     data {
       average_point
+      median_point
+      trimmed_mean_point
       class_num
       display_name
       id

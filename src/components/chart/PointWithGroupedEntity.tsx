@@ -14,6 +14,7 @@ import NoData from "@components/NoData";
 import { BarChart } from "@tremor/react";
 import { ReactNode, useEffect, useState } from "react";
 import { ComboChart } from "../ComboChart";
+import { Select, SelectItem } from "@heroui/react";
 
 type Props = {
 	title: string;
@@ -23,8 +24,11 @@ type Props = {
 	query?: FilterArgs;
 	xTitle?: string;
 	averageTitle?: string;
+	medianTitle?: string;
 	onClick?: (item: GroupedPoint) => any;
 };
+
+type AggregationType = "average_point" | "median_point" | "trimmed_mean_point";
 
 function InnerPointWithGroupedEntity({
 	title,
@@ -33,6 +37,7 @@ function InnerPointWithGroupedEntity({
 	query = {},
 	xTitle = "Điểm",
 	averageTitle = "Trung bình",
+	medianTitle = "Trung vị",
 	groupEntity,
 	onClick = () => {},
 }: Props) {
@@ -40,6 +45,8 @@ function InnerPointWithGroupedEntity({
 
 	const [data, setData] = useState<GroupedPoint[]>([]);
 	const [loading, setLoading] = useState(false);
+	const [aggregationField, setAggregationField] =
+		useState<AggregationType>("average_point");
 
 	const { data: profile } = useProfileQuery();
 
@@ -82,15 +89,16 @@ function InnerPointWithGroupedEntity({
 	}, [JSON.stringify(query), JSON.stringify(variables), profile]);
 
 	const averagePoint =
-		data.reduce((total, value) => (total += value.average_point * 4), 0) /
+		data.reduce((total, value) => (total += value[aggregationField] * 4), 0) /
 		data.length;
 
 	const chartData =
 		[...data]
-			.sort((a, b) => b.average_point - a.average_point)
+			.sort((a, b) => b[aggregationField] - a[aggregationField])
 			.map((point) => ({
-				[xTitle]: point.average_point * 4,
+				[xTitle]: point[aggregationField] * 4,
 				[averageTitle]: averagePoint,
+				[medianTitle]: point.median_point,
 				name: point.display_name,
 			})) || [];
 
@@ -106,6 +114,45 @@ function InnerPointWithGroupedEntity({
 				isFullWidth
 				handlerButtons={selectors}
 			>
+				<div className=" px-6 pb-4 flex justify-end">
+					<Select
+						className="max-w-[240px]"
+						label="Loại điểm"
+						selectedKeys={new Set([aggregationField])}
+						onSelectionChange={(value) =>
+							setAggregationField(
+								(value.currentKey ??
+									aggregationField) as AggregationType
+							)
+						}
+						variant="bordered"
+					>
+						<SelectItem
+							key={"average_point"}
+							startContent={
+								<div className="w-2 h-2 bg-[#0ea5e9] rounded-full" />
+							}
+						>
+							Điểm trung bình
+						</SelectItem>
+						<SelectItem
+							key={"median_point"}
+							startContent={
+								<div className="w-2 h-2 bg-[#10b981] rounded-full" />
+							}
+						>
+							Điểm trung vị
+						</SelectItem>
+						<SelectItem
+							key={"trimmed_mean_point"}
+							startContent={
+								<div className="w-2 h-2 bg-[#fbbf24] rounded-full" />
+							}
+						>
+							Điểm trung bình cắt 5%
+						</SelectItem>
+					</Select>
+				</div>
 				<ComboChart
 					data={chartData}
 					index="name"
@@ -114,7 +161,13 @@ function InnerPointWithGroupedEntity({
 					barSeries={{
 						categories: [xTitle],
 						yAxisLabel: "",
-						colors: ["sky"],
+						colors: [
+							aggregationField === "average_point"
+								? "sky"
+								: aggregationField === "median_point"
+								? "emerald"
+								: "amber",
+						],
 						minValue: 3,
 						maxValue: 4,
 						yAxisWidth: 60,
@@ -134,42 +187,6 @@ function InnerPointWithGroupedEntity({
 						},
 					}}
 				/>
-
-				{/* <BarChart
-					className=" h-full mt-4"
-					data={
-						[...data]
-							.sort((a, b) => b.average_point - a.average_point)
-							.map((point) => ({
-								[xTitle]: point.average_point * 4,
-								name: point.display_name,
-							})) || []
-					}
-					index="name"
-					categories={[xTitle]}
-					colors={["sky"]}
-					minValue={3.5}
-					rotateLabelX={{
-						angle: 0,
-						verticalShift: 20,
-						xAxisHeight: 40,
-					}}
-					yAxisWidth={80}
-					showAnimation
-					valueFormatter={(number: number) => {
-						return `${number.toFixed(2)}`;
-					}}
-					onValueChange={(v) => {
-						const item = data.find(
-							(point) => point.display_name == v?.name
-						);
-						if (item) onClick?.(item);
-					}}
-					enableLegendSlider
-					showLegend
-					//@ts-ignore
-					noDataText={loading ? <Loading /> : <NoData />}
-				/> */}
 			</ChartLayout>
 		</div>
 	);
