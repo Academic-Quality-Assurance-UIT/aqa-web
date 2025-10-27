@@ -12,8 +12,8 @@ export function AuthenticationNavigating({ data, loading }: PropTypes) {
 	const searchParams = useSearchParams();
 
 	useEffect(() => {
-		if (loading === false && !data) {
-			const token = searchParams.get("token");
+		const token = searchParams.get("token");
+		if (loading === false && token) {
 			if (token)
 				router.replace(
 					`/signin-integration?token=${token}&redirect=${pathName}`
