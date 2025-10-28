@@ -187,7 +187,6 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
 						tick={{ fill: "#9ca3af", fontSize: 14 }}
 					/>
 					<Tooltip content={<CustomTooltip />} />
-					<Legend />
 
 					<ReferenceLine
 						x={processedData.percentile20}
