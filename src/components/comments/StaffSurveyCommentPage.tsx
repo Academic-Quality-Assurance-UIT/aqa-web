@@ -40,12 +40,15 @@ export default function StaffSurveyCommentPage({
 							key={comment}
 							content={comment ?? ""}
 							type={"neutral"}
+							type_list={[]}
+							topic={"all"}
 							comment_id={comment ?? i.toString()}
 							isLast={false}
 							clickable={false}
 							secondary={
 								<p className="font-medium text-sm text-left whitespace-pre-wrap	text-gray-400">
-									Tiêu chí <span className=" font-semibold">
+									Tiêu chí{" "}
+									<span className=" font-semibold">
 										{index}. {criteria}
 									</span>{" "}
 									- Điểm:{" "}

@@ -6,6 +6,8 @@ declare type Semester = {
 declare type IComment = {
 	content: string;
 	type: "positive" | "negative";
+	topic: string;
+	type_list: string[];
 	comment_id: string;
 	teach_id: string;
 };

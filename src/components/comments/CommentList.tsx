@@ -50,16 +50,27 @@ export default function CommentList({
 
 	return (
 		<>
-			{comments.map(({ content, type, comment_id, teach_id }: IComment) => (
-				<CommentItem
-					key={comment_id}
-					content={content}
-					type={type}
-					comment_id={comment_id}
-					class_id={teach_id}
-					isLast={false}
-				/>
-			))}
+			{comments.map(
+				({
+					content,
+					type,
+					topic,
+					type_list,
+					comment_id,
+					teach_id,
+				}: IComment) => (
+					<CommentItem
+						key={comment_id}
+						content={content}
+						type={type}
+						topic={topic}
+						type_list={type_list}
+						comment_id={comment_id}
+						class_id={teach_id}
+						isLast={false}
+					/>
+				)
+			)}
 			{hasMore ? <Loading /> : null}
 			{!hasMore && !isLoading ? (
 				<div className="w-full flex flex-col pt-6 pb-4 items-center">
