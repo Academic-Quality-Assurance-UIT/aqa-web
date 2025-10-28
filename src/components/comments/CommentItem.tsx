@@ -64,9 +64,9 @@ export default function CommentItem({
 			>
 				<div
 					className={` flex h-16 w-2 rounded-md ${
-						type_list[0] === "positive"
+						type_list?.[0] === "positive"
 							? "bg-green-300"
-							: type_list[0] === "negative"
+							: type_list?.[0] === "negative"
 							? "bg-red-300"
 							: "bg-slate-300"
 					}`}
@@ -97,7 +97,7 @@ export default function CommentItem({
 								</span>
 							</p>
 						</Chip>
-						{type_list.map((t) => (
+						{type_list?.map((t) => (
 							<Chip
 								size="sm"
 								key={t}

@@ -72,58 +72,65 @@ export default function CommentQuantityInfo({ query }: Props) {
 					number={data?.neutral.quantity}
 				/>
 			</div>
-			<Tabs
-				variant="solid"
-				onSelectionChange={(value) =>
-					setUrlQuery(pathname, {}, { topic: value })
-				}
-			>
-				<Tab key="all" title="Tất cả" />
-				<Tab
-					key="lecturer"
-					title={
-						<p>
-							Giảng viên{" "}
-							<span className="font-semibold">
-								({commentQuantityByTopic?.lecturer.quantity})
-							</span>
-						</p>
+			{!isLoadingTopic ? (
+				<Tabs
+					variant="solid"
+					onSelectionChange={(value) =>
+						setUrlQuery(pathname, {}, { topic: value })
 					}
-				/>
-				<Tab
-					key="training_program"
-					title={
-						<p>
-							Chương trình đào tạo{" "}
-							<span className="font-semibold">
-								({commentQuantityByTopic?.training_program.quantity})
-							</span>
-						</p>
-					}
-				/>
-				<Tab
-					key="facility"
-					title={
-						<p>
-							Cơ sở vật chất{" "}
-							<span className="font-semibold">
-								({commentQuantityByTopic?.facility.quantity})
-							</span>
-						</p>
-					}
-				/>
-				<Tab
-					key="others"
-					title={
-						<p>
-							Khác{" "}
-							<span className="font-semibold">
-								({commentQuantityByTopic?.others.quantity})
-							</span>
-						</p>
-					}
-				/>
-			</Tabs>
+				>
+					<Tab key="all" title="Tất cả" />
+					<Tab
+						key="lecturer"
+						title={
+							<p>
+								Giảng viên{" "}
+								<span className="font-semibold">
+									({commentQuantityByTopic?.lecturer.quantity})
+								</span>
+							</p>
+						}
+					/>
+					<Tab
+						key="training_program"
+						title={
+							<p>
+								Chương trình đào tạo{" "}
+								<span className="font-semibold">
+									(
+									{
+										commentQuantityByTopic?.training_program
+											.quantity
+									}
+									)
+								</span>
+							</p>
+						}
+					/>
+					<Tab
+						key="facility"
+						title={
+							<p>
+								Cơ sở vật chất{" "}
+								<span className="font-semibold">
+									({commentQuantityByTopic?.facility.quantity})
+								</span>
+							</p>
+						}
+					/>
+					<Tab
+						key="others"
+						title={
+							<p>
+								Khác{" "}
+								<span className="font-semibold">
+									({commentQuantityByTopic?.others.quantity})
+								</span>
+							</p>
+						}
+					/>
+				</Tabs>
+			) : null}
 		</div>
 	);
 }
