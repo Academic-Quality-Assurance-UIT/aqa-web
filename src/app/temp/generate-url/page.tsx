@@ -22,7 +22,8 @@ export default function Page() {
 		const sigBuffer = await crypto.subtle.sign("HMAC", key, enc(data));
 		const sigBytes = new Uint8Array(sigBuffer);
 
-		const signature = btoa(String.fromCharCode(...sigBytes));
+		// Convert typed array to regular array before spreading to satisfy TypeScript targets
+		const signature = btoa(String.fromCharCode(...Array.from(sigBytes)));
 
 		return `${data}.${signature}`;
 	}
