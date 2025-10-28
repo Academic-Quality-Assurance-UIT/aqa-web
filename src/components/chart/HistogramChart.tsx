@@ -190,7 +190,7 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
 
 					<ReferenceLine
 						x={processedData.percentile20}
-						stroke="#fbbf24"
+						stroke="#ef568b"
 						strokeWidth={2}
 						label={{
 							value: `Dưới ${processedData.percentage20.toFixed(
