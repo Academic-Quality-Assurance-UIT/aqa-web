@@ -31,7 +31,7 @@ export default function InfoTab({
 				htmlFor={title}
 				className=" w-fit hover:bg-slate-200 dark:hover:bg-slate-700 hover:cursor-pointer transition-all rounded-md pt-2"
 				onClick={() => {
-					setUrlQuery(pathname, {}, { type });
+					setUrlQuery(pathname, {}, { type: [type] });
 				}}
 			>
 				<input

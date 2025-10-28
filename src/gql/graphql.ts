@@ -56,7 +56,9 @@ export type Comment = {
   class?: Maybe<Class>;
   comment_id: Scalars['String']['output'];
   display_name: Scalars['String']['output'];
+  topic: Scalars['String']['output'];
   type: Scalars['String']['output'];
+  type_list: Array<Scalars['String']['output']>;
 };
 
 export type CommentQuantity = {
@@ -375,6 +377,7 @@ export type QueryCommentQuantityArgs = {
   filter?: InputMaybe<FilterArgs>;
   pagination?: InputMaybe<PaginationArgs>;
   sort?: InputMaybe<SortArgs>;
+  topic?: InputMaybe<Scalars['String']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -383,7 +386,8 @@ export type QueryCommentsArgs = {
   filter?: InputMaybe<FilterArgs>;
   pagination?: InputMaybe<PaginationArgs>;
   sort?: InputMaybe<SortArgs>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  topic?: InputMaybe<Array<Scalars['String']['input']>>;
+  type?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 
@@ -631,17 +635,26 @@ export type CommentQuantityQueryVariables = Exact<{
 }>;
 
 
-export type CommentQuantityQuery = { __typename?: 'Query', positive: { __typename?: 'CommentQuantity', quantity: number, type: string }, negative: { __typename?: 'CommentQuantity', quantity: number, type: string }, all: { __typename?: 'CommentQuantity', quantity: number, type: string } };
+export type CommentQuantityQuery = { __typename?: 'Query', positive: { __typename?: 'CommentQuantity', quantity: number, type: string }, negative: { __typename?: 'CommentQuantity', quantity: number, type: string }, neutral: { __typename?: 'CommentQuantity', quantity: number, type: string }, all: { __typename?: 'CommentQuantity', quantity: number, type: string } };
+
+export type CommentQuantityEachTopicQueryVariables = Exact<{
+  filter?: InputMaybe<FilterArgs>;
+  type: Scalars['String']['input'];
+}>;
+
+
+export type CommentQuantityEachTopicQuery = { __typename?: 'Query', lecturer: { __typename?: 'CommentQuantity', quantity: number, type: string }, training_program: { __typename?: 'CommentQuantity', quantity: number, type: string }, facility: { __typename?: 'CommentQuantity', quantity: number, type: string }, others: { __typename?: 'CommentQuantity', quantity: number, type: string }, all: { __typename?: 'CommentQuantity', quantity: number, type: string } };
 
 export type CommentListQueryVariables = Exact<{
   filter?: InputMaybe<FilterArgs>;
   page?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<SortArgs>;
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Array<Scalars['String']['input']> | Scalars['String']['input']>;
+  topic?: InputMaybe<Array<Scalars['String']['input']> | Scalars['String']['input']>;
 }>;
 
 
-export type CommentListQuery = { __typename?: 'Query', comments: { __typename?: 'PaginatedComment', data: Array<{ __typename?: 'Comment', comment_id: string, display_name: string, type: string, class?: { __typename?: 'Class', class_id: string, class_type: string, display_name: string, participating_student?: number | null, program: string, total_student?: number | null, lecturer: { __typename?: 'Lecturer', birth_date?: any | null, display_name?: string | null, email?: string | null, faculty_id?: string | null, gender?: boolean | null, learning?: string | null, learning_position?: string | null, lecturer_id: string, mscb?: number | null, ngach?: string | null, phone?: string | null, position?: string | null, total_point?: number | null, username?: string | null }, subject: { __typename?: 'Subject', display_name?: string | null, faculty_id?: string | null, subject_id: string, total_point?: number | null, faculty?: { __typename?: 'Faculty', display_name: string, faculty_id: string, full_name?: string | null } | null }, semester: { __typename?: 'Semester', display_name: string, semester_id: string, type?: string | null, year?: string | null } } | null }>, meta: { __typename?: 'PaginatedMetaData', hasNext: boolean, hasPrev: boolean, page: number, size: number, total_item: number, total_page: number } } };
+export type CommentListQuery = { __typename?: 'Query', comments: { __typename?: 'PaginatedComment', data: Array<{ __typename?: 'Comment', comment_id: string, display_name: string, type: string, type_list: Array<string>, topic: string, class?: { __typename?: 'Class', class_id: string, class_type: string, display_name: string, participating_student?: number | null, program: string, total_student?: number | null, lecturer: { __typename?: 'Lecturer', birth_date?: any | null, display_name?: string | null, email?: string | null, faculty_id?: string | null, gender?: boolean | null, learning?: string | null, learning_position?: string | null, lecturer_id: string, mscb?: number | null, ngach?: string | null, phone?: string | null, position?: string | null, total_point?: number | null, username?: string | null }, subject: { __typename?: 'Subject', display_name?: string | null, faculty_id?: string | null, subject_id: string, total_point?: number | null, faculty?: { __typename?: 'Faculty', display_name: string, faculty_id: string, full_name?: string | null } | null }, semester: { __typename?: 'Semester', display_name: string, semester_id: string, type?: string | null, year?: string | null } } | null }>, meta: { __typename?: 'PaginatedMetaData', hasNext: boolean, hasPrev: boolean, page: number, size: number, total_item: number, total_page: number } } };
 
 export type DetailCriteriaQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -1027,6 +1040,10 @@ export const CommentQuantityDocument = gql`
     quantity
     type
   }
+  neutral: commentQuantity(type: "neutral", filter: $filter) {
+    quantity
+    type
+  }
   all: commentQuantity(filter: $filter) {
     quantity
     type
@@ -1069,13 +1086,86 @@ export type CommentQuantityQueryResult = Apollo.QueryResult<CommentQuantityQuery
 export function refetchCommentQuantityQuery(variables?: CommentQuantityQueryVariables) {
       return { query: CommentQuantityDocument, variables: variables }
     }
+export const CommentQuantityEachTopicDocument = gql`
+    query CommentQuantityEachTopic($filter: FilterArgs, $type: String!) {
+  lecturer: commentQuantity(type: $type, topic: "lecturer", filter: $filter) {
+    quantity
+    type
+  }
+  training_program: commentQuantity(
+    type: $type
+    topic: "training_program"
+    filter: $filter
+  ) {
+    quantity
+    type
+  }
+  facility: commentQuantity(type: $type, topic: "facility", filter: $filter) {
+    quantity
+    type
+  }
+  others: commentQuantity(type: $type, topic: "others", filter: $filter) {
+    quantity
+    type
+  }
+  all: commentQuantity(filter: $filter) {
+    quantity
+    type
+  }
+}
+    `;
+
+/**
+ * __useCommentQuantityEachTopicQuery__
+ *
+ * To run a query within a React component, call `useCommentQuantityEachTopicQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCommentQuantityEachTopicQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCommentQuantityEachTopicQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useCommentQuantityEachTopicQuery(baseOptions: Apollo.QueryHookOptions<CommentQuantityEachTopicQuery, CommentQuantityEachTopicQueryVariables> & ({ variables: CommentQuantityEachTopicQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CommentQuantityEachTopicQuery, CommentQuantityEachTopicQueryVariables>(CommentQuantityEachTopicDocument, options);
+      }
+export function useCommentQuantityEachTopicLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CommentQuantityEachTopicQuery, CommentQuantityEachTopicQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CommentQuantityEachTopicQuery, CommentQuantityEachTopicQueryVariables>(CommentQuantityEachTopicDocument, options);
+        }
+export function useCommentQuantityEachTopicSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<CommentQuantityEachTopicQuery, CommentQuantityEachTopicQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<CommentQuantityEachTopicQuery, CommentQuantityEachTopicQueryVariables>(CommentQuantityEachTopicDocument, options);
+        }
+export type CommentQuantityEachTopicQueryHookResult = ReturnType<typeof useCommentQuantityEachTopicQuery>;
+export type CommentQuantityEachTopicLazyQueryHookResult = ReturnType<typeof useCommentQuantityEachTopicLazyQuery>;
+export type CommentQuantityEachTopicSuspenseQueryHookResult = ReturnType<typeof useCommentQuantityEachTopicSuspenseQuery>;
+export type CommentQuantityEachTopicQueryResult = Apollo.QueryResult<CommentQuantityEachTopicQuery, CommentQuantityEachTopicQueryVariables>;
+export function refetchCommentQuantityEachTopicQuery(variables: CommentQuantityEachTopicQueryVariables) {
+      return { query: CommentQuantityEachTopicDocument, variables: variables }
+    }
 export const CommentListDocument = gql`
-    query CommentList($filter: FilterArgs, $page: Int, $sort: SortArgs, $type: String) {
-  comments(filter: $filter, pagination: {page: $page}, sort: $sort, type: $type) {
+    query CommentList($filter: FilterArgs, $page: Int, $sort: SortArgs, $type: [String!], $topic: [String!]) {
+  comments(
+    filter: $filter
+    pagination: {page: $page}
+    sort: $sort
+    type: $type
+    topic: $topic
+  ) {
     data {
       comment_id
       display_name
       type
+      type_list
+      topic
       class {
         class_id
         class_type
@@ -1146,6 +1236,7 @@ export const CommentListDocument = gql`
  *      page: // value for 'page'
  *      sort: // value for 'sort'
  *      type: // value for 'type'
+ *      topic: // value for 'topic'
  *   },
  * });
  */

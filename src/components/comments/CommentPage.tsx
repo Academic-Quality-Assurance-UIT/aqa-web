@@ -62,7 +62,11 @@ export default function CommentPage({ defaultFilter = {}, selectors = [] }: IPro
 
 	const { dataList: comments, bottomRef } = useInfiniteScroll({
 		queryFunction: getCommentList,
-		variables: { filter: query, type: searchParams.get("type") },
+		variables: {
+			filter: query,
+			type: searchParams.get("type") ?? ["all"],
+			topic: searchParams.get("topic") ?? ["all"],
+		},
 		isLoading,
 		data: data?.comments.data,
 		meta: data?.comments.meta,
@@ -85,9 +89,10 @@ export default function CommentPage({ defaultFilter = {}, selectors = [] }: IPro
 						{selectors.includes("program") && (
 							<ProgramSelectorWithSearchParam />
 						)}
-						{selectors.includes("faculty") && !(isFaculty || isLecturer) && (
-							<FacultySelectorWithSearchParams />
-						)}
+						{selectors.includes("faculty") &&
+							!(isFaculty || isLecturer) && (
+								<FacultySelectorWithSearchParams />
+							)}
 						{selectors.includes("single-subject") && (
 							<SingleSubjectSelectorWithSearchParam
 								defaultFilter={defaultFilter}
@@ -97,11 +102,20 @@ export default function CommentPage({ defaultFilter = {}, selectors = [] }: IPro
 				</div>
 				<div className=" mt-10 rounded-xl">
 					{comments.map(
-						({ comment_id, display_name, type, class: class_ }) => (
+						({
+							comment_id,
+							display_name,
+							type,
+							topic,
+							type_list,
+							class: class_,
+						}) => (
 							<CommentItem
 								key={comment_id}
 								content={display_name}
 								type={type}
+								topic={topic}
+								type_list={type_list}
 								comment_id={comment_id}
 								class_id={class_?.class_id}
 								isLast={false}
