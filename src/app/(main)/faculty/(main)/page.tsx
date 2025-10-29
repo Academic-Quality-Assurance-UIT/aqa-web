@@ -10,7 +10,7 @@ export default function Page({ params }: { params: any }) {
 	const semester_id = params.id;
 	const { setUrlQuery } = useFilterUrlQuery();
 
-	const { data, loading } = useFacultiesQuery();
+	const { data, loading } = useFacultiesQuery({ fetchPolicy: "network-only" });
 
 	return (
 		<FilterProvider>

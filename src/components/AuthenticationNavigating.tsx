@@ -20,6 +20,9 @@ export function AuthenticationNavigating({ data, loading }: PropTypes) {
 				);
 			else router.replace("authentication-failed");
 		}
+		if (!data && !token && !loading) {
+			router.replace("authentication-failed");
+		}
 	}, [data, loading, pathName, router, searchParams]);
 	return <></>;
 }
