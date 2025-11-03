@@ -143,15 +143,17 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
 					<p className="">
 						Lớn hơn{" "}
 						<span className=" font-semibold">
-							{((_.sum(
-								processedData.chartData
-									.filter(
-										(d) => d.point < payload[0].payload.point
-									)
-									.map((d) => d.count)
-							) /
-								processedData.total) *
-								100).toFixed(2)}
+							{(
+								(_.sum(
+									processedData.chartData
+										.filter(
+											(d) => d.point < payload[0].payload.point
+										)
+										.map((d) => d.count)
+								) /
+									processedData.total) *
+								100
+							).toFixed(2)}
 							%
 						</span>{" "}
 						dữ liệu
@@ -166,7 +168,7 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
 		<div className=" pt-2 bg-transparent rounded-lg">
 			<div className="flex justify-center">
 				<BarChart
-					width={1000}
+					width={1200}
 					height={500}
 					data={processedData.chartData}
 					margin={{ top: 20, left: 20 }}
@@ -198,7 +200,7 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
 							)}% (Điểm <= ${processedData.percentile20.toFixed(2)})`,
 							position: "top",
 							fill: "#ef568b",
-							fontSize: 14,
+							fontSize: 12,
 							fontWeight: "600",
 						}}
 					/>
@@ -213,7 +215,7 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
 							)}% (Điểm >= ${processedData.percentile80.toFixed(2)})`,
 							position: "top",
 							fill: "#10b981",
-							fontSize: 14,
+							fontSize: 12,
 							fontWeight: "600",
 						}}
 					/>

@@ -5,8 +5,6 @@ import { useDetailClassQuery } from "@/gql/graphql";
 import ClassDetail from "./ClassDetail";
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
-	// const response = await fetch(GET_CLASS_INFORMATION(params.id));
-	// const classInfo: ClassInfo = await response.json();
 	const { data: classData } = useDetailClassQuery({ variables: { id } });
 	const classInfo = classData?.class;
 
@@ -29,8 +27,6 @@ type ClassInfo = {
 	subject_name: string;
 	lecturer_id: string;
 	lecturer_name: string;
-	// total: number;
-	// attend: number;
 	semester_id: string;
 	semester_name: string;
 	points: {

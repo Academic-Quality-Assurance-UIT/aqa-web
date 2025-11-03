@@ -12,14 +12,18 @@ import { useFilterUrlQuery } from "@/hooks/useFilterUrlQuery";
 import useLecturerInfo from "@/hooks/useLecturerInfo";
 import { useAuth } from "@/stores/auth.store";
 import { Button, Tooltip } from "@heroui/react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { IoChevronForwardOutline } from "react-icons/io5";
+import { hashAndShorten } from "@/utils/lecturerIdHash";
 
 export default function BreadCrumb() {
 	const router = useRouter();
 	const pathname = usePathname();
+
+	const searchParams = useSearchParams();
+	const isShowedName = searchParams.get("showLecturerName") === "true";
 
 	const { authData } = useAuth();
 
@@ -113,7 +117,17 @@ export default function BreadCrumb() {
 				title: "Giảng viên",
 				link: "lecturer",
 				value: query?.lecturer_id,
-				name: lecturer?.display_name,
+				name: query?.lecturer_id ? (
+					isShowedName ? (
+						lecturer.display_name
+					) : (
+						<span className=" text-slate-500">
+							{hashAndShorten(query?.lecturer_id ?? "")}
+						</span>
+					)
+				) : (
+					lecturer?.display_name
+				),
 				defaultValue: { lecturer_id: "" },
 				onClickValue: {
 					class_id: "",
@@ -142,6 +156,7 @@ export default function BreadCrumb() {
 			query?.subjects,
 			semesters?.semesters,
 			subject?.subject?.display_name,
+			isShowedName,
 		]
 	);
 

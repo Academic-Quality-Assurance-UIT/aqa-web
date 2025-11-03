@@ -16,6 +16,7 @@ import { ReactNode, use, useEffect, useState } from "react";
 import { ComboChart } from "../ComboChart";
 import { Select, SelectItem, Tab, Tabs } from "@heroui/react";
 import HistogramChart from "./HistogramChart";
+import { hashAndShorten } from "@/utils/lecturerIdHash";
 
 type Props = {
 	title: string;
@@ -26,6 +27,7 @@ type Props = {
 	xTitle?: string;
 	averageTitle?: string;
 	medianTitle?: string;
+	isShowedName?: boolean;
 	onClick?: (item: GroupedPoint) => any;
 };
 
@@ -41,6 +43,7 @@ function InnerPointWithGroupedEntity({
 	averageTitle = "Trung bình",
 	medianTitle = "Trung vị",
 	groupEntity,
+	isShowedName = true,
 	onClick = () => {},
 }: Props) {
 	const filter = useFilter();
@@ -101,7 +104,7 @@ function InnerPointWithGroupedEntity({
 			.map((point) => ({
 				[xTitle]: point[aggregationField] * 4,
 				[averageTitle]: averagePoint,
-				name: point.display_name,
+				name: isShowedName ? point.display_name : `Giảng viên ${point.id}`,
 			})) || [];
 	const histogramData = chartData.map((item) => ({ point: item[xTitle] as number }));
 
