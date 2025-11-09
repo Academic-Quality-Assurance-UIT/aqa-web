@@ -11,6 +11,7 @@ import {
 	Cell,
 } from "recharts";
 import _ from "lodash";
+import { useMediaQuery } from "react-responsive";
 
 interface DataItem {
 	point: number;
@@ -45,6 +46,8 @@ interface TooltipProps {
 }
 
 const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
+	const isMobile = useMediaQuery({ maxWidth: 1024 });
+
 	const processedData: ProcessedData = useMemo(() => {
 		const roundedPoints = rawData.map(
 			(item) => Math.round(item.point * 20) / 20
@@ -168,8 +171,8 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
 		<div className=" pt-2 bg-transparent rounded-lg">
 			<div className="flex justify-center">
 				<BarChart
-					width={1200}
-					height={500}
+					width={isMobile ? 350 : 1200}
+					height={isMobile ? 300 : 500}
 					data={processedData.chartData}
 					margin={{ top: 20, left: 20 }}
 				>
@@ -180,6 +183,7 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
 						tick={{ fill: "#9ca3af", fontSize: 14 }}
 					/>
 					<YAxis
+						width={38}
 						label={{
 							value: "Số lượng",
 							angle: -90,
@@ -195,12 +199,11 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
 						stroke="#ef568b"
 						strokeWidth={2}
 						label={{
-							value: `Dưới ${processedData.percentage20.toFixed(
-								2
-							)}% (Điểm <= ${processedData.percentile20.toFixed(2)})`,
+							value: `Dưới 20%`,
+							// value: `Dưới ${processedData.percentage20.toFixed(2)}%`,
 							position: "top",
 							fill: "#ef568b",
-							fontSize: 12,
+							fontSize: isMobile ? 10 : 12,
 							fontWeight: "600",
 						}}
 					/>
@@ -210,12 +213,11 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
 						stroke="#10b981"
 						strokeWidth={2}
 						label={{
-							value: `Trên ${processedData.percentage80.toFixed(
-								2
-							)}% (Điểm >= ${processedData.percentile80.toFixed(2)})`,
+							value: `Trên 80%`,
+							// value: `Trên ${processedData.percentage80.toFixed(2)}%`,
 							position: "top",
 							fill: "#10b981",
-							fontSize: 12,
+							fontSize: isMobile ? 10 : 12,
 							fontWeight: "600",
 						}}
 					/>

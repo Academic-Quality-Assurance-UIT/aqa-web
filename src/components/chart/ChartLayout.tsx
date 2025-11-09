@@ -52,7 +52,7 @@ export default function ChartLayout({
 
 	const { isOpen: open, onOpen, onOpenChange } = useDisclosure();
 
-	const isMobile = useMediaQuery({ maxWidth: 1024 }); // lg breakpoint
+	const isMobile = useMediaQuery({ maxWidth: 1024 });
 
 	useEffect(() => {
 		const currentWidth = containerRef?.current?.getBoundingClientRect().width;
@@ -128,7 +128,7 @@ export default function ChartLayout({
 								color="primary"
 								className="w-fit px-3"
 								size={isMobile ? "sm" : "md"}
-								variant="flat"
+								variant={isMobile ? "flat" : "solid"}
 								onPress={() => {
 									domtoimage
 										.toJpeg(document.getElementById("chart"), {

@@ -17,6 +17,7 @@ import { ComboChart } from "../ComboChart";
 import { Select, SelectItem, Tab, Tabs } from "@heroui/react";
 import HistogramChart from "./HistogramChart";
 import { hashAndShorten } from "@/utils/lecturerIdHash";
+import { useMediaQuery } from "react-responsive";
 
 type Props = {
 	title: string;
@@ -47,6 +48,8 @@ function InnerPointWithGroupedEntity({
 	onClick = () => {},
 }: Props) {
 	const filter = useFilter();
+
+	const isMobile = useMediaQuery({ maxWidth: 1024 });
 
 	const [data, setData] = useState<GroupedPoint[]>([]);
 	const [loading, setLoading] = useState(false);
@@ -120,7 +123,7 @@ function InnerPointWithGroupedEntity({
 				isFullWidth
 				handlerButtons={selectors}
 			>
-				<div className=" px-8 pb-4 flex justify-between items-center">
+				<div className=" px-6 lg:px-6 pb-4 flex flex-col gap-2 justify-start lg:flex-row lg:justify-between lg:items-center">
 					<Tabs
 						variant="underlined"
 						selectedKey={tab}
@@ -130,7 +133,7 @@ function InnerPointWithGroupedEntity({
 						<Tab key="histogram" title="Biểu đồ Histogram" />
 					</Tabs>
 					<Select
-						className="max-w-[240px]"
+						className=" pl-4 lg:pl-0 max-w-[200px] lg:max-w-[240px]"
 						label="Loại điểm"
 						selectedKeys={new Set([aggregationField])}
 						onSelectionChange={(value) =>
@@ -140,6 +143,7 @@ function InnerPointWithGroupedEntity({
 							)
 						}
 						variant="bordered"
+						size={isMobile ? "sm" : "md"}
 					>
 						<SelectItem
 							key={"average_point"}
