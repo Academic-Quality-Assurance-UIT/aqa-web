@@ -52,6 +52,7 @@ export function NavItem({
 	link,
 	icon: Icon,
 	subItems,
+	selectedLinks = [],
 	className,
 }: INavItemProps) {
 	const pathname = usePathname();
@@ -64,7 +65,9 @@ export function NavItem({
 	const isMobile = useMediaQuery({ maxWidth: 1024 }); // lg breakpoint
 	const iconSize = isMobile ? 20 : 24;
 
-	const isSelected = pathname.split("/")[1] === link.split("/")[1];
+	const isSelected =
+		pathname.split("/")[1] === link.split("/")[1] ||
+		selectedLinks.includes(pathname.split("/")[1]);
 
 	useEffect(() => {
 		router.prefetch(link);
@@ -108,12 +111,7 @@ export function NavItem({
 							<div className="lg:w-[24px] w-full flex flex-col gap-1 items-center lg:grid lg:place-items-center">
 								{Icon ? (
 									<Icon
-										color={
-											pathname.split("/")[1] ===
-											link.split("/")[1]
-												? "white"
-												: "black"
-										}
+										color={isSelected ? "white" : "black"}
 										width={iconSize}
 										size={iconSize}
 									/>
@@ -191,6 +189,7 @@ export type INavigationDrawerContext = {
 
 export type INavItemProps = INavItem & {
 	icon?: FunctionComponent<{ width?: number; size?: number; color: string }>;
+	selectedLinks?: string[];
 	subItems?: INavItem[];
 } & Pick<React.ComponentProps<"div">, "className">;
 

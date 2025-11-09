@@ -105,7 +105,7 @@ function AddUserButtonInner({ refetch }: Props) {
 
 	return (
 		<div>
-			<Button onClick={onOpen} variant={"flat"}>
+			<Button onClick={onOpen} variant={"flat"} color="primary">
 				<p className=" font-semibold">Thêm tài khoản</p>
 			</Button>
 			<Modal isOpen={isOpen} onOpenChange={onOpenChange}>

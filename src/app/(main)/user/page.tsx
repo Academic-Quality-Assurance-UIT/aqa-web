@@ -67,8 +67,8 @@ export default function Page() {
 
 	return (
 		<div className=" flex-1 flex flex-col gap-8">
-			<div className=" flex justify-between items-center">
-				<h1 className="font-semibold text-3xl">Quản lý tài khoản</h1>
+			<div className=" flex flex-col lg:flex-row gap-3 justify-between lg:items-center">
+				<h1 className="text-2xl font-bold">Quản lý tài khoản</h1>
 				<div className=" flex gap-4">
 					<AddLecturerUser />
 					<AddUserButton refetch={refetch} />

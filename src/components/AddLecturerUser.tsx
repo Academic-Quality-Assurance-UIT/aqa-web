@@ -98,7 +98,7 @@ export default function AddLecturerUser() {
 
 	return (
 		<div>
-			<Button onClick={onOpen} variant={"flat"}>
+			<Button onClick={onOpen} variant={"flat"} color="primary">
 				<p className=" font-semibold">Thêm tài khoản giảng viên</p>
 			</Button>
 			<Modal isOpen={isOpen} onOpenChange={onOpenChange}>

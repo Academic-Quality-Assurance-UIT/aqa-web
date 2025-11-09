@@ -12,7 +12,7 @@ import {
 	AiOutlineHome,
 	AiOutlinePieChart,
 	AiOutlineSolution,
-	AiOutlineUser
+	AiOutlineUser,
 } from "react-icons/ai";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -58,6 +58,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					<NavItem
 						title="Tra cứu dữ liệu"
 						link="/criteria"
+						selectedLinks={[
+							"class",
+							"faculty",
+							"lecturer",
+							"semester",
+							"subject",
+						]}
 						icon={AiOutlinePieChart}
 					/>
 				) : isLecturer ? (
