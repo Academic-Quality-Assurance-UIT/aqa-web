@@ -6,7 +6,7 @@ type Props = { searchParams: { [key: string]: string | undefined } };
 export default function Page({ searchParams: { type } }: Props) {
 	return (
 		<>
-			<h1 className="mb-14 font-semibold text-2xl">
+			<h1 className="mb-14 font-extrabold text-2xl">
 				{generateTitle(type).title}
 			</h1>
 			<CommentPage

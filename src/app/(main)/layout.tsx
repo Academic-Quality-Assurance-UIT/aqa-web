@@ -87,7 +87,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					/>
 				) : null}
 			</NavigationDrawer>
-			<main className="w-full h-screen overflow-y-auto xl:px-20 px-4 lg:px-16 xl:pl-12 lg:pl-24 pt-12 pb-10 overflow-x-hidden">
+			<main className="w-full h-screen overflow-y-auto xl:px-20 px-4 lg:px-16 lg:pl-12 pt-6 pb-6 lg:pt-12 lg:pb-10 overflow-x-hidden">
 				<Suspense fallback={<p>Loading</p>}>{children}</Suspense>
 			</main>
 		</div>

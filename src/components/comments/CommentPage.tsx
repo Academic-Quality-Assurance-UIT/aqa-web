@@ -17,6 +17,7 @@ import { useRememberValue } from "@/hooks/useRememberValue";
 import { useFilter } from "@/contexts/FilterContext";
 import { useIsFaculty } from "@/hooks/useIsFaculty";
 import { useIsLecturer } from "@/hooks/useIsAdmin";
+import _ from "lodash";
 
 export default function CommentPage({ defaultFilter = {}, selectors = [] }: IProps) {
 	const searchParams = useSearchParams();
@@ -78,11 +79,11 @@ export default function CommentPage({ defaultFilter = {}, selectors = [] }: IPro
 		<div className="">
 			<CommentSearchBar isLoading={!data} />
 			<Card className="mt-8 mb-20 w-full p-5">
-				<div className="flex flex-col xl:flex-row gap-8 xl:gap-0 items-start ">
-					<div className="rounded-none flex flex-row overflow-hidden">
+				<div className="flex flex-col gap-4 items-start ">
+					<div className="w-full rounded-none flex flex-row overflow-hidden">
 						<CommentQuantityInfo query={query} />
 					</div>
-					<div className=" flex flex-row gap-3 xl:ml-auto xl:mr-0">
+					<div className=" p-2 lg:p-0 grid grid-cols-2 lg:flex lg:flex-row gap-3 rounded-lg bg-transparent shadow-lg">
 						{selectors.includes("semester") && (
 							<SemesterSelectorWithSearchParam />
 						)}
@@ -101,7 +102,7 @@ export default function CommentPage({ defaultFilter = {}, selectors = [] }: IPro
 					</div>
 				</div>
 				<div className=" mt-10 rounded-xl">
-					{comments.map(
+					{_.uniqBy(comments, "comment_id").map(
 						({
 							comment_id,
 							display_name,

@@ -120,14 +120,14 @@ export default function CommentItem({
 						))}
 					</div>
 				</div>
-				<Button
+				{/* <Button
 					isIconOnly
 					aria-label="Like"
 					variant="flat"
 					onPress={() => copyToClipboard(content)}
 				>
 					<IoCopyOutline />
-				</Button>
+				</Button> */}
 				<Button
 					isIconOnly
 					aria-label="Like"

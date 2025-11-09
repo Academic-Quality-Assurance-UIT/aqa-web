@@ -41,95 +41,99 @@ export default function CommentQuantityInfo({ query }: Props) {
 	const data = useRememberValue(commentQuantity);
 
 	return (
-		<div>
-			<div className="flex flex-row gap-4 mb-4">
-				<InfoTab
-					type="all"
-					icon={ALL_COMMENT_ICON}
-					title="Tất cả"
-					isLoading={isLoading}
-					number={data?.all.quantity}
-				/>
-				<InfoTab
-					type="positive"
-					icon={POSITIVE_COMMENT_ICON}
-					title="Tích cực"
-					isLoading={isLoading}
-					number={data?.positive.quantity}
-				/>
-				<InfoTab
-					type="negative"
-					icon={NEGATIVE_COMMENT_ICON}
-					title="Tiêu cực"
-					isLoading={isLoading}
-					number={data?.negative.quantity}
-				/>
-				<InfoTab
-					type="neutral"
-					icon={NEUTRLA_COMMENT_ICON}
-					title="Trung tính"
-					isLoading={isLoading}
-					number={data?.neutral.quantity}
-				/>
+		<div className=" w-full">
+			<div className=" w-full overflow-x-auto">
+				<div className=" w-full max-w-[280px] grid grid-cols-2 lg:flex lg:flex-row gap-y-2 gap-x-8 lg:gap-2 mb-4">
+					<InfoTab
+						type="all"
+						icon={ALL_COMMENT_ICON}
+						title="Tất cả"
+						isLoading={isLoading}
+						number={data?.all.quantity}
+					/>
+					<InfoTab
+						type="positive"
+						icon={POSITIVE_COMMENT_ICON}
+						title="Tích cực"
+						isLoading={isLoading}
+						number={data?.positive.quantity}
+					/>
+					<InfoTab
+						type="negative"
+						icon={NEGATIVE_COMMENT_ICON}
+						title="Tiêu cực"
+						isLoading={isLoading}
+						number={data?.negative.quantity}
+					/>
+					<InfoTab
+						type="neutral"
+						icon={NEUTRLA_COMMENT_ICON}
+						title="Trung tính"
+						isLoading={isLoading}
+						number={data?.neutral.quantity}
+					/>
+				</div>
 			</div>
 			{!isLoadingTopic ? (
-				<Tabs
-					variant="solid"
-					onSelectionChange={(value) =>
-						setUrlQuery(pathname, {}, { topic: value })
-					}
-				>
-					<Tab key="all" title="Tất cả" />
-					<Tab
-						key="lecturer"
-						title={
-							<p>
-								Giảng viên{" "}
-								<span className="font-semibold">
-									({commentQuantityByTopic?.lecturer.quantity})
-								</span>
-							</p>
+				<div className="w-full overflow-x-auto py-1">
+					<Tabs
+						variant="solid"
+						onSelectionChange={(value) =>
+							setUrlQuery(pathname, {}, { topic: value })
 						}
-					/>
-					<Tab
-						key="training_program"
-						title={
-							<p>
-								Chương trình đào tạo{" "}
-								<span className="font-semibold">
-									(
-									{
-										commentQuantityByTopic?.training_program
-											.quantity
-									}
-									)
-								</span>
-							</p>
-						}
-					/>
-					<Tab
-						key="facility"
-						title={
-							<p>
-								Cơ sở vật chất{" "}
-								<span className="font-semibold">
-									({commentQuantityByTopic?.facility.quantity})
-								</span>
-							</p>
-						}
-					/>
-					<Tab
-						key="others"
-						title={
-							<p>
-								Khác{" "}
-								<span className="font-semibold">
-									({commentQuantityByTopic?.others.quantity})
-								</span>
-							</p>
-						}
-					/>
-				</Tabs>
+					>
+						<Tab key="all" title="Tất cả" />
+						<Tab
+							key="lecturer"
+							title={
+								<p>
+									Giảng viên{" "}
+									<span className="font-semibold">
+										({commentQuantityByTopic?.lecturer.quantity})
+									</span>
+								</p>
+							}
+						/>
+						<Tab
+							key="training_program"
+							title={
+								<p>
+									Chương trình đào tạo{" "}
+									<span className="font-semibold">
+										(
+										{
+											commentQuantityByTopic?.training_program
+												.quantity
+										}
+										)
+									</span>
+								</p>
+							}
+						/>
+						<Tab
+							key="facility"
+							title={
+								<p>
+									Cơ sở vật chất{" "}
+									<span className="font-semibold">
+										({commentQuantityByTopic?.facility.quantity})
+									</span>
+								</p>
+							}
+						/>
+						<Tab
+							key="others"
+							title={
+								<p>
+									Khác{" "}
+									<span className="font-semibold">
+										({commentQuantityByTopic?.others.quantity})
+									</span>
+								</p>
+							}
+						/>
+					</Tabs>
+				</div>
 			) : null}
 		</div>
 	);
