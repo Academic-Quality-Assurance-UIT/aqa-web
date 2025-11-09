@@ -61,12 +61,6 @@ function CriteriaSelector_({ criteria, criteria_name, setCriteria }: Props) {
 				}
 				hasValue={hasValue}
 				onPress={onOpen}
-				startContent={
-					<CriteriaIcon
-						color={hasValue ? "black" : undefined}
-						width={20}
-					/>
-				}
 			>
 				{buttonText}
 			</OptionButton>

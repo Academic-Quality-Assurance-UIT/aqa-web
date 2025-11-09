@@ -1,25 +1,18 @@
 "use client";
 
-import LecturerNavIcon from "@/assets/LecturerNavIcon";
-import StaffSurveyIcon from "@/assets/StaffSurveyIcon";
 import { AuthenticationNavigating } from "@/components/AuthenticationNavigating";
 import NavigationDrawer, { NavItem } from "@/components/NavigationDrawer";
 import { useProfileQuery } from "@/gql/graphql";
 import { useIsAdmin, useIsFullAccess, useIsLecturer } from "@/hooks/useIsAdmin";
 import { useIsFaculty } from "@/hooks/useIsFaculty";
-import AIGenerateIcon from "@assets/AIGenerateIcon";
-import CommentIcon from "@assets/CommentIcon";
-import CriteriaIcon from "@assets/CriteriaIcon";
-import HomeIcon from "@assets/HomeIcon";
 import { Suspense } from "react";
-import { FcHome, FcComboChart, FcDataSheet, FcComments } from "react-icons/fc";
 import {
-	AiOutlineHome,
-	AiOutlineComment,
-	AiOutlinePieChart,
-	AiOutlineUser,
-	AiOutlineTable,
 	AiOutlineCodepen,
+	AiOutlineComment,
+	AiOutlineHome,
+	AiOutlinePieChart,
+	AiOutlineSolution,
+	AiOutlineUser
 } from "react-icons/ai";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -78,7 +71,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					<NavItem
 						title="Khảo sát giảng viên"
 						link="/staff-survey"
-						icon={AiOutlineTable}
+						icon={AiOutlineSolution}
 					/>
 				) : null}
 				{isFullAcess || isAdmin ? (

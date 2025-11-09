@@ -161,7 +161,7 @@ export default function BreadCrumb() {
 	);
 
 	return (
-		<div className=" w-full mt-5 mb-5 flex flex-row items-center justify-between gap-4">
+		<div className=" w-full mt-5 mb-5 pb-2 flex flex-col lg:flex-row lg:items-center justify-between gap-4 overflow-auto">
 			<div className=" w-fit flex flex-row gap-1">
 				{paths.map(
 					(
@@ -191,7 +191,7 @@ export default function BreadCrumb() {
 										});
 									}}
 								>
-									<div className=" p-2 flex-col gap-2 items-start">
+									<div className=" px-1 py-2 lg:p-2 flex-col gap-2 items-start">
 										<p className=" text-foreground-900 text-xs text-start">
 											{title}
 										</p>
@@ -208,7 +208,7 @@ export default function BreadCrumb() {
 							</Tooltip>
 							{index !== paths.length - 1 ? (
 								<div
-									className=" rounded-xl grid place-items-center h-full px-2 cursor-pointer bg-transparent hover:bg-card active:bg-foreground-200 duration-200"
+									className=" rounded-xl grid place-items-center h-full px-1 lg:px-2 cursor-pointer bg-transparent hover:bg-card active:bg-foreground-200 duration-200"
 									onClick={() => {
 										if (value)
 											setUrlQuery(
@@ -253,7 +253,7 @@ export default function BreadCrumb() {
 			>
 				<div className=" p-2 flex-col gap-2 items-start">
 					<p className=" font-semibold text-xs text-start">
-						Xóa tất cả lựa chọn
+						Xóa tất cả bộ lọc
 					</p>
 				</div>
 			</Button>

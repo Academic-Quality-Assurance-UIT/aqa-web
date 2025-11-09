@@ -21,17 +21,19 @@ export default function PageTabs({
 	const { setUrlQuery } = useFilterUrlQuery();
 
 	return (
-		<Tabs
-			selectedKey={pathname.split("/").at(lastIndex) || ""}
-			onSelectionChange={(tab) => {
-				setUrlQuery(`/${defaultPath}/${tab}`, {});
-			}}
-			className={className}
-			aria-label="Page tabs"
-		>
-			{tabs.map(({ title, link }) => (
-				<Tab key={link} title={title} />
-			))}
-		</Tabs>
+		<div className="w-full overflow-x-auto py-1">
+			<Tabs
+				selectedKey={pathname.split("/").at(lastIndex) || ""}
+				onSelectionChange={(tab) => {
+					setUrlQuery(`/${defaultPath}/${tab}`, {});
+				}}
+				className={className}
+				aria-label="Page tabs"
+			>
+				{tabs.map(({ title, link }) => (
+					<Tab key={link} title={title} />
+				))}
+			</Tabs>
+		</div>
 	);
 }

@@ -114,7 +114,7 @@ function InnerPointWithCompare({
 	).filter((v) => v !== "display_name");
 
 	return (
-		<div className=" h-[500px]">
+		<div className=" h-[400px] lg:h-[500px]">
 			{true ? (
 				<ChartLayout
 					primaryTitle={title}
