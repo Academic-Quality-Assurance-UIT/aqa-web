@@ -144,8 +144,8 @@ function InnerPointEachSemester({
 							: ["Điểm"]
 					}
 					colors={["sky", "purple"]}
-					yAxisWidth={60}
-					minValue={3.3}
+					yAxisWidth={50}
+					minValue={3.2}
 					showAnimation
 					rotateLabelX={{
 						angle: 0,
