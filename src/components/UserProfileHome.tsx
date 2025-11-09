@@ -33,29 +33,28 @@ export default function UserProfileHome() {
 						{data?.profile.lecturer?.email}
 					</span>
 				</p>
+				{isLecturer && (
+					<p className=" text-base font-base italic flex gap-2 items-center">
+						Giảng viên
+					</p>
+				)}
 				{isFaculty && (
-					<>
-						<p className=" text-base font-base italic flex gap-2 items-center">
-							Cán bộ quản lý khoa
-							<span className=" font-semibold">
-								{data?.profile.faculty?.display_name}
-							</span>
-						</p>
-					</>
+					<p className=" text-base font-base italic flex gap-2 items-center">
+						Cán bộ quản lý khoa
+						<span className=" font-semibold">
+							{data?.profile.faculty?.display_name}
+						</span>
+					</p>
 				)}
 				{isFullAcess && !isAdmin && (
-					<>
-						<p className=" text-base font-base italic flex gap-4 items-center">
-							Cán bộ quản lý nhà trường
-						</p>
-					</>
+					<p className=" text-base font-base italic flex gap-4 items-center">
+						Cán bộ quản lý nhà trường
+					</p>
 				)}
 				{isAdmin && (
-					<>
-						<p className=" text-base font-base italic flex gap-4 items-center">
-							Admin
-						</p>
-					</>
+					<p className=" text-base font-base italic flex gap-4 items-center">
+						Admin
+					</p>
 				)}
 			</UICard>
 		</div>

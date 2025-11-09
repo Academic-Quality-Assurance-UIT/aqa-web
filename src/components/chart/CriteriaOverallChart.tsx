@@ -26,9 +26,9 @@ export default function CriteriaOverallChart() {
 			selectors={
 				<>
 					<ProgramSelector />
-					{role == Role.Admin || role == Role.FullAccess ? null : (
+					{role == Role.Admin || role == Role.FullAccess ? (
 						<FacultySelector />
-					)}
+					) : null}
 					<SubjectSelector />
 				</>
 			}
@@ -37,22 +37,24 @@ export default function CriteriaOverallChart() {
 }
 
 export function CurrentLecturerOverallChart() {
-	const { currentLecturerId } = useFilterUrlQuery();
+	const { currentLecturerId, role } = useFilterUrlQuery();
 
-	return (
-		<PointEachSemester
-			overrideQueries={{
-				lecturer_id: currentLecturerId,
-			}}
-			title="Điểm đánh giá trung bình của giảng viên qua từng học kỳ"
-			legend="Điểm đánh giá"
-			selectors={
-				<>
-					<ProgramSelector />
-					<SubjectSelector />
-				</>
-			}
-		/>
+	return role === Role.Lecturer ? null : (
+		<div className=" shadow-2xl rounded-2xl">
+			<PointEachSemester
+				overrideQueries={{
+					lecturer_id: currentLecturerId,
+				}}
+				title="Điểm đánh giá trung bình của giảng viên qua từng học kỳ"
+				legend="Điểm đánh giá"
+				selectors={
+					<>
+						<ProgramSelector />
+						<SubjectSelector />
+					</>
+				}
+			/>
+		</div>
 	);
 }
 

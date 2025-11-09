@@ -17,9 +17,7 @@ export default async function Home() {
 					<SearchBar />
 				</Suspense> */}
 				<UserProfileHome />
-				<div className=" shadow-2xl rounded-2xl">
-					<CurrentLecturerOverallChart />
-				</div>
+				<CurrentLecturerOverallChart />
 				<div className=" shadow-2xl rounded-2xl mt-4">
 					<CriteriaOverallChart />
 				</div>
