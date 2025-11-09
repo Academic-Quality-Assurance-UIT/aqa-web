@@ -1,23 +1,16 @@
 "use client";
 
-import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import { Color, Legend } from "@tremor/react";
-import MediaQuery, { useMediaQuery } from "react-responsive";
-import { Button } from "@heroui/react";
-import { AiOutlineSetting } from "react-icons/ai";
-import DownloadIcon from "@assets/DownloadIcon";
 import BaseChart from "@components/chart/BaseChart";
+import { Button } from "@heroui/react";
+import { Color, Legend } from "@tremor/react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { AiOutlineCloudDownload, AiOutlineSetting } from "react-icons/ai";
+import MediaQuery, { useMediaQuery } from "react-responsive";
 import Extensible from "../Extensible";
 
 import { FcComboChart } from "react-icons/fc";
 
-//@ts-ignore
-import domtoimage from "dom-to-image";
 import {
-	Dropdown,
-	DropdownItem,
-	DropdownMenu,
-	DropdownTrigger,
 	Modal,
 	ModalBody,
 	ModalContent,
@@ -25,6 +18,8 @@ import {
 	ModalHeader,
 	useDisclosure,
 } from "@heroui/react";
+//@ts-ignore
+import domtoimage from "dom-to-image";
 
 export default function ChartLayout({
 	primaryTitle,
@@ -56,6 +51,8 @@ export default function ChartLayout({
 	const [containerWidth, setContainerWidth] = useState(0);
 
 	const { isOpen: open, onOpen, onOpenChange } = useDisclosure();
+
+	const isMobile = useMediaQuery({ maxWidth: 1024 }); // lg breakpoint
 
 	useEffect(() => {
 		const currentWidth = containerRef?.current?.getBoundingClientRect().width;
@@ -90,12 +87,13 @@ export default function ChartLayout({
 								</p>
 							</div>
 						</div>
-						<div className="w-fit flex flex-row flex-nowrap gap-4 pr-5 pl-5 lg:pl-0">
+						<div className="w-fit flex flex-row flex-nowrap gap-4 pr-5 pl-6 lg:pl-0">
 							<MediaQuery maxWidth={1280}>
 								<Button
 									variant="solid"
 									color="primary"
 									onPress={onOpen}
+									size={"sm"}
 								>
 									<AiOutlineSetting size={16} />
 									<p className=" font-semibold">Tùy chọn</p>
@@ -129,6 +127,8 @@ export default function ChartLayout({
 								isIconOnly
 								color="primary"
 								className="w-fit px-3"
+								size={isMobile ? "sm" : "md"}
+								variant="flat"
 								onPress={() => {
 									domtoimage
 										.toJpeg(document.getElementById("chart"), {
@@ -145,7 +145,15 @@ export default function ChartLayout({
 										});
 								}}
 							>
-								<DownloadIcon color="black" />
+								<div className="flex gap-1 items-center">
+									<AiOutlineCloudDownload
+										size={isMobile ? 18 : 24}
+										color="black"
+									/>
+									{isMobile ? (
+										<p className="text-xs font-semibold text-black">Tải xuống</p>
+									) : null}
+								</div>
 							</Button>
 						</div>
 					</div>
