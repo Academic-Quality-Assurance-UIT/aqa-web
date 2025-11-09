@@ -12,6 +12,15 @@ import CommentIcon from "@assets/CommentIcon";
 import CriteriaIcon from "@assets/CriteriaIcon";
 import HomeIcon from "@assets/HomeIcon";
 import { Suspense } from "react";
+import { FcHome, FcComboChart, FcDataSheet, FcComments } from "react-icons/fc";
+import {
+	AiOutlineHome,
+	AiOutlineComment,
+	AiOutlinePieChart,
+	AiOutlineUser,
+	AiOutlineTable,
+	AiOutlineCodepen,
+} from "react-icons/ai";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	const { data, loading } = useProfileQuery({ fetchPolicy: "network-only" });
@@ -30,13 +39,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					title="Trang chủ"
 					description="Tổng quan về dữ liệu"
 					link="/"
-					icon={HomeIcon}
+					icon={AiOutlineHome}
 				/>
 				<NavItem
 					title="Ý kiến"
 					description="Ý kiến của sinh viên về giảng viên"
 					link="/comment"
-					icon={CommentIcon}
+					icon={AiOutlineComment}
 					subItems={[
 						{
 							title: "Tất cả",
@@ -56,34 +65,34 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					<NavItem
 						title="Tra cứu dữ liệu"
 						link="/criteria"
-						icon={CriteriaIcon}
+						icon={AiOutlinePieChart}
 					/>
 				) : isLecturer ? (
 					<NavItem
 						title="Tra cứu dữ liệu"
 						link={`/lecturer/${data?.profile.lecturer?.lecturer_id}`}
-						icon={CriteriaIcon}
+						icon={AiOutlinePieChart}
 					/>
 				) : null}
 				{isFullAcess || isAdmin ? (
 					<NavItem
 						title="Khảo sát giảng viên"
 						link="/staff-survey"
-						icon={StaffSurveyIcon}
+						icon={AiOutlineTable}
 					/>
 				) : null}
 				{isFullAcess || isAdmin ? (
 					<NavItem
 						title="Tạo biểu đồ bằng AI"
 						link="/ai-generate"
-						icon={AIGenerateIcon}
+						icon={AiOutlineCodepen}
 					/>
 				) : null}
 				{isAdmin ? (
 					<NavItem
 						title="Quản lý tài khoản"
 						link="/user"
-						icon={LecturerNavIcon}
+						icon={AiOutlineUser}
 					/>
 				) : null}
 			</NavigationDrawer>

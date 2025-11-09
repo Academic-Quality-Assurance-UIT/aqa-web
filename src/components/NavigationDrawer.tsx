@@ -22,6 +22,7 @@ import { IoLogInOutline } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { UICard } from "./UICard";
+import { useMediaQuery } from "react-responsive";
 
 export default function NavigationDrawer({ children }: { children?: ReactNode }) {
 	const [open, setOpen] = usePersistentState("nav-open", false);
@@ -32,20 +33,14 @@ export default function NavigationDrawer({ children }: { children?: ReactNode })
 
 	return (
 		<NavigationDrawerContext.Provider value={{ isOpen: open }}>
-			<nav className="w-screen lg:w-fit lg:h-screen group px-2 py-2 lg:px-5 lg:pt-12 flex flex-col shadow-large transition-all xl:shadow-none xl:hover:shadow-2xl">
+			<nav className="w-screen lg:w-fit lg:h-screen group bg-transparent lg:px-5 lg:pt-12 flex flex-col shadow-large transition-all xl:shadow-none xl:hover:shadow-2xl">
 				<div
-					className={`lg:-mt-20 lg:h-full flex flex-row lg:flex-col gap-1 lg:gap-4 ${
+					className={`bg-card lg:bg-transparent lg:-mt-20 py-1 lg:h-full flex flex-row items-center lg:flex-col gap-0 lg:gap-4 ${
 						open ? "justify-center" : "justify-center"
 					}`}
 				>
 					{children}
 				</div>
-				{/* <NavItem
-					className=" mb-10"
-					title="Đăng xuất"
-					link="/sign-out"
-					icon={IoLogInOutline}
-				/> */}
 			</nav>
 		</NavigationDrawerContext.Provider>
 	);
@@ -66,6 +61,8 @@ export function NavItem({
 	const [isHover, setIsHover] = useState(false);
 
 	const subRef = useRef<HTMLUListElement>(null);
+	const isMobile = useMediaQuery({ maxWidth: 1024 }); // lg breakpoint
+	const iconSize = isMobile ? 20 : 24;
 
 	const isSelected = pathname.split("/")[1] === link.split("/")[1];
 
@@ -76,7 +73,7 @@ export function NavItem({
 	return (
 		<UICard
 			className={twMerge(
-				"group/nav h-fit w-fit transition-all flex flex-col flex-1 lg:flex-none",
+				"group/nav h-fit w-16 lg:!w-fit transition-all flex flex-shrink flex-col hover:w-32 lg:flex-none !rounded-2xl overflow-hidden ",
 				isSelected ? " bg-transparent" : "",
 				className
 			)}
@@ -99,12 +96,12 @@ export function NavItem({
 				<Card
 					isPressable
 					onPress={() => router.push(link)}
-					className={`h-fit transition-all bg-transparent active:bg-gray-400 hover:bg-gray-300 shadow-sm ${
+					className={`rounded-none lg:rounded-2xl h-fit transition-all bg-transparent active:bg-gray-400 hover:bg-gray-300 shadow-sm ${
 						isOpen ? "shadow-none" : ""
 					} ${isSelected ? " !bg-navbar-selected" : ""}`}
 					style={isSelected ? { color: "white" } : {}}
 				>
-					<CardBody className="flex h-fit p-4">
+					<CardBody className="flex h-fit p-4 group-hover/nav:p-1 group-active/nav:p-1 lg:!p-4">
 						<div
 							className={`flex-1 flex flex-row items-start transition-all `}
 						>
@@ -117,13 +114,13 @@ export function NavItem({
 												? "white"
 												: "black"
 										}
-										width={24}
-										size={24}
+										width={iconSize}
+										size={iconSize}
 									/>
 								) : null}
-								<div className=" hidden lg:hidden">
+								<div className="group-hover/nav:block group-active/nav:block hidden lg:!hidden">
 									<p
-										className="font-semibold text-sm text-center truncate w-full"
+										className="font-semibold text-xs text-wrap text-center"
 										style={{ maxWidth: "100%" }}
 									>
 										{title}
