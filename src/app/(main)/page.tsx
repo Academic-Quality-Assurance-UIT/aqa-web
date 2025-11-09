@@ -11,9 +11,9 @@ export default async function Home() {
 	return (
 		<FilterProvider>
 			<div className=" pt-20">
-				<Suspense fallback={<p>Loading searchbar...</p>}>
+				{/* <Suspense fallback={<p>Loading searchbar...</p>}>
 					<SearchBar />
-				</Suspense>
+				</Suspense> */}
 				<UserProfileHome />
 				<div className=" shadow-2xl rounded-2xl">
 					<CriteriaOverallChart />

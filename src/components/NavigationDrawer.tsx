@@ -32,28 +32,9 @@ export default function NavigationDrawer({ children }: { children?: ReactNode })
 
 	return (
 		<NavigationDrawerContext.Provider value={{ isOpen: open }}>
-			<nav className="fixed h-screen group w-fit group px-5 pt-12 flex flex-col shadow-none transition-all hover:shadow-2xl">
-				<div className="flex flex-row items-center opacity-0">
-					<Button className="ml-1" isIconOnly onPress={toggleDrawer}>
-						<Image
-							src={NAV_ICON}
-							width={20}
-							height={20}
-							alt="Nav icon"
-						/>
-					</Button>
-					{/* <div
-						className={`relative h-5 ${
-							open ? "opacity-100" : "opacity-0 invisible"
-						} transition-all`}
-					>
-						<div className=" absolute -right-48">
-							<ThemeSwitcher />
-						</div>
-					</div> */}
-				</div>
+			<nav className="w-screen lg:w-fit lg:h-screen group px-4 py-2 lg:px-5 lg:pt-12 flex flex-col shadow-large transition-all xl:shadow-none xl:hover:shadow-2xl">
 				<div
-					className={`-mt-20 h-full flex flex-col gap-4 ${
+					className={`lg:-mt-20 lg:h-full flex flex-row lg:flex-col gap-4 ${
 						open ? "justify-center" : "justify-center"
 					}`}
 				>
@@ -95,7 +76,7 @@ export function NavItem({
 	return (
 		<UICard
 			className={twMerge(
-				"group/nav h-fit w-fit hover:scale-105 transition-all",
+				"group/nav h-fit w-fit transition-all flex flex-col flex-1 lg:flex-none",
 				isSelected ? " bg-transparent" : "",
 				className
 			)}
@@ -104,26 +85,30 @@ export function NavItem({
 		>
 			<Tooltip
 				placement="right"
-				content={<div className=" flex flex-col gap-1 px-2 py-1">
-					<p className="font-bold">{title}</p>
-					{description ? (
-						<p className="text-sm">{description}</p>
-					) : null}
-				</div>}
+				content={
+					<div className=" flex flex-col gap-1 px-2 py-1">
+						<p className="font-bold">{title}</p>
+						{description ? (
+							<p className="text-sm">{description}</p>
+						) : null}
+					</div>
+				}
 				color="primary"
 				offset={20}
 			>
 				<Card
 					isPressable
 					onPress={() => router.push(link)}
-					className={`h-fit transition-all bg-transparent shadow-sm ${
+					className={`h-fit transition-all bg-transparent active:bg-gray-400 hover:bg-gray-300 shadow-sm ${
 						isOpen ? "shadow-none" : ""
 					} ${isSelected ? " !bg-navbar-selected" : ""}`}
 					style={isSelected ? { color: "white" } : {}}
 				>
-					<CardBody className="flex flex-col h-fit p-4">
-						<div className={` flex flex-row items-start transition-all`}>
-							<div className="w-[24px] grid place-items-center">
+					<CardBody className="flex h-fit p-4">
+						<div
+							className={`flex-1 flex flex-row items-start transition-all `}
+						>
+							<div className="lg:w-[24px] w-full flex flex-col gap-1 items-center lg:grid lg:place-items-center">
 								{Icon ? (
 									<Icon
 										color={
@@ -136,6 +121,14 @@ export function NavItem({
 										size={24}
 									/>
 								) : null}
+								<div className=" lg:hidden">
+									<p
+										className="font-semibold text-sm text-center truncate w-full"
+										style={{ maxWidth: "100%" }}
+									>
+										{title}
+									</p>
+								</div>
 							</div>
 							<div
 								className={`${

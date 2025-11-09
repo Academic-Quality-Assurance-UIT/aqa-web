@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	const { isLecturer } = useIsLecturer();
 
 	return (
-		<>
+		<div className=" w-screen h-screen flex flex-col-reverse lg:flex-row">
 			<Suspense fallback={<div></div>}>
 				<AuthenticationNavigating data={data} loading={loading} />
 			</Suspense>
@@ -87,9 +87,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					/>
 				) : null}
 			</NavigationDrawer>
-			<main className="w-full min-h-screen xl:px-20 lg:px-16 px-5 xl:pl-32 lg:pl-24 pt-12 pb-10 overflow-x-hidden">
+			<main className="w-full h-screen overflow-y-auto xl:px-20 lg:px-16 px-5 xl:pl-12 lg:pl-24 pt-12 pb-10 overflow-x-hidden">
 				<Suspense fallback={<p>Loading</p>}>{children}</Suspense>
 			</main>
-		</>
+		</div>
 	);
 }
