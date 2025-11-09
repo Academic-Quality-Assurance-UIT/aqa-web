@@ -22,7 +22,7 @@ export default function FeatureCard({
 						alt="feature card illustration"
 					/>
 					<div>
-						<h1 className="text-2xl font-semibold mb-3">
+						<h1 className="text-xl font-semibold mb-3">
 							{title.displayName}
 						</h1>
 						<p className="text-gray-500 -mt-1 text-sm">{description}</p>

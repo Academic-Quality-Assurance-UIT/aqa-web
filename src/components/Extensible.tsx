@@ -35,7 +35,7 @@ export default function Extensible({ children, isOpen: isOpen_, setIsOpen }: Pro
 				size="sm"
 				color="primary"
 				variant="light"
-				className="absolute top-0 -right-0"
+				className="absolute top-0 -right-0 hidden lg:grid place-items-center"
 			>
 				<Image src={EXTEND_ICON} width={14} height={14} alt="button" />
 			</Button>
