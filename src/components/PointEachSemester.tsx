@@ -90,7 +90,7 @@ function InnerPointEachSemester({
 	}, [query, variables]);
 
 	return (
-		<div className=" h-[600px]">
+		<div className=" h-[400px] lg:h-[600px]">
 			<ChartLayout
 				primaryTitle={title}
 				secondaryTitle={""}
@@ -144,7 +144,7 @@ function InnerPointEachSemester({
 							: ["Điểm"]
 					}
 					colors={["sky", "purple"]}
-					yAxisWidth={80}
+					yAxisWidth={60}
 					minValue={3.3}
 					showAnimation
 					rotateLabelX={{

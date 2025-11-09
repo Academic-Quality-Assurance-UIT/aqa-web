@@ -32,9 +32,9 @@ export default function NavigationDrawer({ children }: { children?: ReactNode })
 
 	return (
 		<NavigationDrawerContext.Provider value={{ isOpen: open }}>
-			<nav className="w-screen lg:w-fit lg:h-screen group px-4 py-2 lg:px-5 lg:pt-12 flex flex-col shadow-large transition-all xl:shadow-none xl:hover:shadow-2xl">
+			<nav className="w-screen lg:w-fit lg:h-screen group px-2 py-2 lg:px-5 lg:pt-12 flex flex-col shadow-large transition-all xl:shadow-none xl:hover:shadow-2xl">
 				<div
-					className={`lg:-mt-20 lg:h-full flex flex-row lg:flex-col gap-4 ${
+					className={`lg:-mt-20 lg:h-full flex flex-row lg:flex-col gap-1 lg:gap-4 ${
 						open ? "justify-center" : "justify-center"
 					}`}
 				>
@@ -121,7 +121,7 @@ export function NavItem({
 										size={24}
 									/>
 								) : null}
-								<div className=" lg:hidden">
+								<div className=" hidden lg:hidden">
 									<p
 										className="font-semibold text-sm text-center truncate w-full"
 										style={{ maxWidth: "100%" }}
