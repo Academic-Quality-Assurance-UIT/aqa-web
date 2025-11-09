@@ -26,7 +26,9 @@ export default function CriteriaOverallChart() {
 			selectors={
 				<>
 					<ProgramSelector />
-					<FacultySelector />
+					{role == Role.Admin || role == Role.FullAccess ? null : (
+						<FacultySelector />
+					)}
 					<SubjectSelector />
 				</>
 			}
@@ -40,21 +42,13 @@ export function CurrentLecturerOverallChart() {
 	return (
 		<PointEachSemester
 			overrideQueries={{
-				criteria_id: "",
-				semester_id: "",
-				faculty_id: "",
-				subjects: undefined,
 				lecturer_id: currentLecturerId,
-				program: "",
-				class_type: "",
-				class_id: "",
 			}}
 			title="Điểm đánh giá trung bình của giảng viên qua từng học kỳ"
 			legend="Điểm đánh giá"
 			selectors={
 				<>
 					<ProgramSelector />
-					<FacultySelector />
 					<SubjectSelector />
 				</>
 			}

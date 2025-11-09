@@ -1,21 +1,20 @@
 "use client";
 
-import ProgramIcon from "@/assets/ProgramIcon";
 import { useFilter } from "@/contexts/FilterContext";
 import { useProgramsQuery } from "@/gql/graphql";
 import useNavigate from "@/hooks/useNavigate";
 import {
 	Button,
-	Dropdown,
-	DropdownItem,
-	DropdownMenu,
-	DropdownSection,
-	DropdownTrigger,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
 	Spinner,
+	useDisclosure,
 } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useMemo } from "react";
-import { SelectorButton } from "./SelectorButton";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import OptionButton from "../OptionButton";
 
 function ProgramSelector_({
 	program,
@@ -27,62 +26,96 @@ function ProgramSelector_({
 } & ProgramSelectorPropTypes) {
 	const { data, loading: isLoading } = useProgramsQuery();
 
+	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+	const currentSelectedRef = useRef<any>();
+
 	const hasValue = Boolean(program);
 	const buttonText = program || "Chương trình";
 
+	useEffect(() => {
+		if (currentSelectedRef.current) {
+			currentSelectedRef.current.scrollIntoView({
+				behavior: "smooth",
+				block: "center",
+			});
+		}
+	}, [isOpen]);
+
 	return (
-		<Dropdown backdrop="blur" shouldBlockScroll={false}>
-			<DropdownTrigger>
-				<SelectorButton
-					hasValue={hasValue}
-					isNoBorder={isNoBorder}
-					buttonText={buttonText}
-					startContent={
-						<ProgramIcon
-							color={hasValue ? "black" : "oklch(55.4% 0.046 257.417)"}
-							width={20}
-						/>
-					}
-				/>
-			</DropdownTrigger>
-			<DropdownMenu
-				variant="faded"
-				aria-label="Program dropdown"
-				selectionMode="single"
-				selectedKeys={new Set([program || ""])}
-				onAction={(key) => setProgram?.(key as string)}
+		<>
+			<OptionButton
+				onPress={onOpen}
+				hasValue={hasValue}
+				isNoBorder={isNoBorder}
 			>
-				<DropdownSection title="Chọn chương trình">
-					{data && !isLoading ? (
-						data.programs.map(({ program: programTitle }) => (
-							<DropdownItem
-								onPress={() => setProgram?.(programTitle)}
-								className={`py-2`}
-								key={programTitle}
-							>
-								<p className="font-medium"> {programTitle}</p>
-							</DropdownItem>
-						))
-					) : (
-						<DropdownItem className={`py-2`} key={"loading"}>
-							<div className=" flex flex-row gap-3">
-								<Spinner size="sm" />
-								<p className=" text-sm font-medium">Đang tải</p>
-							</div>
-						</DropdownItem>
+				{buttonText}
+			</OptionButton>
+			<Modal
+				isOpen={isOpen}
+				onOpenChange={onOpenChange}
+				scrollBehavior="inside"
+				backdrop="blur"
+			>
+				<ModalContent>
+					{(onClose) => (
+						<>
+							<ModalHeader>
+								<p>Chọn chương trình</p>
+							</ModalHeader>
+							<ModalBody className="pb-8 pt-3">
+								{data && !isLoading ? (
+									[
+										{ program: "Tất cả", value: "" },
+										...data.programs.map(
+											({ program: programTitle }) => ({
+												program: programTitle,
+												value: programTitle,
+											})
+										),
+									].map(({ program: programTitle, value }) => (
+										<Button
+											ref={
+												programTitle === program
+													? currentSelectedRef
+													: null
+											}
+											onPress={() => {
+												setProgram?.(value);
+												onClose();
+											}}
+											variant={
+												programTitle === program
+													? "shadow"
+													: "flat"
+											}
+											color={
+												programTitle === program
+													? "primary"
+													: "default"
+											}
+											className={`py-5`}
+											key={value}
+										>
+											<p className="font-medium">
+												{programTitle}
+											</p>
+										</Button>
+									))
+								) : (
+									<div className=" flex flex-row gap-3">
+										<Spinner size="sm" />
+										<p className=" text-sm font-medium">
+											Đang tải
+										</p>
+									</div>
+								)}
+							</ModalBody>
+						</>
 					)}
-				</DropdownSection>
-				<DropdownSection title={"Khác"}>
-					<DropdownItem
-						onPress={() => setProgram?.("")}
-						className={`py-2`}
-						key={""}
-					>
-						<p className="font-medium">Tất cả</p>
-					</DropdownItem>
-				</DropdownSection>
-			</DropdownMenu>
-		</Dropdown>
+				</ModalContent>
+			</Modal>
+		</>
 	);
 }
 

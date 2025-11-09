@@ -4,7 +4,7 @@ import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Color, Legend } from "@tremor/react";
 import MediaQuery, { useMediaQuery } from "react-responsive";
 import { Button } from "@heroui/react";
-
+import { AiOutlineSetting } from "react-icons/ai";
 import DownloadIcon from "@assets/DownloadIcon";
 import BaseChart from "@components/chart/BaseChart";
 import Extensible from "../Extensible";
@@ -90,14 +90,15 @@ export default function ChartLayout({
 								</p>
 							</div>
 						</div>
-						<div className="w-fit flex flex-row flex-nowrap gap-4 pr-5">
+						<div className="w-fit flex flex-row flex-nowrap gap-4 pr-5 pl-5 lg:pl-0">
 							<MediaQuery maxWidth={1280}>
 								<Button
-									variant="ghost"
+									variant="solid"
 									color="primary"
 									onPress={onOpen}
 								>
-									Tùy chọn
+									<AiOutlineSetting size={16} />
+									<p className=" font-semibold">Tùy chọn</p>
 								</Button>
 								<Modal isOpen={open} onOpenChange={onOpenChange}>
 									<ModalContent>
