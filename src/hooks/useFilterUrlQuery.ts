@@ -67,5 +67,7 @@ export function useFilterUrlQuery() {
 					: query.lecturer_id,
 		},
 		setUrlQuery,
+		currentLecturerId: data?.profile.lecturer?.lecturer_id,
+		role: data?.profile.role
 	};
 }

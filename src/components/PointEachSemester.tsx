@@ -18,6 +18,7 @@ type Props = {
 	legend?: string;
 	selectors?: ReactNode;
 	query?: FilterArgs;
+	overrideQueries?: FilterArgs;
 	displayAverage?: boolean;
 };
 
@@ -26,6 +27,7 @@ function InnerPointEachSemester({
 	legend = "Điểm",
 	selectors = <></>,
 	query = {},
+	overrideQueries = {},
 	displayAverage = true,
 }: Props) {
 	const filter = useFilter();
@@ -59,6 +61,7 @@ function InnerPointEachSemester({
 					...Object.fromEntries(
 						Object.entries(variables).filter(([key, value]) => value)
 					),
+					...overrideQueries,
 					groupEntity: "Semester",
 				},
 				fetchPolicy: "cache-and-network",
@@ -167,6 +170,7 @@ export default function PointEachSemester({
 	legend,
 	selectors,
 	query,
+	overrideQueries,
 }: Props) {
 	return (
 		<FilterProvider>
@@ -175,6 +179,7 @@ export default function PointEachSemester({
 				legend={legend}
 				selectors={selectors}
 				query={query}
+				overrideQueries={overrideQueries}
 			/>
 		</FilterProvider>
 	);

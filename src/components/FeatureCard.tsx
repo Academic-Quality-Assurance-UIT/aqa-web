@@ -13,7 +13,7 @@ export default function FeatureCard({
 }) {
 	return (
 		<UICard className="  rounded-3xl">
-			<Card className="w-full h-fit px-5 py-3 pt-5 mb-14 bg-transparent shadow-sm">
+			<Card className="w-full h-fit px-5 py-3 pt-5 mb-4 lg:mb-14 bg-transparent shadow-sm">
 				<CardHeader className=" flex flex-row items-center gap-5 pt-4">
 					<Image
 						src={icon}
