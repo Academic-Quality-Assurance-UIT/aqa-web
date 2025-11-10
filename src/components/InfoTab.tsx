@@ -26,7 +26,7 @@ export default function InfoTab({
 	const { setUrlQuery } = useFilterUrlQuery();
 
 	return (
-		<Card radius="none" shadow="none" isPressable className=" flex-grow lg:flex-none">
+		<Card radius="none" shadow="none" isPressable className=" flex-none lg:flex-none">
 			<label
 				htmlFor={title}
 				className=" w-full hover:bg-slate-200 dark:hover:bg-slate-700 hover:cursor-pointer transition-all rounded-md pt-2"
@@ -45,7 +45,7 @@ export default function InfoTab({
 					}
 					onChange={() => {}}
 				/>
-				<div className="px-2 lg:px-4">
+				<div className="px-2 lg:px-4 grid place-items-center lg:place-items-start">
 					<div className="flex flex-row items-start gap-2 pr-5 ">
 						<Image src={icon} width={15} height={15} alt="icon" />
 						<p className="text-sm font-medium text-gray-500 dark:text-gray-300">

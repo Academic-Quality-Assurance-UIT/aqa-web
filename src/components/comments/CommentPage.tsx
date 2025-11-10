@@ -83,22 +83,25 @@ export default function CommentPage({ defaultFilter = {}, selectors = [] }: IPro
 					<div className="w-full rounded-none flex flex-row overflow-hidden">
 						<CommentQuantityInfo query={query} />
 					</div>
-					<div className=" p-2 lg:p-0 grid grid-cols-2 lg:flex lg:flex-row gap-3 rounded-lg bg-transparent shadow-lg">
-						{selectors.includes("semester") && (
-							<SemesterSelectorWithSearchParam />
-						)}
-						{selectors.includes("program") && (
-							<ProgramSelectorWithSearchParam />
-						)}
-						{selectors.includes("faculty") &&
-							!(isFaculty || isLecturer) && (
-								<FacultySelectorWithSearchParams />
+					<div className="flex flex-col gap-1">
+						<p className=" px-2 font-bold">Các bộ lọc</p>
+						<div className=" p-2 lg:p-0 grid grid-cols-2 lg:flex lg:flex-row gap-3 rounded-lg bg-transparent shadow-lg">
+							{selectors.includes("semester") && (
+								<SemesterSelectorWithSearchParam />
 							)}
-						{selectors.includes("single-subject") && (
-							<SingleSubjectSelectorWithSearchParam
-								defaultFilter={defaultFilter}
-							/>
-						)}
+							{selectors.includes("program") && (
+								<ProgramSelectorWithSearchParam />
+							)}
+							{selectors.includes("faculty") &&
+								!(isFaculty || isLecturer) && (
+									<FacultySelectorWithSearchParams />
+								)}
+							{selectors.includes("single-subject") && (
+								<SingleSubjectSelectorWithSearchParam
+									defaultFilter={defaultFilter}
+								/>
+							)}
+						</div>
 					</div>
 				</div>
 				<div className=" mt-10 rounded-xl">

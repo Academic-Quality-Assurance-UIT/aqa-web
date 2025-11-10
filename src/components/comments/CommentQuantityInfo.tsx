@@ -43,7 +43,7 @@ export default function CommentQuantityInfo({ query }: Props) {
 	return (
 		<div className=" w-full">
 			<div className=" w-full overflow-x-auto">
-				<div className=" w-full max-w-[280px] grid grid-cols-2 lg:flex lg:flex-row gap-y-2 gap-x-8 lg:gap-2 mb-4">
+				<div className=" w-full px-8 lg:px-0 lg:pr-0 grid grid-cols-2 lg:flex lg:flex-row gap-y-2 gap-x-6 lg:gap-2 mb-4">
 					<InfoTab
 						type="all"
 						icon={ALL_COMMENT_ICON}

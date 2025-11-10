@@ -7,16 +7,16 @@ import useNavigate from "@/hooks/useNavigate";
 import { useRememberValue } from "@/hooks/useRememberValue";
 import {
 	Button,
-	Dropdown,
-	DropdownItem,
-	DropdownMenu,
-	DropdownSection,
-	DropdownTrigger,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
 	Spinner,
+	useDisclosure,
 } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useMemo } from "react";
-import { SelectorButton } from "./SelectorButton";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import OptionButton from "../OptionButton";
 
 type FilterType = {
 	lecturer_id?: string;
@@ -32,53 +32,96 @@ function SemesterSelector_({
 	setSemester: (d?: Semester) => any;
 	semesters: Semester[];
 } & SemesterPropType) {
+	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+	const currentSelectedRef = useRef<any>();
+
 	const hasValue = Boolean(semester?.display_name);
 	const buttonText = semester?.display_name || "Tất cả học kỳ";
 
+	useEffect(() => {
+		if (currentSelectedRef.current) {
+			currentSelectedRef.current.scrollIntoView({
+				behavior: "smooth",
+				block: "center",
+			});
+		}
+	}, [isOpen]);
+
 	return (
-		<Dropdown backdrop="blur" shouldBlockScroll={false}>
-			<DropdownTrigger>
-				<SelectorButton
-					hasValue={hasValue}
-					isNoBorder={isNoBorder}
-					buttonText={buttonText}
-					startContent={
-						<SemesterIcon
-							color={hasValue ? "black" : "oklch(55.4% 0.046 257.417)"}
-							width={20}
-						/>
-					}
-				/>
-			</DropdownTrigger>
-			<DropdownMenu
-				variant="faded"
-				aria-label="Semester dropwdown"
-				className=" max-h-96 overflow-auto"
-				selectionMode="single"
-				selectedKeys={new Set([semester?.semester_id || ""])}
-				onAction={(key) => {
-					if (key === "") {
-						setSemester?.({
-							display_name: "Tất cả học kỳ",
-							semester_id: "",
-						});
-					} else setSemester(semesters.find((v) => v.semester_id === key));
-				}}
+		<>
+			<OptionButton
+				onPress={onOpen}
+				hasValue={hasValue}
+				isNoBorder={isNoBorder}
 			>
-				<DropdownSection title="Chọn học kỳ">
-					{semesters.map(({ display_name, semester_id }) => (
-						<DropdownItem className={`py-2`} key={semester_id}>
-							<p className="font-medium"> {display_name}</p>
-						</DropdownItem>
-					))}
-				</DropdownSection>
-				<DropdownSection title={"Khác"}>
-					<DropdownItem className={`py-2`} key={""}>
-						<p className="font-medium">Tất cả</p>
-					</DropdownItem>
-				</DropdownSection>
-			</DropdownMenu>
-		</Dropdown>
+				{buttonText}
+			</OptionButton>
+			<Modal
+				isOpen={isOpen}
+				onOpenChange={onOpenChange}
+				scrollBehavior="inside"
+				backdrop="blur"
+			>
+				<ModalContent>
+					{(onClose) => (
+						<>
+							<ModalHeader>
+								<p>Chọn học kỳ</p>
+							</ModalHeader>
+							<ModalBody className="pb-8 pt-3">
+								{[
+									{
+										display_name: "Tất cả học kỳ",
+										semester_id: "",
+									},
+									...semesters,
+								].map(({ display_name, semester_id }) => (
+									<Button
+										ref={
+											semester_id === semester?.semester_id
+												? currentSelectedRef
+												: null
+										}
+										onPress={() => {
+											if (semester_id === "") {
+												setSemester?.({
+													display_name: "Tất cả học kỳ",
+													semester_id: "",
+												});
+											} else {
+												setSemester?.(
+													semesters.find(
+														(v) =>
+															v.semester_id ===
+															semester_id
+													)
+												);
+											}
+											onClose();
+										}}
+										variant={
+											semester_id === semester?.semester_id
+												? "shadow"
+												: "flat"
+										}
+										color={
+											semester_id === semester?.semester_id
+												? "primary"
+												: "default"
+										}
+										className={`py-5`}
+										key={semester_id}
+									>
+										<p className="font-medium">{display_name}</p>
+									</Button>
+								))}
+							</ModalBody>
+						</>
+					)}
+				</ModalContent>
+			</Modal>
+		</>
 	);
 }
 
