@@ -33,7 +33,7 @@ export default function NavigationDrawer({ children }: { children?: ReactNode })
 
 	return (
 		<NavigationDrawerContext.Provider value={{ isOpen: open }}>
-			<nav className="w-screen lg:w-fit lg:h-screen group bg-transparent lg:px-5 lg:pt-12 flex flex-col shadow-large transition-all xl:shadow-none xl:hover:shadow-2xl">
+			<nav className=" z-50 bg-white lg:bg-transparent fixed bottom-0 left-0 lg:relative lg:top-0 lg:left-0 w-screen lg:w-fit lg:h-screen group bg-transparent lg:px-5 lg:pt-12 flex flex-col shadow-large transition-all xl:shadow-none xl:hover:shadow-2xl">
 				<div
 					className={`bg-card lg:bg-transparent lg:-mt-20 py-1 lg:h-full flex flex-row items-center lg:flex-col gap-0 lg:gap-4 ${
 						open ? "justify-center" : "justify-center"
