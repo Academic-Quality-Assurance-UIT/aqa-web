@@ -4,6 +4,11 @@ import { Button } from "@heroui/react";
 import Loading from "./Loading";
 import NoData from "./NoData";
 import EmptyDataMessage from "./EmptyDataMessage";
+import { usePathname } from "next/navigation";
+import { useFilterUrlQuery } from "@/hooks/useFilterUrlQuery";
+import { useDisplayNameOfUrlFilter } from "@/hooks/useDisplayNameOfUrlFilter";
+import { AiOutlineClose } from "react-icons/ai";
+import _ from "lodash";
 
 type Props = {
 	items: {
@@ -22,6 +27,15 @@ export default function ChildrenItems({
 	isSort = true,
 	isDisplayIndex,
 }: Props) {
+	const pathName = usePathname();
+	const { setUrlQuery } = useFilterUrlQuery();
+	const currentFilter = useDisplayNameOfUrlFilter();
+
+	const currentTab = pathName.split("/")[0];
+	const currentTabFilter = currentFilter.find(
+		(filter) => filter.link == currentTab
+	);
+
 	return (
 		<div className=" flex-1 py-6 flex flex-col items-start gap-4">
 			{loading !== false ? (
@@ -32,7 +46,7 @@ export default function ChildrenItems({
 					<Button
 						variant={"shadow"}
 						color={"primary"}
-						onClick={() =>
+						onPress={() =>
 							items.find((v) => v.value === "all")?.onClick?.("all")
 						}
 						className=" w-full"
@@ -67,7 +81,69 @@ export default function ChildrenItems({
 					</div>
 				</>
 			) : (
-				<EmptyDataMessage reason="Không có dữ liệu nào được tìm thấy" />
+				<EmptyDataMessage
+					reason={
+						<div className=" flex flex-col items-center gap-6">
+							<p className=" w-full text-center font-medium text-foreground-400">
+								Không tìm thấy dữ liệu cho bộ lọc hiện tại
+							</p>
+							<div className=" px-6 py-4 rounded-2xl overflow-hidden bg-white shadow-lg flex flex-col gap-1">
+								<p className=" mb-3 font-semibold text-gray-600">
+									Bộ lọc hiện tại
+								</p>
+								{currentFilter?.map((filter) => (
+									<div
+										key={filter.link}
+										className=" flex items-center gap-2"
+									>
+										<p className=" w-24 text-gray-600">
+											{filter.title}
+										</p>
+										<p className=" font-semibold">
+											{filter.name}
+										</p>
+										<Button
+											variant={"flat"}
+											className=" ml-auto p-0"
+											isIconOnly
+											onPress={() =>
+												setUrlQuery(
+													pathName,
+													filter.defaultValue
+												)
+											}
+										>
+											<AiOutlineClose />
+										</Button>
+									</div>
+								))}
+								<Button
+									variant={"shadow"}
+									color={"primary"}
+									className=" mt-5"
+									onPress={() =>
+										setUrlQuery(pathName, {
+											criteria_id: "",
+											semester_id: "",
+											faculty_id: "",
+											subjects: undefined,
+											lecturer_id: "",
+											program: "",
+											class_type: "",
+											class_id: "",
+											[currentTabFilter?.field ?? ""]:
+												currentTabFilter?.value,
+										})
+									}
+								>
+									<p className=" text-start font-semibold">
+										Xóa bộ lọc
+									</p>
+								</Button>
+							</div>
+						</div>
+					}
+				/>
 			)}
 		</div>
 	);

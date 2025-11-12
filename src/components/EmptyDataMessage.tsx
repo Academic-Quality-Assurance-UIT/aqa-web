@@ -1,7 +1,9 @@
 "use client";
 
+import { ReactNode } from "react";
+
 type Props = {
-	reason?: string;
+	reason?: ReactNode;
 };
 
 export default function EmptyDataMessage({ reason }: Props) {
@@ -10,11 +12,7 @@ export default function EmptyDataMessage({ reason }: Props) {
 			<p className=" w-full text-center text-lg font-semibold  text-foreground-900">
 				Không có dữ liệu
 			</p>
-			{reason && (
-				<p className=" w-full text-center font-medium text-foreground-400">
-					{reason}
-				</p>
-			)}
+			{reason}
 		</div>
 	);
 }
