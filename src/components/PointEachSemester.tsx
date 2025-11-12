@@ -64,7 +64,7 @@ function InnerPointEachSemester({
 					...overrideQueries,
 					groupEntity: "Semester",
 				},
-				fetchPolicy: "cache-and-network",
+				fetchPolicy: "network-only",
 			});
 			const currentData = response.data?.groupedPoints.data || [];
 			const averageResponse = await fetchFunction({
@@ -87,7 +87,7 @@ function InnerPointEachSemester({
 		return () => {
 			isAbort = true;
 		};
-	}, [query, variables]);
+	}, [query, overrideQueries, variables]);
 
 	return (
 		<div className=" h-[400px] lg:h-[600px]">

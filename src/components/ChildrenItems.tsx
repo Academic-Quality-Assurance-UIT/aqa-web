@@ -87,16 +87,16 @@ export default function ChildrenItems({
 							<p className=" w-full text-center font-medium text-foreground-400">
 								Không tìm thấy dữ liệu cho bộ lọc hiện tại
 							</p>
-							<div className=" px-6 py-4 rounded-2xl overflow-hidden bg-white shadow-lg flex flex-col gap-1">
+							<div className=" max-w-sm px-6 py-4 rounded-2xl overflow-hidden bg-white shadow-lg flex flex-col gap-1">
 								<p className=" mb-3 font-semibold text-gray-600">
 									Bộ lọc hiện tại
 								</p>
 								{currentFilter?.map((filter) => (
 									<div
 										key={filter.link}
-										className=" flex items-center gap-2"
+										className=" flex flex-grow items-center gap-1"
 									>
-										<p className=" w-24 text-gray-600">
+										<p className=" flex-none w-24 text-gray-600">
 											{filter.title}
 										</p>
 										<p className=" font-semibold">
@@ -104,7 +104,7 @@ export default function ChildrenItems({
 										</p>
 										<Button
 											variant={"flat"}
-											className=" ml-auto p-0"
+											className=" -mr-2 flex-none ml-auto p-0"
 											isIconOnly
 											onPress={() =>
 												setUrlQuery(
@@ -113,7 +113,7 @@ export default function ChildrenItems({
 												)
 											}
 										>
-											<AiOutlineClose />
+											<AiOutlineClose size={14} />
 										</Button>
 									</div>
 								))}
