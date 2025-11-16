@@ -74,7 +74,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 						icon={AiOutlinePieChart}
 					/>
 				) : null}
-				{isFullAcess || isAdmin ? (
+				{isFullAcess || isAdmin || true ? (
 					<NavItem
 						title="Khảo sát giảng viên"
 						link="/staff-survey"
