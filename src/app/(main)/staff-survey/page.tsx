@@ -12,10 +12,17 @@ import {
 import { Button, Tab, Tabs } from "@heroui/react";
 import _ from "lodash";
 import Link from "next/link";
-import {} from "react-icons";
+import { } from "react-icons";
 
 export default function Page() {
 	const { data: points, loading: isLoading } = useGetPointsByCategoryQuery();
+
+	const chartData = (points?.getPointsByCategory ?? []).map((point) => ({
+		"Điểm đánh giá": point.avg_point,
+		"Điểm trung bình":
+			_.mean(points?.getPointsByCategory.map((p) => p.avg_point)) || 0,
+		name: point.category,
+	}));
 
 	return (
 		<div>
@@ -46,20 +53,16 @@ export default function Page() {
 						columnSize={100}
 						isFullWidth
 						handlerButtons={<></>}
+						exportData={chartData}
+						exportColumns={[
+							{ key: "name", label: "Danh mục" },
+							{ key: "Điểm đánh giá", label: "Điểm đánh giá" },
+							{ key: "Điểm trung bình", label: "Điểm trung bình" },
+						]}
+						filterDisplay={[]}
 					>
 						<ComboChart
-							data={(points?.getPointsByCategory ?? []).map(
-								(point) => ({
-									"Điểm đánh giá": point.avg_point,
-									"Điểm trung bình":
-										_.mean(
-											points?.getPointsByCategory.map(
-												(p) => p.avg_point
-											)
-										) || 0,
-									name: point.category,
-								})
-							)}
+							data={chartData}
 							index="name"
 							enableBiaxial={false}
 							showLegend={false}

@@ -2,6 +2,7 @@
 
 import ChartLayout from "@/components/chart/ChartLayout";
 import { FilterProvider, useFilter } from "@/contexts/FilterContext";
+import _ from "lodash";
 import {
 	FilterArgs,
 	GroupedPoint,
@@ -45,7 +46,7 @@ function InnerPointWithGroupedEntity({
 	medianTitle = "Trung vị",
 	groupEntity,
 	isShowedName = true,
-	onClick = () => {},
+	onClick = () => { },
 }: Props) {
 	const filter = useFilter();
 
@@ -68,14 +69,22 @@ function InnerPointWithGroupedEntity({
 		semester_id: filter.semester?.semester_id,
 		subjects: Array.from(filter.subjects.values()).length
 			? Array.from(filter.subjects.values()).map(
-					(subject) => subject.subject_id
-			  )
+				(subject) => subject.subject_id
+			)
 			: undefined,
 		program: filter.program,
 		groupEntity: "Semester",
 	};
 
 	const [fetchFunction] = usePointsWithGroupByLazyQuery();
+
+	const filterDisplay = [
+		{ label: 'Tiêu chí', value: filter.criteria?.display_name },
+		{ label: 'Học kỳ', value: filter.semester?.display_name },
+		{ label: 'Khoa/Bộ môn', value: filter.faculty?.display_name },
+		{ label: 'Môn học', value: filter.subjects ? Array.from(filter.subjects.values()).map?.(d => d.display_name).join(", ") : "" },
+		{ label: 'Chương trình', value: filter.program },
+	].filter(d => d.value);
 
 	useEffect(() => {
 		(async () => {
@@ -122,6 +131,14 @@ function InnerPointWithGroupedEntity({
 				columnSize={100}
 				isFullWidth
 				handlerButtons={selectors}
+				exportData={chartData}
+				exportColumns={[
+					{ key: "name", label: "Tên" },
+					{ key: xTitle, label: xTitle },
+					{ key: averageTitle, label: averageTitle },
+				]}
+				filterDisplay={filterDisplay}
+				exportChart={<HistogramChart rawData={histogramData} isExport />}
 			>
 				<div className=" px-6 lg:px-6 pb-4 flex flex-col gap-2 justify-start lg:flex-row lg:justify-between lg:items-center">
 					<Tabs
@@ -184,8 +201,8 @@ function InnerPointWithGroupedEntity({
 								aggregationField === "average_point"
 									? "sky"
 									: aggregationField === "median_point"
-									? "emerald"
-									: "amber",
+										? "emerald"
+										: "amber",
 							],
 							minValue: 3,
 							maxValue: 4,

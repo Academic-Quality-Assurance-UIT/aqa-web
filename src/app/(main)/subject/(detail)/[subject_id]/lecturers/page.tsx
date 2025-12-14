@@ -126,6 +126,28 @@ function Page_({ subject_id }: { subject_id: string }) {
 						<SortSelector />
 					</>
 				}
+				exportData={data.map((d) => ({
+					display_name: d.display_name,
+					point: (d.average_point * 4).toFixed(2),
+					class_num: d.class_num,
+				}))}
+				exportColumns={[
+					{ key: "display_name", label: "Tên giảng viên" },
+					{ key: "point", label: "Điểm" },
+					{ key: "class_num", label: "Số lớp đã dạy" },
+				]}
+				filterDisplay={[
+					{ label: "Tiêu chí", value: filter.criteria?.display_name || "" },
+					{ label: "Học kỳ", value: filter.semester?.display_name || "" },
+					{
+						label: "Chương trình",
+						value: filter.program == "Standard" ? "Đại trà" : "Chất lượng cao",
+					},
+					{
+						label: "Sắp xếp",
+						value: sort == "asc" ? "Tăng dần" : "Giảm dần",
+					},
+				].filter((f) => f.value)}
 			>
 				<BarChart
 					className=" h-full mt-4"
@@ -133,31 +155,31 @@ function Page_({ subject_id }: { subject_id: string }) {
 					data={
 						data && data?.length
 							? [
-									{
-										label: LEGEND_NAMES[1],
-										data:
-											data?.map((d) => ({
-												x: d.display_name || "",
-												y: d.class_num as number,
-												type: "line",
-												id: d.id,
-											})) || [],
-										yAxisID: "y1",
-										backgroundColor: "rgba(255, 99, 132, 0.7)",
-										borderColor: "rgba(255, 99, 132, 0.7)",
-										type: "line",
-									},
-									{
-										label: LEGEND_NAMES[0],
-										data:
-											data?.map((d) => ({
-												x: d.display_name || "",
-												y: (d.average_point * 4).toFixed(2),
-												id: d.id,
-											})) || [],
-										type: "bar",
-									},
-							  ]
+								{
+									label: LEGEND_NAMES[1],
+									data:
+										data?.map((d) => ({
+											x: d.display_name || "",
+											y: d.class_num as number,
+											type: "line",
+											id: d.id,
+										})) || [],
+									yAxisID: "y1",
+									backgroundColor: "rgba(255, 99, 132, 0.7)",
+									borderColor: "rgba(255, 99, 132, 0.7)",
+									type: "line",
+								},
+								{
+									label: LEGEND_NAMES[0],
+									data:
+										data?.map((d) => ({
+											x: d.display_name || "",
+											y: (d.average_point * 4).toFixed(2),
+											id: d.id,
+										})) || [],
+									type: "bar",
+								},
+							]
 							: undefined
 					}
 					valueFormatter={[dataFormatter, (d: any) => d]}
@@ -204,12 +226,12 @@ const defaultColumns: {
 	index?: number;
 	width?: number;
 }[] = [
-	{
-		key: "lecturer_name",
-		label: "Tên giảng viên",
-		width: 300,
-	},
-];
+		{
+			key: "lecturer_name",
+			label: "Tên giảng viên",
+			width: 300,
+		},
+	];
 
 const CHART_COLORS = ["sky", "pink"] as Color[];
 const LEGEND_NAMES = ["Điểm", "Số lớp đã dạy"];

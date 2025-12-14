@@ -36,6 +36,7 @@ interface ProcessedData {
 
 interface HistogramChartProps {
 	rawData?: DataItem[];
+	isExport?: boolean
 }
 
 interface TooltipProps {
@@ -45,7 +46,7 @@ interface TooltipProps {
 	}>;
 }
 
-const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
+const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [], isExport = false }) => {
 	const isMobile = useMediaQuery({ maxWidth: 1024 });
 
 	const processedData: ProcessedData = useMemo(() => {
@@ -171,8 +172,8 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
 		<div className=" pt-2 bg-transparent rounded-lg">
 			<div className="flex justify-center">
 				<BarChart
-					width={isMobile ? 350 : 1200}
-					height={isMobile ? 300 : 500}
+					width={isMobile && !isExport ? 350 : 1200}
+					height={isMobile && !isExport ? 300 : 500}
 					data={processedData.chartData}
 					margin={{ top: 20, left: 20 }}
 				>
@@ -203,7 +204,7 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
 							// value: `Dưới ${processedData.percentage20.toFixed(2)}%`,
 							position: "top",
 							fill: "#ef568b",
-							fontSize: isMobile ? 10 : 12,
+							fontSize: isMobile && !isExport ? 10 : 12,
 							fontWeight: "600",
 						}}
 					/>
@@ -217,7 +218,7 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [] }) => {
 							// value: `Trên ${processedData.percentage80.toFixed(2)}%`,
 							position: "top",
 							fill: "#10b981",
-							fontSize: isMobile ? 10 : 12,
+							fontSize: isMobile && !isExport ? 10 : 12,
 							fontWeight: "600",
 						}}
 					/>

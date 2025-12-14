@@ -12,6 +12,7 @@ import ChartLayout from "./chart/ChartLayout";
 import Loading from "./Loading";
 import NoData from "./NoData";
 import { useDeepCompareEffect } from "react-use";
+import _ from "lodash";
 
 type Props = {
 	title?: string;
@@ -41,8 +42,8 @@ function InnerPointEachSemester({
 		semester_id: filter.semester?.semester_id,
 		subjects: Array.from(filter.subjects.values()).length
 			? Array.from(filter.subjects.values()).map(
-					(subject) => subject.subject_id
-			  )
+				(subject) => subject.subject_id
+			)
 			: undefined,
 		program: filter.program,
 		groupEntity: "Semester",
@@ -50,11 +51,20 @@ function InnerPointEachSemester({
 
 	const [fetchFunction] = usePointsEachSemesterLazyQuery();
 
+	const filterDisplay = [
+		{ label: 'Tiêu chí', value: filter.criteria?.display_name },
+		{ label: 'Học kỳ', value: filter.semester?.display_name },
+		{ label: 'Khoa/Bộ môn', value: filter.faculty?.display_name },
+		{ label: 'Môn học', value: filter.subjects ? Array.from(filter.subjects.values()).map?.(d => d.display_name).join(", ") : "" },
+		{ label: 'Chương trình', value: filter.program },
+	].filter(d => d.value);
+
 	useDeepCompareEffect(() => {
 		let isAbort = false;
 
 		(async () => {
 			setLoading(true);
+
 			const response = await fetchFunction({
 				variables: {
 					...query,
@@ -89,6 +99,30 @@ function InnerPointEachSemester({
 		};
 	}, [query, overrideQueries, variables]);
 
+	const chartData = loading
+		? []
+		: [...data]
+			.sort((a, b) => {
+				const [semesterA, yearA] = a.display_name?.split(", ") || [0, 0];
+				const [semesterB, yearB] = b.display_name?.split(", ") || [0, 0];
+				if (yearA == yearB) {
+					return (
+						parseInt(semesterA.toString().at(-1) || "", 10) -
+						parseInt(semesterB.toString().at(-1) || "", 10)
+					);
+				} else {
+					return (
+						parseInt(yearA.toString(), 10) -
+						parseInt(yearB.toString(), 10)
+					);
+				}
+			})
+			.map((point) => ({
+				Điểm: point.average_point * 4,
+				"Trung bình toàn trường": point.all_average * 4,
+				semester_name: point.display_name,
+			})) || [];
+
 	return (
 		<div className=" h-[400px] lg:h-[600px]">
 			<ChartLayout
@@ -98,45 +132,17 @@ function InnerPointEachSemester({
 				colors={["sky"]}
 				isFullWidth
 				handlerButtons={selectors}
+				exportData={chartData}
+				exportColumns={[
+					{ key: "semester_name", label: "Học kỳ" },
+					{ key: "Điểm", label: "Điểm" },
+					{ key: "Trung bình toàn trường", label: "Trung bình toàn trường" },
+				]}
+				filterDisplay={filterDisplay}
 			>
 				<AreaChart
 					className=" h-full"
-					data={
-						loading
-							? []
-							: [...data]
-									.sort((a, b) => {
-										const [semesterA, yearA] =
-											a.display_name?.split(", ") || [0, 0];
-										const [semesterB, yearB] =
-											b.display_name?.split(", ") || [0, 0];
-										if (yearA == yearB) {
-											return (
-												parseInt(
-													semesterA.toString().at(-1) ||
-														"",
-													10
-												) -
-												parseInt(
-													semesterB.toString().at(-1) ||
-														"",
-													10
-												)
-											);
-										} else {
-											return (
-												parseInt(yearA.toString(), 10) -
-												parseInt(yearB.toString(), 10)
-											);
-										}
-									})
-									.map((point) => ({
-										Điểm: point.average_point * 4,
-										"Trung bình toàn trường":
-											point.all_average * 4,
-										semester_name: point.display_name,
-									})) || []
-					}
+					data={chartData}
 					index="semester_name"
 					categories={
 						displayAverage

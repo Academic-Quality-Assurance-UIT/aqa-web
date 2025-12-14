@@ -17,6 +17,13 @@ export default function StaffSurveyCriteriaChart({
 		fetchPolicy: "network-only",
 	});
 
+	const chartData = (points?.getPointsByCriteria ?? []).map((point) => ({
+		"Điểm đánh giá": point.avg_point,
+		"Điểm trung bình":
+			_.mean(points?.getPointsByCriteria.map((p) => p.avg_point)) || 0,
+		name: `${point.index + 1}. ${point.criteria}`,
+	}));
+
 	return (
 		<div className=" flex flex-col gap-4">
 			<FilterProvider>
@@ -29,18 +36,16 @@ export default function StaffSurveyCriteriaChart({
 					columnSize={100}
 					isFullWidth
 					handlerButtons={<></>}
+					exportData={chartData}
+					exportColumns={[
+						{ key: "name", label: "Tiêu chí" },
+						{ key: "Điểm đánh giá", label: "Điểm đánh giá" },
+						{ key: "Điểm trung bình", label: "Điểm trung bình" },
+					]}
+					filterDisplay={[{ label: "Danh mục", value: category }]}
 				>
 					<ComboChart
-						data={(points?.getPointsByCriteria ?? []).map((point) => ({
-							"Điểm đánh giá": point.avg_point,
-							"Điểm trung bình":
-								_.mean(
-									points?.getPointsByCriteria.map(
-										(p) => p.avg_point
-									)
-								) || 0,
-							name: `${point.index + 1}. ${point.criteria}`,
-						}))}
+						data={chartData}
 						index="name"
 						enableBiaxial={false}
 						showLegend={false}

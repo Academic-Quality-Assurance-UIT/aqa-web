@@ -49,6 +49,14 @@ function InnerPointWithCompare({
 
 	const [fetchFunction] = usePointsWithGroupByLazyQuery();
 
+	const filterDisplay = [
+		{ label: 'Tiêu chí', value: filter.criteria?.display_name },
+		{ label: 'Học kỳ', value: filter.semester?.display_name },
+		{ label: 'Khoa/Bộ môn', value: filter.faculty?.display_name },
+		{ label: 'Môn học', value: filter.subjects ? Array.from(filter.subjects.values()).map?.(d => d.display_name).join(", ") : "" },
+		{ label: 'Chương trình', value: filter.program },
+	].filter(d => d.value);
+
 	useEffect(() => {
 		(async () => {
 			setData([]);
@@ -126,6 +134,12 @@ function InnerPointWithCompare({
 					columnSize={100}
 					isFullWidth
 					handlerButtons={selectors}
+					exportData={data}
+					exportColumns={[
+						{ key: "display_name", label: xTitle },
+						...legends.map((key) => ({ key, label: key })),
+					]}
+					filterDisplay={filterDisplay}
 				>
 					<LineChart
 						className=" h-full mt-4"
@@ -147,7 +161,7 @@ function InnerPointWithCompare({
 							verticalShift: 30,
 							xAxisHeight: 60,
 						}}
-						onValueChange={() => {}}
+						onValueChange={() => { }}
 						// onValueChange={(v) => {
 						// 	const item = data.find(
 						// 		(point) => point.display_name == v?.name
