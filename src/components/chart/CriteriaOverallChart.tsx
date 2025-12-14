@@ -7,6 +7,8 @@ import ProgramSelector from "../selectors/ProgramSelector";
 import SubjectSelector from "../selectors/SubjectSelector";
 import { Role } from "@/gql/graphql";
 import { FilterProvider } from "@/contexts/FilterContext";
+import { Chip } from "@heroui/react";
+import _ from "lodash";
 
 export default function CriteriaOverallChart() {
 	const { query, role } = useFilterUrlQuery();
@@ -15,13 +17,13 @@ export default function CriteriaOverallChart() {
 		role === Role.Admin || role == Role.FullAccess
 			? "toàn trường"
 			: role == Role.Faculty
-			? "khoa/bộ môn"
-			: "giảng viên";
+				? "khoa/bộ môn"
+				: "giảng viên";
 
 	return (
 		<PointEachSemester
 			query={query}
-			title={`Điểm đánh giá trung bình của ${currentRoleName} qua từng học kỳ`}
+			title={<span className=" flex items-center gap-2">{`Điểm đánh giá trung bình của ${currentRoleName} qua từng học kỳ`} <Chip color="success"><span className=" font-semibold">{_.capitalize(currentRoleName)}</span></Chip></span>}
 			legend="Điểm đánh giá"
 			selectors={
 				<>
@@ -45,7 +47,7 @@ export function CurrentLecturerOverallChart() {
 				overrideQueries={{
 					lecturer_id: currentLecturerId,
 				}}
-				title="Điểm đánh giá trung bình của giảng viên qua từng học kỳ"
+				title={<span className=" flex items-center gap-2">{`Điểm đánh giá trung bình của giảng viên qua từng học kỳ`} <Chip color="primary"><span className=" font-semibold">Giảng viên</span></Chip></span>}
 				legend="Điểm đánh giá"
 				selectors={
 					<>

@@ -15,7 +15,7 @@ import { useDeepCompareEffect } from "react-use";
 import _ from "lodash";
 
 type Props = {
-	title?: string;
+	title?: string | ReactNode;
 	legend?: string;
 	selectors?: ReactNode;
 	query?: FilterArgs;

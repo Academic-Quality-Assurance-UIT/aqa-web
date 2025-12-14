@@ -45,7 +45,7 @@ export default function ChartLayout({
 	exportColumns,
 	filterDisplay,
 }: {
-	primaryTitle?: string;
+	primaryTitle?: string | ReactNode;
 	secondaryTitle?: string;
 	columnSize?: number;
 	columnNum?: number;
