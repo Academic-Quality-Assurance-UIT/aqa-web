@@ -81,13 +81,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 						icon={AiOutlineSolution}
 					/>
 				) : null}
-				{isFullAcess || isAdmin ? (
+				{/* {isFullAcess || isAdmin ? (
 					<NavItem
 						title="Tạo biểu đồ bằng AI"
 						link="/ai-generate"
 						icon={AiOutlineCodepen}
 					/>
-				) : null}
+				) : null} */}
 				{isAdmin ? (
 					<NavItem
 						title="Quản lý tài khoản"
