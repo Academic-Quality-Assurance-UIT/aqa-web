@@ -175,8 +175,7 @@ export default function ChartLayout({
 														})
 														.then(function (dataUrl: string) {
 															var link = document.createElement("a");
-															link.download = `${primaryTitle || "chart"
-																}.jpeg`;
+															link.download = `chart.jpeg`;
 															link.href = dataUrl;
 															link.click();
 														});
@@ -210,7 +209,7 @@ export default function ChartLayout({
 													);
 													writeFile(
 														workbook,
-														`${primaryTitle || "chart"}.xlsx`
+														`chart-data.xlsx`
 													);
 												}
 											}}
@@ -224,8 +223,7 @@ export default function ChartLayout({
 													domToPdf(
 														pdfContainerRef.current,
 														{
-															filename: `${primaryTitle || "chart"
-																}.pdf`,
+															filename: `chart-document.pdf`,
 															overrideWidth: 1400,
 															compression: "SLOW",
 														},
@@ -271,7 +269,7 @@ export default function ChartLayout({
 					ref={hiddenChartRef}
 					className=" w-full h-[600px] p-10 bg-white"
 				>
-					{exportChart}
+					{exportChart ?? children}
 				</div>
 
 				{/* Hidden Container for PDF Export */}
@@ -302,7 +300,7 @@ export default function ChartLayout({
 						)}
 
 						<div className=" w-full h-[400px] mt-4">
-							{exportChart}
+							{exportChart ?? children}
 						</div>
 					</div>
 				</div>

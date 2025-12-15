@@ -138,7 +138,7 @@ function InnerPointWithGroupedEntity({
 					{ key: averageTitle, label: averageTitle },
 				]}
 				filterDisplay={filterDisplay}
-				exportChart={<HistogramChart rawData={histogramData} isExport />}
+				exportChart={tab == "list" ? null : <HistogramChart rawData={histogramData} isExport />}
 			>
 				<div className=" px-6 lg:px-6 pb-4 flex flex-col gap-2 justify-start lg:flex-row lg:justify-between lg:items-center">
 					<Tabs
