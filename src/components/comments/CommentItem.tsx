@@ -77,7 +77,7 @@ export default function CommentItem({
 					</p>
 					{secondary ? secondary : null}
 					<div className=" flex gap-2">
-						<Chip
+						{topic ? <Chip
 							size="sm"
 							className={`w-24 ${
 								topic == "lecturer"
@@ -96,7 +96,7 @@ export default function CommentItem({
 										topic}
 								</span>
 							</p>
-						</Chip>
+						</Chip> : null}
 						{type_list?.map((t) => (
 							<Chip
 								size="sm"

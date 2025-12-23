@@ -78,6 +78,7 @@ type Props = {
 	onClick?: (d: IClickData) => any;
 	hasY1?: boolean;
 	yTitle?: string;
+	y1Title?: string;
 };
 
 export function BarChart({
@@ -87,7 +88,8 @@ export function BarChart({
 	valueFormatter = [(d: number) => d],
 	onClick,
 	hasY1 = true,
-	yTitle
+	yTitle,
+	y1Title,
 }: Props) {
 	const ref = useRef<any>();
 
@@ -133,24 +135,28 @@ export function BarChart({
 			},
 			...(hasY1
 				? {
-						y1: {
-							border: {
-								display: false,
-							},
-							beginAtZero: true,
-							display: true,
-							position: "right" as const,
-							min: 0,
-							grid: {
-								drawOnChartArea: false,
-							},
-							ticks: {
-								color: "black",
-								font: { size: 15 },
-								stepSize: 1,
-							},
+					y1: {
+						border: {
+							display: false,
 						},
-				  }
+						beginAtZero: true,
+						display: true,
+						position: "right" as const,
+						min: 0,
+						grid: {
+							drawOnChartArea: false,
+						},
+						ticks: {
+							color: "black",
+							font: { size: 15 },
+							stepSize: 1,
+						},
+						title: {
+							display: !!y1Title,
+							text: y1Title,
+						},
+					},
+				}
 				: {}),
 		},
 		plugins: {

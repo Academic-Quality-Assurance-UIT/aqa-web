@@ -41,7 +41,7 @@ export default function StaffSurveyCommentPage({
 							content={comment ?? ""}
 							type={"neutral"}
 							type_list={[]}
-							topic={"all"}
+							topic={""}
 							comment_id={comment ?? i.toString()}
 							isLast={false}
 							clickable={false}

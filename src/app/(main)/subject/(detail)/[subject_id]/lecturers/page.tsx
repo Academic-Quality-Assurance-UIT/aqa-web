@@ -14,6 +14,7 @@ import { useFilterUrlQuery } from "@/hooks/useFilterUrlQuery";
 import Loading from "@components/Loading";
 import NoData from "@components/NoData";
 import ChartLayout from "@components/chart/ChartLayout";
+import LecturerShowToggle from "@/components/LecturerHiddenToggle";
 import ProgramSelector from "@components/selectors/ProgramSelector";
 import SemesterSelector from "@components/selectors/SemesterSelector";
 import { Color } from "@tremor/react";
@@ -28,6 +29,7 @@ function Page_({ subject_id }: { subject_id: string }) {
 
 	const [data, setData] = useState<GroupedPoint[]>([]);
 	const [loading, setLoading] = useState(false);
+	const [showLecturerName, setShowLecturerName] = useState(true);
 
 	const subjects = useMemo(
 		() => Array.from(filter.subjects.values()),
@@ -112,7 +114,12 @@ function Page_({ subject_id }: { subject_id: string }) {
 	return (
 		<>
 			<ChartLayout
-				primaryTitle="Biểu đồ điểm trung bình các giảng viên"
+				primaryTitle={
+					<div className="flex items-center gap-4">
+						<p>Biểu đồ điểm trung bình các giảng viên</p>
+						<LecturerShowToggle onToggle={setShowLecturerName} />
+					</div>
+				}
 				legends={LEGEND_NAMES}
 				colors={CHART_COLORS}
 				columnNum={data?.length || 0}
@@ -126,8 +133,10 @@ function Page_({ subject_id }: { subject_id: string }) {
 						<SortSelector />
 					</>
 				}
-				exportData={data.map((d) => ({
-					display_name: d.display_name,
+				exportData={data.map((d, index) => ({
+					display_name: showLecturerName
+						? d.display_name
+						: `Giảng viên ${index + 1}`,
 					point: (d.average_point * 4).toFixed(2),
 					class_num: d.class_num,
 				}))}
@@ -158,8 +167,10 @@ function Page_({ subject_id }: { subject_id: string }) {
 								{
 									label: LEGEND_NAMES[1],
 									data:
-										data?.map((d) => ({
-											x: d.display_name || "",
+										data?.map((d, index) => ({
+											x: showLecturerName
+												? d.display_name || ""
+												: `Giảng viên ${index + 1}`,
 											y: d.class_num as number,
 											type: "line",
 											id: d.id,
@@ -172,8 +183,10 @@ function Page_({ subject_id }: { subject_id: string }) {
 								{
 									label: LEGEND_NAMES[0],
 									data:
-										data?.map((d) => ({
-											x: d.display_name || "",
+										data?.map((d, index) => ({
+											x: showLecturerName
+												? d.display_name || ""
+												: `Giảng viên ${index + 1}`,
 											y: (d.average_point * 4).toFixed(2),
 											id: d.id,
 										})) || [],
@@ -188,6 +201,8 @@ function Page_({ subject_id }: { subject_id: string }) {
 						// router.push(`/lecturer/${data[0]?.id}`)
 						setUrlQuery(`/lecturer/${data[0]?.id}`)
 					}
+					yTitle="Điểm"
+					y1Title="Số lớp đã dạy"
 				/>
 			</ChartLayout>
 		</>
