@@ -151,7 +151,10 @@ function InnerPointEachSemester({
 					}
 					colors={["sky", "purple"]}
 					yAxisWidth={50}
-					minValue={3.2}
+					minValue={1}
+					maxValue={4}
+					xAxisLabel="Học kỳ"
+					yAxisLabel="Điểm"
 					showAnimation
 					rotateLabelX={{
 						angle: 0,

@@ -194,9 +194,10 @@ function InnerPointWithGroupedEntity({
 						index="name"
 						enableBiaxial={false}
 						showLegend={false}
+						xAxisLabel="Tên"
 						barSeries={{
 							categories: [xTitle],
-							yAxisLabel: "",
+							yAxisLabel: "Điểm",
 							colors: [
 								aggregationField === "average_point"
 									? "sky"
@@ -204,7 +205,7 @@ function InnerPointWithGroupedEntity({
 										? "emerald"
 										: "amber",
 							],
-							minValue: 3,
+							minValue: 1,
 							maxValue: 4,
 							yAxisWidth: 60,
 							valueFormatter: (number: number) => {
@@ -214,9 +215,9 @@ function InnerPointWithGroupedEntity({
 						lineSeries={{
 							categories: [averageTitle],
 							showYAxis: true,
-							yAxisLabel: "",
+							yAxisLabel: "Điểm",
 							colors: ["pink"],
-							minValue: 3,
+							minValue: 1,
 							maxValue: 4,
 							valueFormatter: (number: number) => {
 								return `${number.toFixed(2)}`;

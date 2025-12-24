@@ -49,11 +49,13 @@ export default function StaffSurveyCriteriaChart({
 						index="name"
 						enableBiaxial={false}
 						showLegend={false}
+						xAxisLabel="Tiêu chí"
 						barSeries={{
 							categories: ["Điểm đánh giá"],
-							yAxisLabel: "",
+							yAxisLabel: "Điểm",
 							colors: ["sky"],
-							minValue: 3,
+							minValue: 1,
+							maxValue: 4,
 							yAxisWidth: 60,
 							valueFormatter: (number: number) => {
 								return `${number.toFixed(2)}`;
@@ -62,9 +64,10 @@ export default function StaffSurveyCriteriaChart({
 						lineSeries={{
 							categories: ["Điểm trung bình"],
 							showYAxis: true,
-							yAxisLabel: "",
+							yAxisLabel: "Điểm",
 							colors: ["pink"],
-							minValue: 3,
+							minValue: 1,
+							maxValue: 4,
 							valueFormatter: (number: number) => {
 								return `${number.toFixed(2)}`;
 							},

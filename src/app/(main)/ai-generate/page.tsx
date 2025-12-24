@@ -161,15 +161,16 @@ export default function Page() {
 						<div className=" w-2/3 flex flex-col items-center gap-4">
 							{(genereatedData.chart_type == "bar" ||
 								genereatedData.chart_type == "line") && (
-								<div className="w-full h-fit px-12 py-8 pt-10 flex flex-col items-center bg-white shadow-md rounded-3xl">
-									<div className=" w-full h-[500px] mt-4 mb-10">
-										<BarChart
-											className=" w-full h-full"
-											//@ts-ignore
-											yTitle={genereatedData.metadata.y_axis}
-											data={
-												genereatedData.chartData?.length
-													? genereatedData.metadata.series.map(
+									<div className="w-full h-fit px-12 py-8 pt-10 flex flex-col items-center bg-white shadow-md rounded-3xl">
+										<div className=" w-full h-[500px] mt-4 mb-10">
+											<BarChart
+												className=" w-full h-full"
+												//@ts-ignore
+												yTitle={genereatedData.metadata.y_axis}
+												xTitle={genereatedData.metadata.x_axis}
+												data={
+													genereatedData.chartData?.length
+														? genereatedData.metadata.series.map(
 															(d: any, i: number) => ({
 																label: d.label,
 																data:
@@ -201,27 +202,27 @@ export default function Page() {
 																		.borderColor,
 																type: genereatedData.chart_type,
 															})
-													  )
-													: undefined
-											}
-											valueFormatter={genereatedData.metadata.series.map(
-												() => (d: any) => d
-											)}
-											noDataText={
-												loading ? <Loading /> : <NoData />
-											}
-											onClick={({ index, data }) => {}}
-											hasY1={false}
-										/>
+														)
+														: undefined
+												}
+												valueFormatter={genereatedData.metadata.series.map(
+													() => (d: any) => d
+												)}
+												noDataText={
+													loading ? <Loading /> : <NoData />
+												}
+												onClick={({ index, data }) => { }}
+												hasY1={false}
+											/>
+										</div>
+										<p className=" text-center mb-1 font-semibold">
+											{genereatedData.chart_title}
+										</p>
+										<p className=" text-center text-sm">
+											{genereatedData.chart_description}
+										</p>
 									</div>
-									<p className=" text-center mb-1 font-semibold">
-										{genereatedData.chart_title}
-									</p>
-									<p className=" text-center text-sm">
-										{genereatedData.chart_description}
-									</p>
-								</div>
-							)}
+								)}
 							{genereatedData.chart_type == "table" && (
 								<Table aria-label="Example static collection table">
 									<TableHeader>
@@ -238,7 +239,7 @@ export default function Page() {
 											<TableRow
 												key={
 													row[
-														genereatedData.metadata.index
+													genereatedData.metadata.index
 													]
 												}
 											>

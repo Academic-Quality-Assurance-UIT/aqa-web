@@ -79,6 +79,7 @@ type Props = {
 	hasY1?: boolean;
 	yTitle?: string;
 	y1Title?: string;
+	xTitle?: string;
 };
 
 export function BarChart({
@@ -90,6 +91,7 @@ export function BarChart({
 	hasY1 = true,
 	yTitle,
 	y1Title,
+	xTitle,
 }: Props) {
 	const ref = useRef<any>();
 
@@ -113,6 +115,10 @@ export function BarChart({
 					color: "black",
 					font: { size: 15, weight: "bold" },
 				},
+				title: {
+					display: !!xTitle,
+					text: xTitle,
+				},
 			},
 			y: {
 				border: {
@@ -122,6 +128,8 @@ export function BarChart({
 					display: true,
 				},
 				beginAtZero: false,
+				min: 1,
+				max: 4,
 				ticks: {
 					color: "black",
 					font: { size: 15 },

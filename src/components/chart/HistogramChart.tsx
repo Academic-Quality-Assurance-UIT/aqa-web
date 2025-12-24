@@ -55,7 +55,7 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [], isExport 
 		);
 
 		const bins: Record<string, number> = {};
-		for (let i = 0; i <= 80; i++) {
+		for (let i = 20; i <= 80; i++) {
 			bins[(i / 20).toFixed(2)] = 0;
 		}
 
@@ -104,7 +104,7 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [], isExport 
 		const percentage80 =
 			100 -
 			(sortedPoints.filter((point) => point >= percentile80).length / total) *
-				100;
+			100;
 
 		return {
 			chartData,
@@ -182,6 +182,12 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [], isExport 
 						dataKey="point"
 						stroke="#d1d5db"
 						tick={{ fill: "#9ca3af", fontSize: 14 }}
+						label={{
+							value: "Điểm",
+							position: "insideBottom",
+							offset: -5,
+							fill: "#9ca3af",
+						}}
 					/>
 					<YAxis
 						width={38}
@@ -231,8 +237,8 @@ const HistogramChart: React.FC<HistogramChartProps> = ({ rawData = [], isExport 
 									entry.point <= processedData.percentile20
 										? "#ef568b"
 										: entry.point >= processedData.percentile80
-										? "#10b981"
-										: "#0ea5e9"
+											? "#10b981"
+											: "#0ea5e9"
 								}
 							/>
 						))}

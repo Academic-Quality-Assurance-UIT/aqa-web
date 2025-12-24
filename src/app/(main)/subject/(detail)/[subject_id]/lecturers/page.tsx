@@ -203,6 +203,7 @@ function Page_({ subject_id }: { subject_id: string }) {
 					}
 					yTitle="Điểm"
 					y1Title="Số lớp đã dạy"
+					xTitle="Giảng viên"
 				/>
 			</ChartLayout>
 		</>

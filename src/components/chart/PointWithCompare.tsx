@@ -150,9 +150,13 @@ function InnerPointWithCompare({
 						enableLegendSlider
 						colors={COLORS}
 						yAxisWidth={80}
-						autoMinValue
+						autoMinValue={false}
+						minValue={1}
+						maxValue={4}
 						connectNulls
 						showAnimation
+						xAxisLabel={xTitle}
+						yAxisLabel="Điểm"
 						valueFormatter={(number: number) => {
 							return `${number.toFixed(2)}`;
 						}}
