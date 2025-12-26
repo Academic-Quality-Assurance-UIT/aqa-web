@@ -36,23 +36,27 @@ query GetStaffSurveyBatchList {
 	}
 }
 
-query GetPointsByCategory {
-	getPointsByCategory {
+query GetSurveySemesterList {
+	getSurveySemesterList
+}
+
+query GetPointsByCategory($semester: String) {
+	getPointsByCategory(semester: $semester) {
 		avg_point
 		category
 	}
 }
 
-query GetPointsByCriteria($category: String!) {
-	getPointsByCriteria(category: $category) {
+query GetPointsByCriteria($category: String!, $semester: String) {
+	getPointsByCriteria(category: $category, semester: $semester) {
 		avg_point
 		criteria
 		index
 	}
 }
 
-query GetPointWithCommentByCriteria($category: String, $page: Int) {
-	getPointWithCommentByCriteria(category: $category, pagination: { page: $page }) {
+query GetPointWithCommentByCriteria($category: String, $page: Int, $semester: String) {
+	getPointWithCommentByCriteria(category: $category, pagination: { page: $page }, semester: $semester) {
 		data {
 			criteria
 			index
@@ -69,3 +73,4 @@ query GetPointWithCommentByCriteria($category: String, $page: Int) {
 		}
 	}
 }
+

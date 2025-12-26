@@ -7,12 +7,15 @@ import StaffSurveyCommentPage from "../comments/StaffSurveyCommentPage";
 
 export default function StaffSurveyCriteriaChart({
 	category,
+	semester,
 }: {
 	category: string;
+	semester?: string;
 }) {
 	const { data: points, loading: isLoading } = useGetPointsByCriteriaQuery({
 		variables: {
 			category,
+			semester,
 		},
 		fetchPolicy: "network-only",
 	});
@@ -42,7 +45,10 @@ export default function StaffSurveyCriteriaChart({
 						{ key: "Điểm đánh giá", label: "Điểm đánh giá" },
 						{ key: "Điểm trung bình", label: "Điểm trung bình" },
 					]}
-					filterDisplay={[{ label: "Danh mục", value: category }]}
+					filterDisplay={[
+						{ label: "Danh mục", value: category },
+						...(semester ? [{ label: "Học kỳ", value: semester }] : []),
+					]}
 				>
 					<ComboChart
 						data={chartData}
@@ -76,7 +82,7 @@ export default function StaffSurveyCriteriaChart({
 					<div className=" mt-12 px-8">
 						<h2 className=" font-semibold text-xl">Danh sách ý kiến</h2>
 						<div className=" mt-8">
-							<StaffSurveyCommentPage category={category} />
+							<StaffSurveyCommentPage category={category} semester={semester} />
 						</div>
 					</div>
 				</ChartLayout>
@@ -84,3 +90,4 @@ export default function StaffSurveyCriteriaChart({
 		</div>
 	);
 }
+

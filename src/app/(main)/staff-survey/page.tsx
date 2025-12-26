@@ -4,6 +4,7 @@ import ChartLayout from "@/components/chart/ChartLayout";
 import PointWithGroupedEntity from "@/components/chart/PointWithGroupedEntity";
 import StaffSurveyCriteriaChart from "@/components/chart/StaffSurveyCriteriaChart";
 import { ComboChart } from "@/components/ComboChart";
+import StaffSurveySemesterSelector from "@/components/selectors/StaffSurveySemesterSelector";
 import { FilterProvider } from "@/contexts/FilterContext";
 import {
 	useGetPointsByCategoryQuery,
@@ -12,10 +13,15 @@ import {
 import { Button, Tab, Tabs } from "@heroui/react";
 import _ from "lodash";
 import Link from "next/link";
+import { useState } from "react";
 import { } from "react-icons";
 
 export default function Page() {
-	const { data: points, loading: isLoading } = useGetPointsByCategoryQuery();
+	const [semester, setSemester] = useState<string | undefined>(undefined);
+
+	const { data: points, loading: isLoading } = useGetPointsByCategoryQuery({
+		variables: { semester },
+	});
 
 	const chartData = (points?.getPointsByCategory ?? []).map((point) => ({
 		"Điểm đánh giá": point.avg_point,
@@ -29,6 +35,10 @@ export default function Page() {
 			<div className=" flex items-center justify-between mb-8">
 				<h1 className=" text-2xl font-bold">Dữ liệu khảo sát giảng viên</h1>
 				<div className="flex gap-4">
+					<StaffSurveySemesterSelector
+						semester={semester}
+						setSemester={setSemester}
+					/>
 					<Link href="/staff-survey/add">
 						<Button color="primary">
 							<p className=" font-semibold">Thêm dữ liệu mới</p>
@@ -59,7 +69,7 @@ export default function Page() {
 							{ key: "Điểm đánh giá", label: "Điểm đánh giá" },
 							{ key: "Điểm trung bình", label: "Điểm trung bình" },
 						]}
-						filterDisplay={[]}
+						filterDisplay={semester ? [{ label: "Học kỳ", value: semester }] : []}
 					>
 						<ComboChart
 							data={chartData}
@@ -100,10 +110,11 @@ export default function Page() {
 			>
 				{(item) => (
 					<Tab key={item.category} title={item.category}>
-						<StaffSurveyCriteriaChart category={item.category} />
+						<StaffSurveyCriteriaChart category={item.category} semester={semester} />
 					</Tab>
 				)}
 			</Tabs>
 		</div>
 	);
 }
+

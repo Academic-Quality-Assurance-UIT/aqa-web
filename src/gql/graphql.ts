@@ -153,9 +153,9 @@ export type GroupedPoint = {
   display_name?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   max_point?: Maybe<Scalars['Float']['output']>;
-  median_point: Scalars['Float']['output'];
+  median_point?: Maybe<Scalars['Float']['output']>;
   point?: Maybe<Scalars['Float']['output']>;
-  trimmed_mean_point: Scalars['Float']['output'];
+  trimmed_mean_point?: Maybe<Scalars['Float']['output']>;
 };
 
 export type Lecturer = {
@@ -340,6 +340,7 @@ export type Query = {
   getPointWithCommentByCriteria: StaffSurveyPointResponseDto;
   getPointsByCategory: Array<PointByCategoryDto>;
   getPointsByCriteria: Array<PointByCriteriaDto>;
+  getSurveySemesterList: Array<Scalars['String']['output']>;
   /** List all points, group by a specific entity */
   groupedPoints: PaginatedGroupedPoint;
   /** View detail information of a specific lecturer */
@@ -419,12 +420,19 @@ export type QueryGetPointWithCommentByCriteriaArgs = {
   category?: InputMaybe<Scalars['String']['input']>;
   filter?: InputMaybe<FilterArgs>;
   pagination?: InputMaybe<PaginationArgs>;
+  semester?: InputMaybe<Scalars['String']['input']>;
   sort?: InputMaybe<SortArgs>;
+};
+
+
+export type QueryGetPointsByCategoryArgs = {
+  semester?: InputMaybe<Scalars['String']['input']>;
 };
 
 
 export type QueryGetPointsByCriteriaArgs = {
   category?: InputMaybe<Scalars['String']['input']>;
+  semester?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -501,6 +509,7 @@ export type SortFieldArgs = {
 export type StaffSurveyBatch = {
   __typename?: 'StaffSurveyBatch';
   display_name?: Maybe<Scalars['String']['output']>;
+  semester?: Maybe<Scalars['String']['output']>;
   staff_survey_batch_id: Scalars['String']['output'];
   updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -628,7 +637,7 @@ export type DetailClassQueryVariables = Exact<{
 }>;
 
 
-export type DetailClassQuery = { __typename?: 'Query', class?: { __typename?: 'Class', class_id: string, class_type: string, display_name: string, participating_student?: number | null, program: string, total_student?: number | null, lecturer: { __typename?: 'Lecturer', birth_date?: any | null, display_name?: string | null, email?: string | null, faculty_id?: string | null, gender?: boolean | null, learning?: string | null, learning_position?: string | null, lecturer_id: string, mscb?: number | null, ngach?: string | null, phone?: string | null, position?: string | null, total_point?: number | null, username?: string | null }, subject: { __typename?: 'Subject', display_name?: string | null, faculty_id?: string | null, subject_id: string, total_point?: number | null, faculty?: { __typename?: 'Faculty', display_name: string, faculty_id: string, full_name?: string | null } | null }, semester: { __typename?: 'Semester', display_name: string, semester_id: string, type?: string | null, year?: string | null }, points: Array<{ __typename?: 'GroupedPoint', average_point: number, median_point: number, trimmed_mean_point: number, class_num: number, display_name?: string | null, id: string, max_point?: number | null, point?: number | null }> } | null };
+export type DetailClassQuery = { __typename?: 'Query', class?: { __typename?: 'Class', class_id: string, class_type: string, display_name: string, participating_student?: number | null, program: string, total_student?: number | null, lecturer: { __typename?: 'Lecturer', birth_date?: any | null, display_name?: string | null, email?: string | null, faculty_id?: string | null, gender?: boolean | null, learning?: string | null, learning_position?: string | null, lecturer_id: string, mscb?: number | null, ngach?: string | null, phone?: string | null, position?: string | null, total_point?: number | null, username?: string | null }, subject: { __typename?: 'Subject', display_name?: string | null, faculty_id?: string | null, subject_id: string, total_point?: number | null, faculty?: { __typename?: 'Faculty', display_name: string, faculty_id: string, full_name?: string | null } | null }, semester: { __typename?: 'Semester', display_name: string, semester_id: string, type?: string | null, year?: string | null }, points: Array<{ __typename?: 'GroupedPoint', average_point: number, median_point?: number | null, trimmed_mean_point?: number | null, class_num: number, display_name?: string | null, id: string, max_point?: number | null, point?: number | null }> } | null };
 
 export type CommentQuantityQueryVariables = Exact<{
   filter?: InputMaybe<FilterArgs>;
@@ -753,7 +762,7 @@ export type PointsEachSemesterQueryVariables = Exact<{
 }>;
 
 
-export type PointsEachSemesterQuery = { __typename?: 'Query', groupedPoints: { __typename?: 'PaginatedGroupedPoint', data: Array<{ __typename?: 'GroupedPoint', average_point: number, median_point: number, trimmed_mean_point: number, class_num: number, display_name?: string | null, id: string, max_point?: number | null, point?: number | null }> } };
+export type PointsEachSemesterQuery = { __typename?: 'Query', groupedPoints: { __typename?: 'PaginatedGroupedPoint', data: Array<{ __typename?: 'GroupedPoint', average_point: number, median_point?: number | null, trimmed_mean_point?: number | null, class_num: number, display_name?: string | null, id: string, max_point?: number | null, point?: number | null }> } };
 
 export type PointsWithGroupByQueryVariables = Exact<{
   groupEntity: Scalars['String']['input'];
@@ -767,7 +776,7 @@ export type PointsWithGroupByQueryVariables = Exact<{
 }>;
 
 
-export type PointsWithGroupByQuery = { __typename?: 'Query', groupedPoints: { __typename?: 'PaginatedGroupedPoint', data: Array<{ __typename?: 'GroupedPoint', average_point: number, median_point: number, trimmed_mean_point: number, class_num: number, display_name?: string | null, id: string, max_point?: number | null, point?: number | null }> } };
+export type PointsWithGroupByQuery = { __typename?: 'Query', groupedPoints: { __typename?: 'PaginatedGroupedPoint', data: Array<{ __typename?: 'GroupedPoint', average_point: number, median_point?: number | null, trimmed_mean_point?: number | null, class_num: number, display_name?: string | null, id: string, max_point?: number | null, point?: number | null }> } };
 
 export type ProgramsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -803,13 +812,21 @@ export type GetStaffSurveyBatchListQueryVariables = Exact<{ [key: string]: never
 
 export type GetStaffSurveyBatchListQuery = { __typename?: 'Query', getBatchList: Array<{ __typename?: 'StaffSurveyBatch', display_name?: string | null, staff_survey_batch_id: string, updated_at?: any | null }> };
 
-export type GetPointsByCategoryQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetSurveySemesterListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSurveySemesterListQuery = { __typename?: 'Query', getSurveySemesterList: Array<string> };
+
+export type GetPointsByCategoryQueryVariables = Exact<{
+  semester?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
 export type GetPointsByCategoryQuery = { __typename?: 'Query', getPointsByCategory: Array<{ __typename?: 'PointByCategoryDTO', avg_point: number, category: string }> };
 
 export type GetPointsByCriteriaQueryVariables = Exact<{
   category: Scalars['String']['input'];
+  semester?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
@@ -818,6 +835,7 @@ export type GetPointsByCriteriaQuery = { __typename?: 'Query', getPointsByCriter
 export type GetPointWithCommentByCriteriaQueryVariables = Exact<{
   category?: InputMaybe<Scalars['String']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
+  semester?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
@@ -2291,9 +2309,49 @@ export type GetStaffSurveyBatchListQueryResult = Apollo.QueryResult<GetStaffSurv
 export function refetchGetStaffSurveyBatchListQuery(variables?: GetStaffSurveyBatchListQueryVariables) {
       return { query: GetStaffSurveyBatchListDocument, variables: variables }
     }
+export const GetSurveySemesterListDocument = gql`
+    query GetSurveySemesterList {
+  getSurveySemesterList
+}
+    `;
+
+/**
+ * __useGetSurveySemesterListQuery__
+ *
+ * To run a query within a React component, call `useGetSurveySemesterListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSurveySemesterListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSurveySemesterListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSurveySemesterListQuery(baseOptions?: Apollo.QueryHookOptions<GetSurveySemesterListQuery, GetSurveySemesterListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSurveySemesterListQuery, GetSurveySemesterListQueryVariables>(GetSurveySemesterListDocument, options);
+      }
+export function useGetSurveySemesterListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSurveySemesterListQuery, GetSurveySemesterListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSurveySemesterListQuery, GetSurveySemesterListQueryVariables>(GetSurveySemesterListDocument, options);
+        }
+export function useGetSurveySemesterListSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetSurveySemesterListQuery, GetSurveySemesterListQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetSurveySemesterListQuery, GetSurveySemesterListQueryVariables>(GetSurveySemesterListDocument, options);
+        }
+export type GetSurveySemesterListQueryHookResult = ReturnType<typeof useGetSurveySemesterListQuery>;
+export type GetSurveySemesterListLazyQueryHookResult = ReturnType<typeof useGetSurveySemesterListLazyQuery>;
+export type GetSurveySemesterListSuspenseQueryHookResult = ReturnType<typeof useGetSurveySemesterListSuspenseQuery>;
+export type GetSurveySemesterListQueryResult = Apollo.QueryResult<GetSurveySemesterListQuery, GetSurveySemesterListQueryVariables>;
+export function refetchGetSurveySemesterListQuery(variables?: GetSurveySemesterListQueryVariables) {
+      return { query: GetSurveySemesterListDocument, variables: variables }
+    }
 export const GetPointsByCategoryDocument = gql`
-    query GetPointsByCategory {
-  getPointsByCategory {
+    query GetPointsByCategory($semester: String) {
+  getPointsByCategory(semester: $semester) {
     avg_point
     category
   }
@@ -2312,6 +2370,7 @@ export const GetPointsByCategoryDocument = gql`
  * @example
  * const { data, loading, error } = useGetPointsByCategoryQuery({
  *   variables: {
+ *      semester: // value for 'semester'
  *   },
  * });
  */
@@ -2335,8 +2394,8 @@ export function refetchGetPointsByCategoryQuery(variables?: GetPointsByCategoryQ
       return { query: GetPointsByCategoryDocument, variables: variables }
     }
 export const GetPointsByCriteriaDocument = gql`
-    query GetPointsByCriteria($category: String!) {
-  getPointsByCriteria(category: $category) {
+    query GetPointsByCriteria($category: String!, $semester: String) {
+  getPointsByCriteria(category: $category, semester: $semester) {
     avg_point
     criteria
     index
@@ -2357,6 +2416,7 @@ export const GetPointsByCriteriaDocument = gql`
  * const { data, loading, error } = useGetPointsByCriteriaQuery({
  *   variables: {
  *      category: // value for 'category'
+ *      semester: // value for 'semester'
  *   },
  * });
  */
@@ -2380,8 +2440,12 @@ export function refetchGetPointsByCriteriaQuery(variables: GetPointsByCriteriaQu
       return { query: GetPointsByCriteriaDocument, variables: variables }
     }
 export const GetPointWithCommentByCriteriaDocument = gql`
-    query GetPointWithCommentByCriteria($category: String, $page: Int) {
-  getPointWithCommentByCriteria(category: $category, pagination: {page: $page}) {
+    query GetPointWithCommentByCriteria($category: String, $page: Int, $semester: String) {
+  getPointWithCommentByCriteria(
+    category: $category
+    pagination: {page: $page}
+    semester: $semester
+  ) {
     data {
       criteria
       index
@@ -2414,6 +2478,7 @@ export const GetPointWithCommentByCriteriaDocument = gql`
  *   variables: {
  *      category: // value for 'category'
  *      page: // value for 'page'
+ *      semester: // value for 'semester'
  *   },
  * });
  */

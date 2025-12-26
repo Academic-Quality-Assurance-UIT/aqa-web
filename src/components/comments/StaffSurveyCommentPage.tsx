@@ -15,6 +15,7 @@ export default function StaffSurveyCommentPage({
 	defaultFilter = {},
 	selectors = [],
 	category,
+	semester,
 }: IProps) {
 	const [getCommentList, { data, loading: isLoading }] =
 		useGetPointWithCommentByCriteriaLazyQuery({
@@ -23,7 +24,7 @@ export default function StaffSurveyCommentPage({
 
 	const { dataList: comments, bottomRef } = useInfiniteScroll({
 		queryFunction: getCommentList,
-		variables: { category },
+		variables: { category, semester },
 		isLoading,
 		data: data?.getPointWithCommentByCriteria.data,
 		meta: data?.getPointWithCommentByCriteria.meta,
@@ -78,4 +79,6 @@ interface IProps {
 	defaultFilter?: FilterArgs;
 	selectors?: SelectorType[];
 	category: string;
+	semester?: string;
 }
+
