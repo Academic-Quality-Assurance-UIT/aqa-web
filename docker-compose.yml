@@ -1,15 +1,18 @@
 services:
   aqa-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL_V2=/api
     image: hoanghy/aqa-client
+    env_file:
+      - .env
+    environment:
+      - BACKEND_URL=http://host.docker.internal:8000/graphql
     container_name: aqa-client
     ports:
-      - "3000:3000"
-    environment:
-      # Backend URL for API rewrites (as defined in next.config.js)
-      # Use host.docker.internal to access host machine services from container
-      # Or use the actual backend service name if running in the same docker network
-      - BACKEND_URL=http://host.docker.internal:8000/api/:path*
-      - NODE_ENV=production
+      - "0.0.0.0:3000:3000"
     restart: unless-stopped
     # For Linux hosts, add this to enable host.docker.internal
     extra_hosts:

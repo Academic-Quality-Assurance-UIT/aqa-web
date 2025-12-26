@@ -13,6 +13,9 @@ COPY . .
 ARG NEXT_PUBLIC_API_URL_V2
 ENV NEXT_PUBLIC_API_URL_V2=$NEXT_PUBLIC_API_URL_V2
 
+ARG BACKEND_URL=http://host.docker.internal:8000/graphql
+ENV BACKEND_URL=$BACKEND_URL
+
 RUN pnpm build --no-lint
 
 FROM node:22-alpine
