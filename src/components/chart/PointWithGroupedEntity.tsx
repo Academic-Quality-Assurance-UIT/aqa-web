@@ -107,14 +107,14 @@ function InnerPointWithGroupedEntity({
 	}, [JSON.stringify(query), JSON.stringify(variables), profile]);
 
 	const averagePoint =
-		data.reduce((total, value) => (total += value[aggregationField] * 4), 0) /
+		data.reduce((total, value) => (total += (value[aggregationField] ?? 0) * 4), 0) /
 		data.length;
 
 	const chartData =
 		[...data]
-			.sort((a, b) => b[aggregationField] - a[aggregationField])
+			.sort((a, b) => (b[aggregationField] ?? 0) - (a[aggregationField] ?? 0))
 			.map((point) => ({
-				[xTitle]: point[aggregationField] * 4,
+				[xTitle]: (point[aggregationField] ?? 0) * 4,
 				[averageTitle]: averagePoint,
 				name: isShowedName ? point.display_name : `Giảng viên ${point.id}`,
 			})) || [];
