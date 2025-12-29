@@ -80,7 +80,7 @@ export default function Page() {
 								categories: ["Điểm đánh giá"],
 								yAxisLabel: "",
 								colors: ["sky"],
-								minValue: 3,
+								minValue: 1,
 								maxValue: 4,
 								yAxisWidth: 60,
 								valueFormatter: (number: number) => {
