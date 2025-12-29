@@ -92,7 +92,7 @@ export default function Page() {
 								showYAxis: true,
 								yAxisLabel: "",
 								colors: ["pink"],
-								minValue: 3,
+								minValue: 1,
 								maxValue: 4,
 								valueFormatter: (number: number) => {
 									return `${number.toFixed(2)}`;
